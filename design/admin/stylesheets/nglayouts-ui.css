@@ -19,6 +19,13 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, #leftmenu::-webkit-scrollbar, 
     min-height: auto;
 }
 
+/* Dashboard-specific leftmenu styling for section_id_7 (white background) */
+.ezcontentnavigationpart.section_id_7 .dashboard-flex #leftmenu.sidebar.left.show {
+    overflow: hidden !important;
+    background: #fff;
+    min-height: auto;
+}
+
 #leftmenu .nglayouts-sidebar {
     width: 100%;
     height: auto;
