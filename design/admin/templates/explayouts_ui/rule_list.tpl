@@ -223,7 +223,7 @@
                                                 <div class="rule-layout-info">
                                                     {if and(is_set($layoutType.zones),count($layoutType.zones)|gt(0))}
                                                         <div class="rule-layout-info-icon">
-                                                            {if $layoutType}<img src={concat('/extension/explayouts/design/standard/images/explayouts_standard/layout_types/',$layoutType.icon,'.svg')|ezroot} alt="" class="layout-icon" style="width:100%;display:block;" />{/if}
+                                                            {if $layoutType}<img src={concat('/extension/explayouts/design/standard/images/explayouts_standard/layout_types/',$layoutType.icon,'.svg')|ezroot} alt="" class="layout-icon" style="width:100%;display:block;height:auto !important;padding-bottom:0 !important;" />{/if}
                                                         </div>
                                                         <div class="rule-layout-info-text">
                                                             <p><strong>{$layout.name|wash}</strong></p>
