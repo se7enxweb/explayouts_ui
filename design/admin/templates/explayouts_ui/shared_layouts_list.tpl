@@ -36,7 +36,7 @@
                                     <span class="nl-layout-icon">{$layout_type_icons[$layout.layout_type]}</span>
                                 </div>
                                 <div class="nl-layout-text">
-                                    <div class="nl-layout-name"><a href={concat('explayouts_ui/layout_edit/',$layout.id)|ezurl}>{$layout.name|wash}</a></div>
+                                    <div class="nl-layout-name"><a href={concat('explayouts_ui_api/app#layout/',$layout.id)|ezurl}>{$layout.name|wash}</a></div>
                                     <div class="nl-layout-description">{$layout.identifier|wash}</div>
                                     <div class="nl-layout-modified"><p>{$layout.modified|datetime( 'custom', '%Y-%m-%d %H:%M' )}</p></div>
                                     {if ne($layout.status,2)}<span class="unpublished-label">Draft</span>{/if}
@@ -52,8 +52,7 @@
                                 <div class="nl-dropdown" data-position="right">
                                     <button class="nl-btn nl-dropdown-toggle" type="button"><i class="material-icons">more_horiz</i></button>
                                     <ul class="nl-dropdown-menu main-dropdown">
-                                        <li><a href={concat('explayouts_ui_api/app#layout/',$layout.id)|ezurl}>Edit in modern editor</a></li>
-                                        <li><a href={concat('explayouts_ui/layout_preview/',$layout.id,'/',$layout.status)|ezurl} target="_blank">Preview</a></li>
+                                        <li><a href={concat('explayouts_ui/layout_preview/',$layout.id,'/',$layout.status)|ezurl} target="_blank"><i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:4px;">visibility</i> Preview</a></li>
                                     </ul>
                                 </div>
                             </div>

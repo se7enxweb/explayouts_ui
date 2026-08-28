@@ -53,7 +53,7 @@
             {/if}
 
             <input class="defaultbutton" type="submit" name="SaveBlock" value="Save block" />
-            <a class="button" href={concat('explayouts_ui/layout_edit/',$block.layout_id)|ezurl}>Back to layout</a>
+            <a class="button" href={concat('explayouts_ui_api/app#layout/',$block.layout_id)|ezurl}>Back to layout</a>
         </form>
 
         {if $has_collection}

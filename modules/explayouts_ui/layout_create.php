@@ -45,7 +45,7 @@ if ( $http->hasPostVariable( 'CreateLayout' ) )
         $position++;
     }
 
-    return $module->redirectTo( '/explayouts_ui/layout_edit/' . $layout->attribute( 'id' ) );
+    return $module->redirectTo( '/explayouts_ui_api/app#layout/' . $layout->attribute( 'id' ) );
 }
 
 $tpl = eZTemplate::factory();
