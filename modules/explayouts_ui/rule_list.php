@@ -19,6 +19,51 @@ $error = '';
 
 $ruleService = new expLayoutsCoreRuleService();
 
+// Handle new rule creation (edit permission required)
+if ( $canEdit && $http->hasPostVariable( 'AddRule' ) )
+{
+    $layoutId = (int)$http->postVariable( 'LayoutID' );
+    $priority = (int)$http->postVariable( 'Priority' );
+    $enabled = $http->hasPostVariable( 'Enabled' ) ? 1 : 0;
+
+    $rule = $ruleService->create( $layoutId, $priority, $enabled );
+
+    if ( $rule )
+    {
+        $ruleId = (int)$rule->attribute( 'id' );
+
+        $targetTypes = $http->hasPostVariable( 'TargetType' ) ? $http->postVariable( 'TargetType' ) : array();
+        $targetValues = $http->hasPostVariable( 'TargetValue' ) ? $http->postVariable( 'TargetValue' ) : array();
+        $targets = array();
+        for ( $i = 0; $i < count( $targetTypes ); $i++ )
+        {
+            $type = trim( $targetTypes[$i] );
+            $value = isset( $targetValues[$i] ) ? trim( $targetValues[$i] ) : '';
+            if ( $type === '' ) continue;
+            $targets[] = array( 'type' => $type, 'value' => $value );
+        }
+        $ruleService->setTargets( $ruleId, $targets );
+
+        $conditionTypes = $http->hasPostVariable( 'ConditionType' ) ? $http->postVariable( 'ConditionType' ) : array();
+        $conditionValues = $http->hasPostVariable( 'ConditionValue' ) ? $http->postVariable( 'ConditionValue' ) : array();
+        $conditions = array();
+        for ( $i = 0; $i < count( $conditionTypes ); $i++ )
+        {
+            $type = trim( $conditionTypes[$i] );
+            $value = isset( $conditionValues[$i] ) ? trim( $conditionValues[$i] ) : '';
+            if ( $type === '' ) continue;
+            $conditions[] = array( 'type' => $type, 'value' => $value );
+        }
+        $ruleService->setConditions( $ruleId, $conditions );
+
+        $message = 'Rule added.';
+    }
+    else
+    {
+        $error = 'Rule could not be created.';
+    }
+}
+
 // Handle rule save (edit permission required)
 if ( $canEdit && $http->hasPostVariable( 'SaveRule' ) )
 {
@@ -140,6 +185,9 @@ if ( $canEdit && $http->hasPostVariable( 'CopyRule' ) )
 $rules = $ruleService->listAll( false );
 $layouts = expLayoutsLayout::fetchList();
 
+$newRule = expLayoutsRule::create( 0, 0 );
+$newRule->setAttribute( 'enabled', 1 );
+
 $targetTypes = array( 'path', 'path_prefix', 'path_regex', 'content_node', 'subtree', 'route' );
 $conditionTypes = array(
     'siteaccess',
@@ -178,6 +226,7 @@ foreach ( $rules as $rule )
 }
 
 $tpl = eZTemplate::factory();
+$tpl->setVariable( 'newRule', $newRule );
 $tpl->setVariable( 'ruleData', $ruleData );
 $tpl->setVariable( 'layouts', $layouts );
 $tpl->setVariable( 'targetTypes', $targetTypes );
