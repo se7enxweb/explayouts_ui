@@ -223,7 +223,7 @@
                                                 <div class="rule-layout-info">
                                                     {if and(is_set($layoutType.zones),count($layoutType.zones)|gt(0))}
                                                         <div class="rule-layout-info-icon">
-                                                            {if $layoutType}<img src="{concat('/extension/explayouts/design/standard/images/explayouts_standard/layout_types/',$layoutType.icon,'.svg')|ezroot}" alt="" class="layout-icon" style="width:100%;display:block;" />{/if}
+                                                            {if $layoutType}<img src={concat('/extension/explayouts/design/standard/images/explayouts_standard/layout_types/',$layoutType.icon,'.svg')|ezroot} alt="" class="layout-icon" style="width:100%;display:block;" />{/if}
                                                         </div>
                                                         <div class="rule-layout-info-text">
                                                             <p><strong>{$layout.name|wash}</strong></p>
@@ -390,7 +390,7 @@
 <script>
 var nglTargetTypes = [{foreach $targetTypes as $tt}'{$tt|wash}'{delimiter},{/delimiter}{/foreach}];
 var nglConditionTypes = [{foreach $conditionTypes as $ct}'{$ct|wash}'{delimiter},{/delimiter}{/foreach}];
-var nglContentBrowserUrl = {'/explayouts_content_browser_ui/browser/?return_uri=js&field=active'|ezurl};
+var nglContentBrowserUrl = {'/explayouts_content_browser_ui/browser/'|ezurl};
 var nglCmsEditBase = {'/content/edit/'|ezurl};
 </script>
 
@@ -515,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (cell) {
             var viewLink = cell.querySelector('.js-view-target');
             if (viewLink) {
-                viewLink.href = (window.nglCmsEditBase || '/content/edit/') + nodeId;
+                viewLink.href = (window.nglCmsEditBase || '/content/edit') + '/' + nodeId;
                 viewLink.style.display = '';
             }
         }
@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var input = cell ? cell.querySelector('input[name="TargetValue[]"]') : null;
             if (!input) return;
             window.nglActiveTargetInput = input;
-            var url = window.nglContentBrowserUrl || '/explayouts_content_browser_ui/browser/?return_uri=js&field=active';
+            var url = (window.nglContentBrowserUrl || '/explayouts_content_browser_ui/browser/') + '?return_uri=js&field=active';
             window.open(url, 'contentbrowser', 'width=900,height=700,scrollbars=yes,resizable=yes');
         }
     });
@@ -542,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var viewLink = cell ? cell.querySelector('.js-view-target') : null;
             if (viewLink) {
                 if (/^\d+$/.test(e.target.value)) {
-                    viewLink.href = (window.nglCmsEditBase || '/content/edit/') + e.target.value;
+                    viewLink.href = (window.nglCmsEditBase || '/content/edit') + '/' + e.target.value;
                     viewLink.style.display = '';
                 } else {
                     viewLink.style.display = 'none';
