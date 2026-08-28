@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="nl-layout-options">
-                            <a href={concat('explayouts_ui/rule_edit/',$ruleId)|ezurl} class="js-open-ngl">Edit layout</a>
+                            <a href={concat('explayouts_ui_api/app#layout/',$rule.layout_id)|ezurl} class="js-open-ngl">Edit layout</a>
                         </div>
                     {else}
                         <div class="panel-name" title="No mapped layout"><p>No mapped layout</p></div>

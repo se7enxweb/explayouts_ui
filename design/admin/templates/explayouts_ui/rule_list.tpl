@@ -128,7 +128,7 @@
                                 <div class="hover-actions">
                                     {if $layout}
                                         <div class="nl-rule-cell rule-edit-layout rule-padded-left">
-                                            <a href={concat('explayouts_ui/rule_edit/',$rule.id)|ezurl} class="js-open-ngl">Edit layout</a>
+                                            <a href={concat('explayouts_ui_api/app#layout/',$rule.layout_id)|ezurl} class="js-open-ngl">Edit layout</a>
                                         </div>
                                     {/if}
 
