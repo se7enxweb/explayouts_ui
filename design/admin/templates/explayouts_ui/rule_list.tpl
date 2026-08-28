@@ -1,13 +1,15 @@
 {ezcss_load(array('netgen/layouts-admin.css','netgen/layouts-ibexa.css','nglayouts-ui.css'))}
-{ezscript_load(array('netgen/layouts-admin.js','netgen/layouts-ibexa.js'))}
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 {literal}<style>
+#rules { visibility: visible !important; }
 #rules .message-feedback,
 #rules .message-error { margin: 14px 18px; }
 #rules .nl-rule-body table.list { width: 100%; }
 #rules .nl-rule-body table.list th { text-align: left; font-size: 12px; color: #777; padding: 6px 4px; font-weight: 500; }
 #rules .nl-rule-body table.list td { padding: 4px; }
+#rules .rule-layout .icon-rule,
+#rules .rule-layout .icon-rule-disabled { font-family: 'Material Icons' !important; }
 #rules .nl-rule-body table.list input[type="text"],
 #rules .nl-rule-body table.list select { width: 100%; box-sizing: border-box; padding: 6px; }
 #rules .nl-rule-body .nl-rule-setting .settings-action select { min-width: 140px; padding: 6px; }
@@ -19,8 +21,9 @@
 #rules .nl-dropdown-menu a, #rules .nl-dropdown-menu button { display: block; width: 100%; box-sizing: border-box; }
 </style>{/literal}
 
-<div class="ng-layouts-app row">
-    <div id="rules" class="nl-element">
+<div class="ng-layouts-app">
+    <div class="layouts-content">
+        <div id="rules" class="nl-element">
         <div class="layouts-header">
             <h2 class="layouts-title">Layout Rules</h2>
             <div class="layouts-controls">
@@ -92,8 +95,8 @@
 
                                 <div class="nl-rule-cell rule-layout">
                                     <div class="rule-priority"><span class="rule-priority-nr">{$rule.priority|sum(1)}</span></div>
-                                    <span class="icon-rule"></span>
-                                    <span class="icon-rule-disabled"><span class="disabled-tooltip">Inactive</span></span>
+                                    <i class="material-icons icon-rule">widgets</i>
+                                    <i class="material-icons icon-rule-disabled">error</i>
 
                                     {if $layout}
                                         <p>{$layout.name|wash}</p>
@@ -373,6 +376,7 @@
             {/if}
         </div>
     </div>
+</div>
 </div>
 
 <script>
