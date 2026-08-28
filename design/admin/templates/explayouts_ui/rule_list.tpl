@@ -126,7 +126,8 @@
                                     {if count($conditions)|gt(0)}
                                         <ul class="{if count($conditions)|eq(2)}nl-ellipsis{elseif count($conditions)|gt(2)}nl-inline{/if}">
                                             {foreach $conditions as $c}
-                                                <li>{if count($conditions)|lt(3)}{$c.condition_type|wash}: {/if}{$c.condition_value|wash}</li>
+                                                {def $conditionDisplayType = cond(eq($c.condition_type,'ibexa_content_type'),'content_type',cond(eq($c.condition_type,'ibexa_site_access'),'siteaccess',$c.condition_type))}
+                                                <li>{if count($conditions)|lt(3)}{$conditionDisplayType|wash}: {/if}{$c.condition_value|wash}</li>
                                             {/foreach}
                                         </ul>
                                     {/if}
@@ -342,9 +343,10 @@
                                                         {foreach $conditions as $c}
                                                             <tr>
                                                                 <td>
+                                                                    {def $conditionDisplayType = cond(eq($c.condition_type,'ibexa_content_type'),'content_type',cond(eq($c.condition_type,'ibexa_site_access'),'siteaccess',$c.condition_type))}
                                                                     <select name="ConditionType[]">
                                                                         {foreach $conditionTypes as $ct}
-                                                                            <option value="{$ct|wash}" {if eq($c.condition_type,$ct)}selected="selected"{/if}>{$ct|wash}</option>
+                                                                            <option value="{$ct|wash}" {if eq($conditionDisplayType,$ct)}selected="selected"{/if}>{$ct|wash}</option>
                                                                         {/foreach}
                                                                     </select>
                                                                 </td>
