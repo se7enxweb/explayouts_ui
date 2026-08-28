@@ -223,7 +223,7 @@
                                                 <div class="rule-layout-info">
                                                     {if and(is_set($layoutType.zones),count($layoutType.zones)|gt(0))}
                                                         <div class="rule-layout-info-icon">
-                                                            <i class="layout-icon {if $layoutType}{$layoutType.identifier|wash}{/if}"></i>
+                                                            {if $layoutType}<img src="{concat('/extension/explayouts/design/standard/images/explayouts_standard/layout_types/',$layoutType.icon,'.svg')|ezroot}" alt="" class="layout-icon" style="width:100%;display:block;" />{/if}
                                                         </div>
                                                         <div class="rule-layout-info-text">
                                                             <p><strong>{$layout.name|wash}</strong></p>
@@ -293,7 +293,15 @@
                                                                         {/foreach}
                                                                     </select>
                                                                 </td>
-                                                                <td><input type="text" name="TargetValue[]" value="{$t.target_value|wash}" size="50" /></td>
+                                                                <td>
+                                                                    <input type="text" name="TargetValue[]" value="{$t.target_value|wash}" size="40" />
+                                                                    <button type="button" class="nl-btn js-browse-target">Browse</button>
+                                                                    {if and(or(eq($t.target_type,'content_node'),eq($t.target_type,'subtree')),$t.target_value|is_numeric)}
+                                                                        <a href="{concat('/content/edit/',$t.target_value)|ezurl}" target="_blank" class="nl-btn js-view-target">View in CMS</a>
+                                                                    {else}
+                                                                        <a href="#" target="_blank" class="nl-btn js-view-target" style="display:none;">View in CMS</a>
+                                                                    {/if}
+                                                                </td>
                                                                 <td><button type="button" class="nl-btn js-remove-row">Remove</button></td>
                                                             </tr>
                                                         {/foreach}
@@ -382,6 +390,8 @@
 <script>
 var nglTargetTypes = [{foreach $targetTypes as $tt}'{$tt|wash}'{delimiter},{/delimiter}{/foreach}];
 var nglConditionTypes = [{foreach $conditionTypes as $ct}'{$ct|wash}'{delimiter},{/delimiter}{/foreach}];
+var nglContentBrowserUrl = {'/explayouts_content_browser_ui/browser/?return_uri=js&field=active'|ezurl};
+var nglCmsEditBase = {'/content/edit/'|ezurl};
 </script>
 
 {literal}<script>
@@ -443,7 +453,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             var row = table.insertRow(-1);
             row.innerHTML = '<td><select name="TargetType[]">' + options + '</select></td>' +
-                '<td><input type="text" name="TargetValue[]" value="" size="50" /></td>' +
+                '<td><input type="text" name="TargetValue[]" value="" size="40" />' +
+                '<button type="button" class="nl-btn js-browse-target">Browse</button>' +
+                '<a href="#" target="_blank" class="nl-btn js-view-target" style="display:none;">View in CMS</a></td>' +
                 '<td><button type="button" class="nl-btn js-remove-row">Remove</button></td>';
         });
     });
@@ -492,6 +504,50 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.nl-rule.show-body').forEach(function(rule) {
                 rule.classList.remove('show-body');
             });
+        }
+    });
+
+    window.setRuleTargetValue = function(nodeId, name, field) {
+        var input = window.nglActiveTargetInput;
+        if (!input) return;
+        input.value = nodeId;
+        var cell = input.parentNode;
+        if (cell) {
+            var viewLink = cell.querySelector('.js-view-target');
+            if (viewLink) {
+                viewLink.href = (window.nglCmsEditBase || '/content/edit/') + nodeId;
+                viewLink.style.display = '';
+            }
+        }
+        window.nglActiveTargetInput = null;
+    };
+
+    window.nglActiveTargetInput = null;
+
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('js-browse-target')) {
+            e.preventDefault();
+            var cell = e.target.closest ? e.target.closest('td') : null;
+            var input = cell ? cell.querySelector('input[name="TargetValue[]"]') : null;
+            if (!input) return;
+            window.nglActiveTargetInput = input;
+            var url = window.nglContentBrowserUrl || '/explayouts_content_browser_ui/browser/?return_uri=js&field=active';
+            window.open(url, 'contentbrowser', 'width=900,height=700,scrollbars=yes,resizable=yes');
+        }
+    });
+
+    document.addEventListener('input', function(e) {
+        if (e.target && e.target.name === 'TargetValue[]') {
+            var cell = e.target.parentNode;
+            var viewLink = cell ? cell.querySelector('.js-view-target') : null;
+            if (viewLink) {
+                if (/^\d+$/.test(e.target.value)) {
+                    viewLink.href = (window.nglCmsEditBase || '/content/edit/') + e.target.value;
+                    viewLink.style.display = '';
+                } else {
+                    viewLink.style.display = 'none';
+                }
+            }
         }
     });
 });
