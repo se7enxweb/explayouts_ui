@@ -4,7 +4,12 @@ eZDebug::updateSettings( array( 'debug-enabled' => false ) );
 $http = eZHTTPTool::instance();
 $module = $Params['Module'];
 
-if ( !eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
+$readAccess = eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' );
+$editAccess = eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' );
+$canEdit = is_array( $editAccess ) && isset( $editAccess['accessWord'] ) && $editAccess['accessWord'] === 'yes';
+$canRead = is_array( $readAccess ) && isset( $readAccess['accessWord'] ) && $readAccess['accessWord'] === 'yes';
+
+if ( !$canRead )
 {
     return $module->handleError( eZError::KERNEL_ACCESS_DENIED, 'kernel' );
 }
@@ -15,7 +20,7 @@ $error = '';
 $ruleService = new expLayoutsCoreRuleService();
 
 // Handle rule save (edit permission required)
-if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPostVariable( 'SaveRule' ) )
+if ( $canEdit && $http->hasPostVariable( 'SaveRule' ) )
 {
     $ruleId = (int)$http->postVariable( 'RuleID' );
     $rule = $ruleService->load( $ruleId );
@@ -64,8 +69,56 @@ if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPos
     }
 }
 
+// Handle quick enable (edit permission required)
+if ( $canEdit && $http->hasPostVariable( 'EnableRule' ) )
+{
+    $ruleId = (int)$http->postVariable( 'RuleID' );
+    $rule = $ruleService->load( $ruleId );
+    if ( $rule )
+    {
+        $ruleService->update( $ruleId, array( 'enabled' => 1 ) );
+        $message = 'Rule enabled.';
+    }
+    else
+    {
+        $error = 'Rule not found.';
+    }
+}
+
+// Handle quick disable (edit permission required)
+if ( $canEdit && $http->hasPostVariable( 'DisableRule' ) )
+{
+    $ruleId = (int)$http->postVariable( 'RuleID' );
+    $rule = $ruleService->load( $ruleId );
+    if ( $rule )
+    {
+        $ruleService->update( $ruleId, array( 'enabled' => 0 ) );
+        $message = 'Rule disabled.';
+    }
+    else
+    {
+        $error = 'Rule not found.';
+    }
+}
+
+// Handle quick unlink layout (edit permission required)
+if ( $canEdit && $http->hasPostVariable( 'UnlinkRule' ) )
+{
+    $ruleId = (int)$http->postVariable( 'RuleID' );
+    $rule = $ruleService->load( $ruleId );
+    if ( $rule )
+    {
+        $ruleService->update( $ruleId, array( 'layout_id' => 0 ) );
+        $message = 'Layout unlinked.';
+    }
+    else
+    {
+        $error = 'Rule not found.';
+    }
+}
+
 // Handle rule deletion (edit permission required)
-if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPostVariable( 'DeleteRule' ) )
+if ( $canEdit && $http->hasPostVariable( 'DeleteRule' ) )
 {
     $deleteId = (int)$http->postVariable( 'DeleteRuleID' );
     if ( $ruleService->delete( $deleteId ) )
@@ -75,7 +128,7 @@ if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPos
 }
 
 // Handle rule copy (edit permission required)
-if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPostVariable( 'CopyRule' ) )
+if ( $canEdit && $http->hasPostVariable( 'CopyRule' ) )
 {
     $copyId = (int)$http->postVariable( 'CopyRuleID' );
     if ( $ruleService->copy( $copyId ) )
@@ -87,18 +140,27 @@ if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPos
 $rules = $ruleService->listAll( false );
 $layouts = expLayoutsLayout::fetchList();
 
+$targetTypes = array( 'path', 'path_prefix', 'path_regex', 'content_node', 'subtree', 'route' );
+$conditionTypes = array( 'siteaccess', 'content_type' );
+
 $ruleData = array();
 foreach ( $rules as $rule )
 {
     $ruleId = (int)$rule->attribute( 'id' );
     $layout = false;
+    $layoutType = false;
     $layoutId = (int)$rule->attribute( 'layout_id' );
     if ( $layoutId > 0 )
+    {
         $layout = expLayoutsLayout::fetch( $layoutId );
+        if ( $layout )
+            $layoutType = expLayoutsLayoutType::getTypeInfo( $layout->attribute( 'layout_type' ) );
+    }
 
     $ruleData[$ruleId] = array(
         'rule' => $rule,
         'layout' => $layout,
+        'layout_type' => $layoutType,
         'targets' => $rule->targets(),
         'conditions' => $rule->conditions(),
     );
@@ -107,6 +169,9 @@ foreach ( $rules as $rule )
 $tpl = eZTemplate::factory();
 $tpl->setVariable( 'ruleData', $ruleData );
 $tpl->setVariable( 'layouts', $layouts );
+$tpl->setVariable( 'targetTypes', $targetTypes );
+$tpl->setVariable( 'conditionTypes', $conditionTypes );
+$tpl->setVariable( 'canEdit', $canEdit );
 $tpl->setVariable( 'message', $message );
 $tpl->setVariable( 'error', $error );
 
