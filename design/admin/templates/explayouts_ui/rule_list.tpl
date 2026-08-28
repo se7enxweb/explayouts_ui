@@ -256,7 +256,11 @@
 
                                             <div style="margin-top:14px;display:flex;gap:24px;align-items:center;">
                                                 <label style="font-weight:500;">Priority <input type="text" name="Priority" value="{$rule.priority|wash}" size="6" style="padding:8px;" /></label>
-                                                <label style="display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" name="Enabled" value="1" {if $rule.enabled}checked="checked"{/if} /> Enabled</label>
+                                                <label class="nl-toggle-switch" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;">
+                                                    <input type="checkbox" id="rule-enabled-{$rule.id|wash}" class="nl-toggle-input" name="Enabled" value="1" {if $rule.enabled}checked="checked"{/if} data-rule-id="{$rule.id|wash}" />
+                                                    <span class="nl-toggle-slider"></span>
+                                                    <span class="nl-toggle-label" data-on="Enabled" data-off="Disabled">{if $rule.enabled}Enabled{else}Disabled{/if}</span>
+                                                </label>
                                             </div>
                                         </div>
 
@@ -387,6 +391,16 @@
 </div>
 </div>
 
+{literal}<style>
+.nl-toggle-switch { position: relative; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500; }
+.nl-toggle-input { opacity: 0; width: 0; height: 0; position: absolute; }
+.nl-toggle-slider { position: relative; display: inline-block; width: 44px; height: 24px; background: #ccc; border-radius: 24px; transition: background .2s; }
+.nl-toggle-slider:before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: transform .2s; }
+.nl-toggle-input:checked + .nl-toggle-slider { background: #2196F3; }
+.nl-toggle-input:checked + .nl-toggle-slider:before { transform: translateX(20px); }
+.nl-toggle-input:focus + .nl-toggle-slider { box-shadow: 0 0 0 2px rgba(33,150,243,.4); }
+</style>{/literal}
+
 <script>
 var nglTargetTypes = [{foreach $targetTypes as $tt}'{$tt|wash}'{delimiter},{/delimiter}{/foreach}];
 var nglConditionTypes = [{foreach $conditionTypes as $ct}'{$ct|wash}'{delimiter},{/delimiter}{/foreach}];
@@ -503,6 +517,27 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape') {
             document.querySelectorAll('.nl-rule.show-body').forEach(function(rule) {
                 rule.classList.remove('show-body');
+            });
+        }
+    });
+
+    document.querySelectorAll('.nl-toggle-input').forEach(function(input) {
+        var label = input.parentNode ? input.parentNode.querySelector('.nl-toggle-label') : null;
+        if (label) {
+            input.addEventListener('change', function() {
+                label.textContent = input.checked ? label.getAttribute('data-on') : label.getAttribute('data-off');
+                var ruleId = input.getAttribute('data-rule-id');
+                if (ruleId) {
+                    var rule = document.getElementById('rule-' + ruleId);
+                    if (rule) {
+                        var content = rule.querySelector('.nl-rule-content');
+                        if (content) {
+                            if (input.checked) content.classList.remove('disabled');
+                            else content.classList.add('disabled');
+                            content.setAttribute('data-enabled', input.checked ? '1' : '0');
+                        }
+                    }
+                }
             });
         }
     });
