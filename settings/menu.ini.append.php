@@ -1,15 +1,15 @@
 <?php /* #?ini charset="utf-8"?
 
 [NavigationPart]
-Part[ezexplayoutsuinavigationpart]=Exponential Layouts UI
+Part[ezexplayoutsuinavigationpart]=Layouts
 
 [TopAdminMenu]
 Tabs[]=explayouts_ui_dashboard
 
 [Topmenu_explayouts_ui_dashboard]
 NavigationPartIdentifier=ezexplayoutsuinavigationpart
-Name=Exponential Layouts UI
-Tooltip=Exponential Layouts UI Dashboard
+Name=Layouts
+Tooltip=Layouts dashboard
 URL[]
 URL[default]=explayouts_ui/dashboard
 Enabled[]
@@ -24,7 +24,7 @@ Shown[browse]=true
 PolicyList[]=explayouts/read
 
 [Leftmenu_explayouts_ui_dashboard]
-Name=Exponential Layouts UI
+Name=Layouts
 Links[]
 LinkNames[]
 Links[Layout mappings]=explayouts_ui/rule_list
