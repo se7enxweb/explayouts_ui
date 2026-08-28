@@ -149,6 +149,18 @@ $conditionTypes = array(
     'time',
 );
 
+// Keep condition types that are already in use so existing rules can be edited
+// without silently changing their condition type on save.
+$usedConditionTypes = array();
+foreach ( $rules as $rule )
+{
+    foreach ( $rule->conditions() as $condition )
+    {
+        $usedConditionTypes[] = (string)$condition->attribute( 'condition_type' );
+    }
+}
+$conditionTypes = array_values( array_unique( array_merge( $conditionTypes, $usedConditionTypes ) ) );
+
 $ruleData = array();
 foreach ( $rules as $rule )
 {
