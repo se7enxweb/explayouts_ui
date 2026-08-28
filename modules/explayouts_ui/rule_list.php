@@ -141,7 +141,13 @@ $rules = $ruleService->listAll( false );
 $layouts = expLayoutsLayout::fetchList();
 
 $targetTypes = array( 'path', 'path_prefix', 'path_regex', 'content_node', 'subtree', 'route' );
-$conditionTypes = array( 'siteaccess', 'content_type' );
+$conditionTypes = array(
+    'siteaccess',
+    'content_type',
+    'query_parameter',
+    'route_parameter',
+    'time',
+);
 
 $ruleData = array();
 foreach ( $rules as $rule )
