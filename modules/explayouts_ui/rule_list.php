@@ -212,7 +212,7 @@ if ( $http->hasGetVariable( 'RuleID' ) )
 $targetTypes = array( 'path', 'path_prefix', 'path_regex', 'node', 'subtree', 'route' );
 $conditionTypes = array(
     'siteaccess',
-    'content_type',
+    'class',
     'query_parameter',
     'route_parameter',
     'time',

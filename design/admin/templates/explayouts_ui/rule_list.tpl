@@ -118,7 +118,7 @@
                                     {if count($conditions)|gt(0)}
                                         <ul class="{if count($conditions)|eq(2)}nl-ellipsis{elseif count($conditions)|gt(2)}nl-inline{/if}">
                                             {foreach $conditions as $c}
-                                                {def $conditionDisplayType = cond(eq($c.condition_type,'ibexa_content_type'),'content_type',cond(eq($c.condition_type,'ibexa_site_access'),'siteaccess',$c.condition_type))}
+                                                {def $conditionDisplayType = cond(eq($c.condition_type,'ibexa_content_type'),'class',cond(eq($c.condition_type,'content_type'),'class',cond(eq($c.condition_type,'ibexa_site_access'),'siteaccess',$c.condition_type)))}
                                                 <li>{if count($conditions)|lt(3)}{$conditionDisplayType|wash}: {/if}{$c.condition_value|wash}</li>
                                             {/foreach}
                                         </ul>

@@ -140,7 +140,7 @@
                                 {foreach $conditions as $c}
                                     <tr>
                                         <td>
-                                            {def $conditionDisplayType = cond(eq($c.condition_type,'ibexa_content_type'),'content_type',cond(eq($c.condition_type,'ibexa_site_access'),'siteaccess',$c.condition_type))}
+                                            {def $conditionDisplayType = cond(eq($c.condition_type,'ibexa_content_type'),'class',cond(eq($c.condition_type,'content_type'),'class',cond(eq($c.condition_type,'ibexa_site_access'),'siteaccess',$c.condition_type)))}
                                             <select name="ConditionType[]">
                                                 {foreach $conditionTypes as $ct}
                                                     <option value="{$ct|wash}" {if eq($conditionDisplayType,$ct)}selected="selected"{/if}>{$ct|wash}</option>
