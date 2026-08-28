@@ -221,8 +221,8 @@
                     {include uri='design:explayouts_ui/rule_detail.tpl'
                         rule=$newRule
                         ruleId='new'
-                        targetType='null'
-                        targets=array()
+                        targetType=$newRuleTargetType
+                        targets=$newRuleTargets
                         conditions=array()
                         canEdit=$canEdit
                         layouts=$layouts
@@ -250,6 +250,8 @@ var nglTargetTypes = [{foreach $targetTypes as $tt}'{$tt|wash}'{delimiter},{/del
 var nglConditionTypes = [{foreach $conditionTypes as $ct}'{$ct|wash}'{delimiter},{/delimiter}{/foreach}];
 var nglContentBrowserUrl = {'/explayouts_content_browser_ui/browser/'|ezurl};
 var nglCmsEditBase = {'/content/edit/'|ezurl};
+var nglAutoOpenNewRule = {if $autoOpenNewRule}true{else}false{/if};
+var nglAutoOpenRuleId = '{$autoOpenRuleId|wash}';
 </script>
 
 {literal}<script>
@@ -440,5 +442,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    if ( window.nglAutoOpenNewRule )
+        toggleRule('new');
+    else if ( window.nglAutoOpenRuleId )
+        toggleRule(window.nglAutoOpenRuleId);
 });
 </script>{/literal}

@@ -188,6 +188,27 @@ $layouts = expLayoutsLayout::fetchList();
 $newRule = expLayoutsRule::create( 0, 0 );
 $newRule->setAttribute( 'enabled', 1 );
 
+// Pre-fill a new rule target when the rule list is opened from a "Map layout" link.
+$newRuleTargetType = 'null';
+$newRuleTargets = array();
+$autoOpenNewRule = false;
+if ( $http->hasGetVariable( 'TargetType' ) && $http->hasGetVariable( 'TargetValue' ) )
+{
+    $newRuleTargetType = trim( (string)$http->getVariable( 'TargetType' ) );
+    $newRuleTargets[] = array(
+        'target_type' => $newRuleTargetType,
+        'target_value' => trim( (string)$http->getVariable( 'TargetValue' ) ),
+    );
+    $autoOpenNewRule = true;
+}
+
+// Auto-open an existing rule detail when opened from an "Edit mapping" link.
+$autoOpenRuleId = '';
+if ( $http->hasGetVariable( 'RuleID' ) )
+{
+    $autoOpenRuleId = (int)$http->getVariable( 'RuleID' );
+}
+
 $targetTypes = array( 'path', 'path_prefix', 'path_regex', 'node', 'subtree', 'route' );
 $conditionTypes = array(
     'siteaccess',
@@ -231,6 +252,10 @@ $tpl->setVariable( 'ruleData', $ruleData );
 $tpl->setVariable( 'layouts', $layouts );
 $tpl->setVariable( 'targetTypes', $targetTypes );
 $tpl->setVariable( 'conditionTypes', $conditionTypes );
+$tpl->setVariable( 'newRuleTargetType', $newRuleTargetType );
+$tpl->setVariable( 'newRuleTargets', $newRuleTargets );
+$tpl->setVariable( 'autoOpenNewRule', $autoOpenNewRule );
+$tpl->setVariable( 'autoOpenRuleId', $autoOpenRuleId );
 $tpl->setVariable( 'canEdit', $canEdit );
 $tpl->setVariable( 'message', $message );
 $tpl->setVariable( 'error', $error );
