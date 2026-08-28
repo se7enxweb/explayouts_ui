@@ -27,7 +27,7 @@
             </label>
 
             <h3 style="margin-top:24px;">Targets</h3>
-            <p>First matching target wins. Types: <code>path_prefix</code>, <code>path</code>, <code>path_regex</code> (pattern without delimiters), <code>content_node</code> (node ID or URL alias).</p>
+            <p>First matching target wins. Types: <code>path_prefix</code>, <code>path</code>, <code>path_regex</code> (pattern without delimiters), <code>node</code> (node ID or URL alias).</p>
             <table class="list" cellspacing="0">
                 <tr><th>Type</th><th>Value</th></tr>
                 {foreach $targets as $t}

@@ -188,7 +188,7 @@ $layouts = expLayoutsLayout::fetchList();
 $newRule = expLayoutsRule::create( 0, 0 );
 $newRule->setAttribute( 'enabled', 1 );
 
-$targetTypes = array( 'path', 'path_prefix', 'path_regex', 'content_node', 'subtree', 'route' );
+$targetTypes = array( 'path', 'path_prefix', 'path_regex', 'node', 'subtree', 'route' );
 $conditionTypes = array(
     'siteaccess',
     'content_type',

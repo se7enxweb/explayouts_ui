@@ -98,7 +98,7 @@
                                         <td>
                                             <input type="text" name="TargetValue[]" value="{$t.target_value|wash}" size="40" />
                                             <button type="button" class="nl-btn js-browse-target">Browse</button>
-                                            {if and(or(eq($t.target_type,'content_node'),eq($t.target_type,'subtree')),$t.target_value|is_numeric)}
+                                            {if and(or(eq($t.target_type,'node'),eq($t.target_type,'subtree')),$t.target_value|is_numeric)}
                                                 <a href="{concat('/content/edit/',$t.target_value)|ezurl}" target="_blank" class="nl-btn js-view-target">View in CMS</a>
                                             {else}
                                                 <a href="#" target="_blank" class="nl-btn js-view-target" style="display:none;">View in CMS</a>
