@@ -29,12 +29,11 @@
 /* Sorting controls rendered as one bar matching the New layout button height */
 .layouts-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .layouts-title { margin: 0; }
-.layouts-controls { display: flex; align-items: center; gap: 8px; flex: 1; }
-.layout-sorting-controls { display: inline-flex; align-items: center; gap: 8px; height: 2.6428571429em; font-size: .875em; border: 1px solid #ccc; border-radius: 2px; background: #fff; padding: 0 8px; box-sizing: border-box; }
+.layouts-controls { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: flex-end; }
+.layout-sorting-controls { display: inline-flex; align-items: center; gap: 4px; height: 2.6428571429em; font-size: .875em; border: 1px solid #ccc; border-radius: 2px; background: #fff; padding: 0 4px; box-sizing: border-box; }
 .layout-sorting-controls label { display: inline-flex; align-items: center; margin: 0; }
 .layout-sorting-controls .material-icons { font-size: 18px; color: #666; }
-.layout-sorting-controls .nl-select { height: 100%; border: none; background: transparent; padding: 0 4px; margin: 0; font-size: 1em; }
-#add-new-button { margin-left: auto; }
+.layout-sorting-controls .nl-select { height: 100%; border: none; background: transparent; padding: 0 4px; margin: 0; font-size: 1em; max-width: 120px; min-width: 70px; }
 </style>{/literal}
 <div class="ng-layouts-app row">
     <div class="layouts-content">
