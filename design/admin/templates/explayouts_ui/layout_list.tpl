@@ -17,6 +17,14 @@
 .nl-layout-description { margin-bottom: 2px; }
 .nl-dropdown { display: inline-block !important; opacity: 1 !important; visibility: visible !important; }
 .nl-dropdown-toggle { visibility: visible !important; }
+
+/* Patch: keep layout cards inside the admin content area */
+.nl-layouts { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; width: 100%; box-sizing: border-box; }
+.nl-layout { width: 100% !important; max-width: 100% !important; margin: 0 !important; box-sizing: border-box; }
+.nl-layout-content { min-width: 0; width: 100%; }
+.nl-layout-info { min-width: 0; flex: 1 1 auto; width: 100%; }
+.nl-layout-text { min-width: 0; overflow: hidden; width: 100%; }
+.nl-layout-name, .nl-layout-description { word-break: break-word; overflow-wrap: anywhere; }
 </style>{/literal}
 <div class="ng-layouts-app row">
     <div class="layouts-content">
