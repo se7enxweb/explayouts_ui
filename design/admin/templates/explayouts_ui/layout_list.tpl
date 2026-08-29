@@ -27,11 +27,14 @@
 .nl-layout-name, .nl-layout-description { word-break: break-word; overflow-wrap: anywhere; }
 
 /* Sorting controls rendered as one bar matching the New layout button height */
-.layouts-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.layouts-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.layouts-title { margin: 0; }
+.layouts-controls { display: flex; align-items: center; gap: 8px; flex: 1; }
 .layout-sorting-controls { display: inline-flex; align-items: center; gap: 8px; height: 2.6428571429em; font-size: .875em; border: 1px solid #ccc; border-radius: 2px; background: #fff; padding: 0 8px; box-sizing: border-box; }
 .layout-sorting-controls label { display: inline-flex; align-items: center; margin: 0; }
 .layout-sorting-controls .material-icons { font-size: 18px; color: #666; }
 .layout-sorting-controls .nl-select { height: 100%; border: none; background: transparent; padding: 0 4px; margin: 0; font-size: 1em; }
+#add-new-button { margin-left: auto; }
 </style>{/literal}
 <div class="ng-layouts-app row">
     <div class="layouts-content">
@@ -41,9 +44,6 @@
                 <div class="layouts-controls">
                     <a style="display: none" href="#" class="nl-btn js-export">Export</a>
                     <a href="#" class="nl-btn js-change-layouts-view" style="display: none;"></a>
-                    <a href={concat('explayouts_ui_api/app#layout')|ezurl} id="add-new-button" class="nl-btn nl-btn-primary js-open-ngl">
-                        <i class="material-icons">add</i> New layout
-                    </a>
                     <div class="layout-sorting-controls">
                         <label for="layout-sorting-sort"><i class="material-icons">sort_by_alpha</i></label>
                         <select id="layout-sorting-sort" class="nl-select">
@@ -58,6 +58,9 @@
                             <option value="desc">Descending</option>
                         </select>
                     </div>
+                    <a href={concat('explayouts_ui_api/app#layout')|ezurl} id="add-new-button" class="nl-btn nl-btn-primary js-open-ngl">
+                        <i class="material-icons">add</i> New layout
+                    </a>
                 </div>
             </div>
 
