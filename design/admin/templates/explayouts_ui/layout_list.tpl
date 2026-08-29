@@ -25,6 +25,13 @@
 .nl-layout-info { min-width: 0; flex: 1 1 auto; width: 100%; }
 .nl-layout-text { min-width: 0; overflow: hidden; width: 100%; }
 .nl-layout-name, .nl-layout-description { word-break: break-word; overflow-wrap: anywhere; }
+
+/* Sorting controls rendered as one bar matching the New layout button height */
+.layouts-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.layout-sorting-controls { display: inline-flex; align-items: center; gap: 8px; height: 2.6428571429em; font-size: .875em; border: 1px solid #ccc; border-radius: 2px; background: #fff; padding: 0 8px; box-sizing: border-box; }
+.layout-sorting-controls label { display: inline-flex; align-items: center; margin: 0; }
+.layout-sorting-controls .material-icons { font-size: 18px; color: #666; }
+.layout-sorting-controls .nl-select { height: 100%; border: none; background: transparent; padding: 0 4px; margin: 0; font-size: 1em; }
 </style>{/literal}
 <div class="ng-layouts-app row">
     <div class="layouts-content">
