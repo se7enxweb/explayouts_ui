@@ -126,10 +126,17 @@ foreach ( $componentClasses as $identifier => $class )
         $node = $object->attribute( 'main_node' );
         $nodeId = $node ? (int)$node->attribute( 'node_id' ) : 0;
 
-        // Name links to the admin view (node view); fallback to edit for objects with no node
-        $viewUrl = $nodeId > 0
-            ? 'content/view/full/' . $nodeId
-            : 'content/edit/' . $objectId;
+        // Name links to the object's nice URL (admin siteaccess friendly URL).
+        // Fallback to edit for objects with no node assignment.
+        if ( $nodeId > 0 )
+        {
+            $urlAlias = (string)$node->attribute( 'url_alias' );
+            $viewUrl = $urlAlias !== '' ? $urlAlias : 'content/view/full/' . $nodeId;
+        }
+        else
+        {
+            $viewUrl = 'content/edit/' . $objectId;
+        }
 
         $components[] = array(
             'id' => $objectId,
