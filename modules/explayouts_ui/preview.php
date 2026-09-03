@@ -73,6 +73,7 @@ $tpl->setVariable( 'layout', $prepared );
 $Result = array();
 $Result['pagelayout'] = true;
 $Result['content'] = $tpl->fetch( 'design:explayouts/layout.tpl' );
+$Result['content_info'] = array( 'viewmode' => 'layout_preview' );
 $Result['path'] = array( array( 'url' => false,
                                 'text' => ezpI18n::tr( 'explayouts_ui/preview', 'Preview layout' ) ) );
 return $Result;
