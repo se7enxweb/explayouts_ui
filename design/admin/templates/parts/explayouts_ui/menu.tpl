@@ -11,6 +11,10 @@
         <i class="material-icons">share</i>
         <span>Shared layouts</span>
     </a>
+    <a href={concat('explayouts_ui/components')|ezurl} class="{if $module_result.uri|extract(1)|eq('explayouts_ui/components')}active{/if}">
+        <i class="material-icons">extension</i>
+        <span>Components</span>
+    </a>
     <a href={concat('explayouts_ui/transfer_import')|ezurl} class="{if $module_result.uri|extract(1)|eq('explayouts_ui/transfer_import')}active{/if}">
         <i class="material-icons">file_upload</i>
         <span>Import</span>

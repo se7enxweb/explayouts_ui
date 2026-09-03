@@ -88,6 +88,13 @@ $ViewList['transfer_import'] = array(
     'params' => array()
 );
 
+$ViewList['components'] = array(
+    'script' => 'components.php',
+    'functions' => array( 'read' ),
+    'default_navigation_part' => 'ezexplayoutsuinavigationpart',
+    'params' => array()
+);
+
 $FunctionList = array();
 $FunctionList['read'] = array();
 $FunctionList['edit'] = array();
