@@ -249,7 +249,7 @@
 var nglTargetTypes = [{foreach $targetTypes as $tt}'{$tt|wash}'{delimiter},{/delimiter}{/foreach}];
 var nglConditionTypes = [{foreach $conditionTypes as $ct}'{$ct|wash}'{delimiter},{/delimiter}{/foreach}];
 var nglContentBrowserUrl = {'/explayouts_content_browser_ui/browser/'|ezurl};
-var nglCmsEditBase = {'/content/edit/'|ezurl};
+var nglCmsViewBase = {'/content/view/full/'|ezurl};
 var nglAutoOpenNewRule = {if $autoOpenNewRule}true{else}false{/if};
 var nglAutoOpenRuleId = '{$autoOpenRuleId|wash}';
 </script>
@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (cell) {
             var viewLink = cell.querySelector('.js-view-target');
             if (viewLink) {
-                viewLink.href = (window.nglCmsEditBase || '/content/edit') + '/' + nodeId;
+                viewLink.href = (window.nglCmsViewBase || '/content/view/full') + '/' + nodeId;
                 viewLink.style.display = '';
             }
         }
@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var viewLink = cell ? cell.querySelector('.js-view-target') : null;
             if (viewLink) {
                 if (/^\d+$/.test(e.target.value)) {
-                    viewLink.href = (window.nglCmsEditBase || '/content/edit') + '/' + e.target.value;
+                    viewLink.href = (window.nglCmsViewBase || '/content/view/full') + '/' + e.target.value;
                     viewLink.style.display = '';
                 } else {
                     viewLink.style.display = 'none';
