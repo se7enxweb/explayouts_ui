@@ -18,21 +18,43 @@
 .nl-components-filter-form .form-actions { margin-left: auto; }
 .nl-btn-primary { background: #FED82F; border: 1px solid #FED82F; color: #1a1a1a; padding: 0.5rem 1rem; font-weight: 500; border-radius: 2px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; }
 .nl-btn-primary:hover { background: #e8c42a; }
-.nl-components-list { list-style: none; margin: 0; padding: 0; border: 1px solid #e0e0e0; border-radius: 4px; overflow: hidden; }
-.nl-component { display: grid; grid-template-columns: minmax(220px, 1.5fr) minmax(140px, 1fr) 140px 70px minmax(220px, 1.5fr); gap: 1rem; align-items: start; padding: 0.75rem 1rem; border-bottom: 1px solid #e0e0e0; background: #fff; }
+
+/* Table / list */
+.nl-components { overflow-x: auto; }
+.nl-components-list { list-style: none; margin: 0; padding: 0; border: 1px solid #e0e0e0; border-radius: 4px; overflow: hidden; min-width: 980px; background: #fff; }
+.nl-component { display: grid; grid-template-columns: minmax(200px, 1.75fr) minmax(130px, 1fr) minmax(170px, max-content) 80px minmax(220px, 1.75fr); gap: 0.75rem; align-items: start; padding: 0.75rem 1rem; border-bottom: 1px solid #e0e0e0; }
 .nl-component:last-child { border-bottom: none; }
+.nl-component > div { min-width: 0; padding: 0.375rem 0.5rem; overflow-wrap: break-word; word-break: break-word; box-sizing: border-box; }
 .nl-component-header { background: #f5f5f5; font-weight: 600; font-size: 0.8125rem; color: #555; text-transform: uppercase; padding: 0.5rem 1rem; }
+.nl-component-header > div { padding: 0.375rem 0.5rem; }
 .nl-component__name a { color: #1a1a1a; text-decoration: none; font-weight: 500; }
 .nl-component__name a:hover { text-decoration: underline; }
 .nl-component__content-type { color: #666; }
-.nl-component__last-modified { color: #666; white-space: nowrap; }
-.nl-component__usage-count { text-align: center; }
+.nl-component__last-modified { color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 170px; }
+.nl-component__usage-count { text-align: center; padding: 0.375rem 0.5rem; min-width: 80px; font-variant-numeric: tabular-nums; }
 .nl-component__used-in { display: flex; flex-direction: column; gap: 0.25rem; }
-.used-in-item { display: flex; gap: 0.75rem; align-items: baseline; }
+.used-in-item { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: baseline; }
+.used-in-item-name { min-width: 0; overflow-wrap: break-word; word-break: break-word; }
 .used-in-item-name a { color: #1a1a1a; text-decoration: none; }
 .used-in-item-name a:hover { text-decoration: underline; }
-.used-in-item-style { color: #888; font-size: 0.875rem; }
+.used-in-item-style { color: #888; font-size: 0.875rem; white-space: nowrap; }
 .nl-no-items { padding: 2rem; text-align: center; color: #666; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; }
+
+/* Responsive card layout for narrow admin panes */
+@media (max-width: 860px) {
+    .nl-components-list { min-width: 0; }
+    .nl-component,
+    .nl-component-header { display: block; }
+    .nl-component-header { display: none; }
+    .nl-component { padding: 1rem; border-bottom: 1px solid #e0e0e0; }
+    .nl-component > div { padding: 0.35rem 0; }
+    .nl-component__name { font-weight: 500; font-size: 1.05rem; margin-bottom: 0.25rem; }
+    .nl-component__name a { color: #1a1a1a; }
+    .nl-component > div::before { content: attr(data-cell-title) ": "; font-weight: 600; color: #555; }
+    .nl-component__last-modified::before,
+    .nl-component__used-in::before { display: block; margin-bottom: 0.15rem; }
+    .nl-component__used-in .used-in-item { margin-left: 0.5rem; }
+}
 </style>{/literal}
 <div class="ng-layouts-app row">
     <div class="layouts-content components-content">
