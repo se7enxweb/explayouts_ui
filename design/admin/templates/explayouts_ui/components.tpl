@@ -21,8 +21,8 @@
 
 /* Table / list */
 .nl-components { overflow-x: auto; }
-.nl-components-list { list-style: none; margin: 0; padding: 0; border: 1px solid #e0e0e0; border-radius: 4px; overflow: hidden; min-width: 980px; background: #fff; }
-.nl-component { display: grid; grid-template-columns: minmax(200px, 1.75fr) minmax(130px, 1fr) minmax(170px, max-content) 80px minmax(220px, 1.75fr); gap: 0.75rem; align-items: start; padding: 0.75rem 1rem; border-bottom: 1px solid #e0e0e0; }
+.nl-components-list { list-style: none; margin: 0; padding: 0; border: 1px solid #e0e0e0; border-radius: 4px; overflow: hidden; min-width: 1040px; background: #fff; }
+.nl-component { display: grid; grid-template-columns: minmax(200px, 1.5fr) minmax(130px, 1fr) minmax(170px, max-content) 80px minmax(200px, 1.5fr) 50px; gap: 0.75rem; align-items: start; padding: 0.75rem 1rem; border-bottom: 1px solid #e0e0e0; }
 .nl-component:last-child { border-bottom: none; }
 .nl-component > div { min-width: 0; padding: 0.375rem 0.5rem; overflow-wrap: break-word; word-break: break-word; box-sizing: border-box; }
 .nl-component-header { background: #f5f5f5; font-weight: 600; font-size: 0.8125rem; color: #555; text-transform: uppercase; padding: 0.5rem 1rem; }
@@ -33,6 +33,9 @@
 .nl-component__last-modified { color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 170px; }
 .nl-component__usage-count { text-align: center; padding: 0.375rem 0.5rem; min-width: 80px; font-variant-numeric: tabular-nums; }
 .nl-component__used-in { display: flex; flex-direction: column; gap: 0.25rem; }
+.nl-component__actions { text-align: center; }
+.nl-component__actions a { display: inline-block; padding: 0.25rem; }
+.nl-component__actions img { display: block; width: 16px; height: 16px; }
 .used-in-item { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: baseline; }
 .used-in-item-name { min-width: 0; overflow-wrap: break-word; word-break: break-word; }
 .used-in-item-name a { color: #1a1a1a; text-decoration: none; }
@@ -116,11 +119,12 @@
                         <div class="nl-component__last-modified">Last modified</div>
                         <div class="nl-component__usage-count">Count</div>
                         <div class="nl-component__used-in">Used in</div>
+                        <div class="nl-component__actions">Edit</div>
                     </li>
                     {foreach $components as $component}
                         <li class="nl-component">
                             <div class="nl-component__name" data-cell-title="Name">
-                                <a href={concat('content/edit/', $component.id)|ezurl} target="_blank">{$component.name|wash}</a>
+                                <a href={concat( $component.view_url )|ezurl}>{$component.name|wash}</a>
                             </div>
                             <div class="nl-component__content-type" data-cell-title="Content type">{$component.class_name|wash}</div>
                             <div class="nl-component__last-modified" data-cell-title="Last modified">{$component.modified|datetime( 'custom', '%M %d, %Y, %h:%i:%s %A' )}</div>
@@ -136,6 +140,9 @@
                                 {else}
                                     <span class="used-in-item-style">Not used</span>
                                 {/if}
+                            </div>
+                            <div class="nl-component__actions" data-cell-title="Edit">
+                                <a href={concat( $component.edit_url )|ezurl} title="{'Edit'|i18n( 'design/admin/node/view/full' )} '{$component.name|wash}'"><img src={'edit.gif'|ezimage} width="16" height="16" alt="{'Edit'|i18n( 'design/admin/node/view/full' )}" /></a>
                             </div>
                         </li>
                     {/foreach}

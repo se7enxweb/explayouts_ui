@@ -124,6 +124,13 @@ foreach ( $componentClasses as $identifier => $class )
             continue;
 
         $node = $object->attribute( 'main_node' );
+        $nodeId = $node ? (int)$node->attribute( 'node_id' ) : 0;
+
+        // Name links to the admin view (node view); fallback to edit for objects with no node
+        $viewUrl = $nodeId > 0
+            ? 'content/view/full/' . $nodeId
+            : 'content/edit/' . $objectId;
+
         $components[] = array(
             'id' => $objectId,
             'name' => (string)$object->attribute( 'name' ),
@@ -131,7 +138,9 @@ foreach ( $componentClasses as $identifier => $class )
             'class_identifier' => $identifier,
             'class_name' => (string)$class->attribute( 'name' ),
             'modified' => (int)$object->attribute( 'modified' ),
-            'node_id' => $node ? (int)$node->attribute( 'node_id' ) : 0,
+            'node_id' => $nodeId,
+            'view_url' => $viewUrl,
+            'edit_url' => 'content/edit/' . $objectId,
             'count' => count( $usages ),
             'usages' => $usages,
         );
