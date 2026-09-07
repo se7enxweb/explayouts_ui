@@ -56,11 +56,11 @@ if ( $canEdit && $http->hasPostVariable( 'AddRule' ) )
         }
         $ruleService->setConditions( $ruleId, $conditions );
 
-        $message = 'Rule added.';
+        $message = 'Mapping added.';
     }
     else
     {
-        $error = 'Rule could not be created.';
+        $error = 'Mapping could not be created.';
     }
 }
 
@@ -106,11 +106,11 @@ if ( $canEdit && $http->hasPostVariable( 'SaveRule' ) )
         }
         $ruleService->setConditions( $ruleId, $conditions );
 
-        $message = 'Rule saved.';
+        $message = 'Mapping saved.';
     }
     else
     {
-        $error = 'Rule not found.';
+        $error = 'Mapping not found.';
     }
 }
 
@@ -122,11 +122,11 @@ if ( $canEdit && $http->hasPostVariable( 'EnableRule' ) )
     if ( $rule )
     {
         $ruleService->update( $ruleId, array( 'enabled' => 1 ) );
-        $message = 'Rule enabled.';
+        $message = 'Mapping enabled.';
     }
     else
     {
-        $error = 'Rule not found.';
+        $error = 'Mapping not found.';
     }
 }
 
@@ -138,11 +138,11 @@ if ( $canEdit && $http->hasPostVariable( 'DisableRule' ) )
     if ( $rule )
     {
         $ruleService->update( $ruleId, array( 'enabled' => 0 ) );
-        $message = 'Rule disabled.';
+        $message = 'Mapping disabled.';
     }
     else
     {
-        $error = 'Rule not found.';
+        $error = 'Mapping not found.';
     }
 }
 
@@ -158,7 +158,7 @@ if ( $canEdit && $http->hasPostVariable( 'UnlinkRule' ) )
     }
     else
     {
-        $error = 'Rule not found.';
+        $error = 'Mapping not found.';
     }
 }
 
@@ -167,9 +167,9 @@ if ( $canEdit && $http->hasPostVariable( 'DeleteRule' ) )
 {
     $deleteId = (int)$http->postVariable( 'DeleteRuleID' );
     if ( $ruleService->delete( $deleteId ) )
-        $message = 'Rule deleted.';
+        $message = 'Mapping deleted.';
     else
-        $error = 'Rule not found.';
+        $error = 'Mapping not found.';
 }
 
 // Handle rule copy (edit permission required)
@@ -177,15 +177,44 @@ if ( $canEdit && $http->hasPostVariable( 'CopyRule' ) )
 {
     $copyId = (int)$http->postVariable( 'CopyRuleID' );
     if ( $ruleService->copy( $copyId ) )
-        $message = 'Rule copied.';
+        $message = 'Mapping duplicated.';
     else
-        $error = 'Rule not found.';
+        $error = 'Mapping not found.';
+}
+
+// Handle clear layout cache (edit permission required)
+if ( $canEdit && $http->hasPostVariable( 'ClearLayoutCache' ) )
+{
+    $clearRuleId = (int)$http->postVariable( 'RuleID' );
+    $rule = $ruleService->load( $clearRuleId );
+    if ( $rule )
+    {
+        // Clear resolver caches for this mapping
+        if ( method_exists( 'expLayoutsResolver', 'clearCache' ) )
+            expLayoutsResolver::clearCache();
+        $message = 'Layout cache cleared.';
+    }
+    else
+    {
+        $error = 'Mapping not found.';
+    }
 }
 
 $rules = $ruleService->listAll( false );
 $layouts = expLayoutsLayout::fetchList();
 
-$newRule = expLayoutsRule::create( 0, 0 );
+$contentClasses = array();
+foreach ( eZContentClass::fetchList( eZContentClass::VERSION_STATUS_DEFINED, true, false, null, null, false, null ) as $class )
+{
+    $contentClasses[(string)$class->attribute( 'identifier' )] = (string)$class->attribute( 'name' );
+}
+
+$siteIni = eZINI::instance( 'site.ini' );
+$siteAccessList = $siteIni->hasVariable( 'SiteAccessSettings', 'AvailableSiteAccessList' )
+    ? $siteIni->variable( 'SiteAccessSettings', 'AvailableSiteAccessList' )
+    : array();
+
+$newRule = expLayoutsRule::create( 0 );
 $newRule->setAttribute( 'enabled', 1 );
 
 // Pre-fill a new rule target when the rule list is opened from a "Map layout" link.
@@ -218,11 +247,6 @@ $conditionTypes = array(
     'time',
 );
 
-// Existing rules may contain legacy ibexa-prefixed condition types. The resolver
-// still handles them, but the UI dropdown only exposes the canonical names and
-// the template maps legacy types to those canonical names so the right option
-// is selected.
-
 $ruleData = array();
 foreach ( $rules as $rule )
 {
@@ -252,6 +276,10 @@ $tpl->setVariable( 'ruleData', $ruleData );
 $tpl->setVariable( 'layouts', $layouts );
 $tpl->setVariable( 'targetTypes', $targetTypes );
 $tpl->setVariable( 'conditionTypes', $conditionTypes );
+$tpl->setVariable( 'contentClasses', $contentClasses );
+$tpl->setVariable( 'contentClassesJson', json_encode( $contentClasses, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) );
+$tpl->setVariable( 'siteAccessList', $siteAccessList );
+$tpl->setVariable( 'siteAccessListJson', json_encode( $siteAccessList, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) );
 $tpl->setVariable( 'newRuleTargetType', $newRuleTargetType );
 $tpl->setVariable( 'newRuleTargets', $newRuleTargets );
 $tpl->setVariable( 'autoOpenNewRule', $autoOpenNewRule );
@@ -264,5 +292,5 @@ $Result = array();
 $Result['content'] = $tpl->fetch( 'design:explayouts_ui/rule_list.tpl' );
 $Result['left_menu'] = 'design:parts/explayouts_ui/menu.tpl';
 $Result['path'] = array( array( 'url' => false,
-                                'text' => ezpI18n::tr( 'explayouts_ui/rule', 'Layout Rules' ) ) );
+                                'text' => ezpI18n::tr( 'explayouts_ui/rule', 'Layout mappings' ) ) );
 return $Result;
