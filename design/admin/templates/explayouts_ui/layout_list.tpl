@@ -121,6 +121,20 @@
                 {/foreach}
             </div>
 
+{* Paged. The size is admininterface.ini [PaginationSettings], keyed by this
+   view, and the extension ships its own defaults for these four. *}
+{if $page_count|gt( $limit )}
+<div class="context-toolbar">
+{include name=LayoutNavigator
+         uri='design:navigator/google.tpl'
+         page_uri='/explayouts_ui/layout_list'
+         item_count=$page_count
+         view_parameters=$view_parameters
+         item_limit=$limit}
+</div>
+{/if}
+
+
             {if count($layouts)|eq(0)}
                 <p class="nl-no-items" style="display: block;">There are no layouts defined</p>
             {/if}

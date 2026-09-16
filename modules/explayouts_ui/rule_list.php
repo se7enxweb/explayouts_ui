@@ -272,7 +272,23 @@ foreach ( $rules as $rule )
 
 $tpl = eZTemplate::factory();
 $tpl->setVariable( 'newRule', $newRule );
+
+// Paged. These lists have no ceiling: an installation with a layout per page,
+// or a rule per site per class, drew every one of them on one screen.
+// expAdminPagination is this fork's kernel helper; the guard keeps the
+// extension working on a kernel that has not got it.
+$pageLimit  = class_exists( 'expAdminPagination' )
+            ? expAdminPagination::limit( 'explayouts_ui/rule_list' ) : 25;
+$pageOffset = class_exists( 'expAdminPagination' )
+            ? expAdminPagination::offset( $Params ) : 0;
+$pageCount  = count( $ruleData );
+$ruleData = class_exists( 'expAdminPagination' )
+        ? expAdminPagination::page( $ruleData, $pageOffset, $pageLimit )
+        : $ruleData;
 $tpl->setVariable( 'ruleData', $ruleData );
+$tpl->setVariable( 'page_count', $pageCount );
+$tpl->setVariable( 'limit', $pageLimit );
+$tpl->setVariable( 'view_parameters', array( 'offset' => $pageOffset ) );
 $tpl->setVariable( 'layouts', $layouts );
 $tpl->setVariable( 'targetTypes', $targetTypes );
 $tpl->setVariable( 'conditionTypes', $conditionTypes );

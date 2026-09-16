@@ -271,6 +271,20 @@
                     {undef $conditionType}
                 {/foreach}
 
+{* Paged. The size is admininterface.ini [PaginationSettings], keyed by this
+   view, and the extension ships its own defaults for these four. *}
+{if $page_count|gt( $limit )}
+<div class="context-toolbar">
+{include name=RuleNavigator
+         uri='design:navigator/google.tpl'
+         page_uri='/explayouts_ui/rule_list'
+         item_count=$page_count
+         view_parameters=$view_parameters
+         item_limit=$limit}
+</div>
+{/if}
+
+
                 <div class="nl-rule nl-element" id="rule-new" data-rule-id="new">
                     {include uri='design:explayouts_ui/rule_detail.tpl'
                         rule=$newRule

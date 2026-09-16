@@ -147,6 +147,20 @@
                         </li>
                     {/foreach}
                 </ul>
+
+{* Paged. The size is admininterface.ini [PaginationSettings], keyed by this
+   view, and the extension ships its own defaults for these four. *}
+{if $page_count|gt( $limit )}
+<div class="context-toolbar">
+{include name=ComponentNavigator
+         uri='design:navigator/google.tpl'
+         page_uri='/explayouts_ui/components'
+         item_count=$page_count
+         view_parameters=$view_parameters
+         item_limit=$limit}
+</div>
+{/if}
+
             {else}
                 <p class="nl-no-items">There are no components matching the selected filters.</p>
             {/if}

@@ -38,7 +38,23 @@ foreach ( $layouts as $layout )
 }
 
 $tpl = eZTemplate::factory();
+
+// Paged. These lists have no ceiling: an installation with a layout per page,
+// or a rule per site per class, drew every one of them on one screen.
+// expAdminPagination is this fork's kernel helper; the guard keeps the
+// extension working on a kernel that has not got it.
+$pageLimit  = class_exists( 'expAdminPagination' )
+            ? expAdminPagination::limit( 'explayouts_ui/shared_layouts_list' ) : 25;
+$pageOffset = class_exists( 'expAdminPagination' )
+            ? expAdminPagination::offset( $Params ) : 0;
+$pageCount  = count( $layouts );
+$layouts = class_exists( 'expAdminPagination' )
+        ? expAdminPagination::page( $layouts, $pageOffset, $pageLimit )
+        : $layouts;
 $tpl->setVariable( 'layouts', $layouts );
+$tpl->setVariable( 'page_count', $pageCount );
+$tpl->setVariable( 'limit', $pageLimit );
+$tpl->setVariable( 'view_parameters', array( 'offset' => $pageOffset ) );
 $tpl->setVariable( 'shared_counts', $sharedCounts );
 $tpl->setVariable( 'layout_type_icons', $layoutTypeIcons );
 
