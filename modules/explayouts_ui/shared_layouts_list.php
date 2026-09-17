@@ -9,21 +9,21 @@ if ( !eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
 
 $db = eZDB::instance();
 $rows = $db->arrayQuery( 'SELECT linked_layout_id, COUNT(*) AS ref_count FROM explayouts_zone WHERE linked_layout_id > 0 GROUP BY linked_layout_id' );
-$layoutIds = array();
 $sharedCounts = array();
 foreach ( $rows as $row )
 {
-    $lid = (int)$row['linked_layout_id'];
-    $layoutIds[] = $lid;
-    $sharedCounts[$lid] = (int)$row['ref_count'];
+    $sharedCounts[(int)$row['linked_layout_id']] = (int)$row['ref_count'];
 }
 
-$layouts = array();
-foreach ( $layoutIds as $id )
+// A layout is shared because it is marked shared, not because something
+// happens to link to it: a shared layout that nothing links to yet is still
+// a shared layout and still belongs on this list.
+$layouts = expLayoutsLayout::fetchShared( 2 );
+foreach ( $layouts as $layout )
 {
-    $layout = expLayoutsLayout::fetch( $id );
-    if ( $layout )
-        $layouts[] = $layout;
+    $id = (int)$layout->attribute( 'id' );
+    if ( !isset( $sharedCounts[$id] ) )
+        $sharedCounts[$id] = 0;
 }
 
 $layoutTypeIcons = array();
