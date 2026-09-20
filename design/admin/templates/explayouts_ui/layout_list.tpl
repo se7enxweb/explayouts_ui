@@ -27,13 +27,37 @@
 .nl-layout-name, .nl-layout-description { word-break: break-word; overflow-wrap: anywhere; }
 
 /* Sorting controls rendered as one bar matching the New layout button height */
-.layouts-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.layouts-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
 .layouts-title { margin: 0; }
-.layouts-controls { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: flex-end; }
+.layouts-controls { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: flex-end; flex-wrap: wrap; }
 .layout-sorting-controls { display: inline-flex; align-items: center; gap: 4px; height: 2.6428571429em; font-size: .875em; border: 1px solid #ccc; border-radius: 2px; background: #fff; padding: 0 4px; box-sizing: border-box; }
 .layout-sorting-controls label { display: inline-flex; align-items: center; margin: 0; padding: 0 4px; }
 .layout-sorting-controls .material-icons { font-size: 18px; color: #666; }
 .layout-sorting-controls .nl-select { height: 100%; border: none; background: transparent; padding: 0 4px; margin: 0; font-size: 1em; max-width: 120px; min-width: 70px; }
+
+/* The header is one row: the title, the two sorting selects and the New
+   layout button. Nothing in it could wrap and the selects carry a minimum
+   width, so on a narrow screen the row ran past the edge of the content area
+   and the button went off it. The row wraps now, and below the width where
+   it stops fitting the controls take a line of their own, left aligned, with
+   the selects free to shrink. */
+@media only screen and (max-width: 900px) {
+  .layouts-controls { flex: 1 1 100%; justify-content: flex-start; }
+  .layout-sorting-controls { flex: 1 1 auto; min-width: 0; }
+  .layout-sorting-controls .nl-select { flex: 1 1 auto; min-width: 0; max-width: none; }
+  #add-new-button { flex: 0 0 auto; }
+}
+
+/* A phone in portrait has no room for the sorting bar and the button side by
+   side, so each takes the full width. */
+@media only screen and (max-width: 480px) {
+  .layout-sorting-controls { flex-basis: 100%; }
+  #add-new-button { flex: 1 1 100%; justify-content: center; }
+}
+
+/* The cards themselves are laid out on a fixed 260px minimum, which is wider
+   than the content area on a small phone and overflows it. */
+.nl-layouts { grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); }
 </style>{/literal}
 <div class="ng-layouts-app row">
     <div class="layouts-content">
