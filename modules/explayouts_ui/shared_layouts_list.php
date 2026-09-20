@@ -8,11 +8,27 @@ if ( !eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
 }
 
 $db = eZDB::instance();
-$rows = $db->arrayQuery( 'SELECT linked_layout_id, COUNT(*) AS ref_count FROM explayouts_zone WHERE linked_layout_id > 0 GROUP BY linked_layout_id' );
 $sharedCounts = array();
-foreach ( $rows as $row )
+
+if ( $db->databaseName() === 'mongo' )
 {
-    $sharedCounts[(int)$row['linked_layout_id']] = (int)$row['ref_count'];
+    // The driver does not translate GROUP BY, so every layout reported zero
+    // links on MongoDB. An aggregation counts the same rows.
+    $rows = $db->aggregate( 'explayouts_zone', array(
+        array( '$match' => array( 'linked_layout_id' => array( '$gt' => 0 ) ) ),
+        array( '$group' => array( '_id' => '$linked_layout_id', 'ref_count' => array( '$sum' => 1 ) ) ),
+    ) );
+
+    foreach ( (array)$rows as $row )
+        $sharedCounts[(int)$row['_id']] = (int)$row['ref_count'];
+}
+else
+{
+    $rows = $db->arrayQuery( 'SELECT linked_layout_id, COUNT(*) AS ref_count FROM explayouts_zone WHERE linked_layout_id > 0 GROUP BY linked_layout_id' );
+    foreach ( (array)$rows as $row )
+    {
+        $sharedCounts[(int)$row['linked_layout_id']] = (int)$row['ref_count'];
+    }
 }
 
 // A layout is shared because it is marked shared, not because something

@@ -51,13 +51,53 @@ foreach ( $componentClassIdentifiers as $identifier )
 }
 
 // 2) Resolve all ibexa_component_* block usages up front
-$blockSql = "SELECT b.id, b.layout_id, b.view_type, b.definition_identifier, bp.value as content_value
-             FROM explayouts_block b
-             JOIN explayouts_block_parameter bp ON bp.block_id = b.id
-             WHERE b.definition_identifier LIKE 'ibexa_component_%'
-               AND bp.name = 'content'
-               AND b.status = 2";
-$blockRows = $db->arrayQuery( $blockSql );
+if ( $db->databaseName() === 'mongo' )
+{
+    // MongoDB has no JOIN and the driver refuses SQL it cannot translate, so
+    // this listing came back empty on MongoDB however many components existed.
+    // The two collections are read in turn and matched here instead.
+    $blockRows = array();
+    $publishedBlocks = $db->arrayQuery(
+        "SELECT id, layout_id, view_type, definition_identifier FROM explayouts_block"
+        . " WHERE definition_identifier LIKE 'ibexa_component_%' AND status = 2" );
+
+    $blocksById = array();
+    foreach ( $publishedBlocks as $block )
+        $blocksById[(int)$block['id']] = $block;
+
+    if ( $blocksById )
+    {
+        $parameters = $db->arrayQuery(
+            "SELECT block_id, value FROM explayouts_block_parameter WHERE name = 'content'"
+            . ' AND block_id IN ( ' . implode( ', ', array_keys( $blocksById ) ) . ' )' );
+
+        // An INNER JOIN yields one row per matching parameter, so a block with
+        // no content parameter drops out and one with several repeats.
+        foreach ( $parameters as $parameter )
+        {
+            $blockId = (int)$parameter['block_id'];
+            if ( !isset( $blocksById[$blockId] ) )
+                continue;
+
+            $row = $blocksById[$blockId];
+            $row['content_value'] = $parameter['value'];
+            $blockRows[] = $row;
+        }
+    }
+}
+else
+{
+    $blockSql = "SELECT b.id, b.layout_id, b.view_type, b.definition_identifier, bp.value as content_value
+                 FROM explayouts_block b
+                 JOIN explayouts_block_parameter bp ON bp.block_id = b.id
+                 WHERE b.definition_identifier LIKE 'ibexa_component_%'
+                   AND bp.name = 'content'
+                   AND b.status = 2";
+    $blockRows = $db->arrayQuery( $blockSql );
+}
+
+if ( !is_array( $blockRows ) )
+    $blockRows = array();
 
 $layoutIds = array();
 $rawUsages = array();
