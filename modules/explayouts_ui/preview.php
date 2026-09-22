@@ -1,20 +1,6 @@
 <?php
-$module = $Params['Module'];
 
-if ( !eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
-{
-    return $module->handleError( eZError::KERNEL_ACCESS_DENIED, 'kernel' );
-}
-
-$layoutId = isset( $Params['LayoutID'] ) ? (int)$Params['LayoutID'] : 0;
-$status = isset( $Params['Status'] ) ? (int)$Params['Status'] : 2;
-$layout = expLayoutsLayout::fetch( $layoutId, $status );
-
-if ( !$layout )
-    return $module->handleError( eZError::KERNEL_NOT_FOUND, 'kernel' );
-
-$prepared = expLayoutsRenderer::prepareLayout( $layout, $status );
-
+if ( !function_exists( 'expLayoutsPreviewNode' ) ) {
 /**
  * Pick a node to preview the layout against.
  *
@@ -104,6 +90,24 @@ function expLayoutsPreviewNode( $layoutId )
     // No usable target: fall back to the site index page.
     return expLayoutsResolver::nodeFromPath( '' );
 }
+}
+
+$module = $Params['Module'];
+
+if ( !eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
+{
+    return $module->handleError( eZError::KERNEL_ACCESS_DENIED, 'kernel' );
+}
+
+$layoutId = isset( $Params['LayoutID'] ) ? (int)$Params['LayoutID'] : 0;
+$status = isset( $Params['Status'] ) ? (int)$Params['Status'] : 2;
+$layout = expLayoutsLayout::fetch( $layoutId, $status );
+
+if ( !$layout )
+    return $module->handleError( eZError::KERNEL_NOT_FOUND, 'kernel' );
+
+$prepared = expLayoutsRenderer::prepareLayout( $layout, $status );
+
 
 // Resolved after the siteaccess switch below, so the IndexPage fallback reads
 // the public site.ini rather than the admin one.

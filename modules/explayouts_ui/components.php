@@ -1,4 +1,34 @@
 <?php
+
+if ( !function_exists( 'expComponentsResolveContent' ) ) {
+/**
+ * Resolves a component block content parameter to the matching eZ content object,
+ * using the same fallback logic as sevenxThemesMediaOperators::componentContent().
+ */
+function expComponentsResolveContent( $value )
+{
+    $id = (int)$value;
+    if ( $id <= 0 )
+        return false;
+
+    $object = eZContentObject::fetchByRemoteID( 'media-o-' . ( $id + 776 ) );
+    if ( !$object ) $object = eZContentObject::fetchByRemoteID( 'media-o-' . $id );
+    if ( !$object ) $object = eZContentObject::fetch( $id + 776 );
+    if ( !$object ) $object = eZContentObject::fetch( $id );
+    return $object;
+}
+}
+
+if ( !function_exists( 'expComponentsHumanizeStyle' ) ) {
+/**
+ * Converts a view_type identifier like "features_style_2" into a human readable style label.
+ */
+function expComponentsHumanizeStyle( $viewType )
+{
+    return ucfirst( str_replace( '_', ' ', $viewType ) );
+}
+}
+
 eZDebug::updateSettings( array( 'debug-enabled' => false ) );
 $module = $Params['Module'];
 
@@ -239,27 +269,4 @@ $Result['path'] = array( array( 'url' => false,
                                 'text' => ezpI18n::tr( 'explayouts_ui/components', 'Components' ) ) );
 return $Result;
 
-/**
- * Resolves a component block content parameter to the matching eZ content object,
- * using the same fallback logic as sevenxThemesMediaOperators::componentContent().
- */
-function expComponentsResolveContent( $value )
-{
-    $id = (int)$value;
-    if ( $id <= 0 )
-        return false;
 
-    $object = eZContentObject::fetchByRemoteID( 'media-o-' . ( $id + 776 ) );
-    if ( !$object ) $object = eZContentObject::fetchByRemoteID( 'media-o-' . $id );
-    if ( !$object ) $object = eZContentObject::fetch( $id + 776 );
-    if ( !$object ) $object = eZContentObject::fetch( $id );
-    return $object;
-}
-
-/**
- * Converts a view_type identifier like "features_style_2" into a human readable style label.
- */
-function expComponentsHumanizeStyle( $viewType )
-{
-    return ucfirst( str_replace( '_', ' ', $viewType ) );
-}

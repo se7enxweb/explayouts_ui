@@ -1,4 +1,14 @@
 <?php
+
+if ( !function_exists( 'expLayoutsTableCount' ) ) {
+function expLayoutsTableCount( $table )
+{
+    $db = eZDB::instance();
+    $rows = $db->arrayQuery( "SELECT COUNT(*) AS cnt FROM {$table}" );
+    return isset( $rows[0]['cnt'] ) ? (int)$rows[0]['cnt'] : 0;
+}
+}
+
 eZDebug::updateSettings( array( 'debug-enabled' => false ) );
 $module = $Params['Module'];
 
@@ -9,12 +19,6 @@ if ( !eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
 
 $db = eZDB::instance();
 
-function expLayoutsTableCount( $table )
-{
-    $db = eZDB::instance();
-    $rows = $db->arrayQuery( "SELECT COUNT(*) AS cnt FROM {$table}" );
-    return isset( $rows[0]['cnt'] ) ? (int)$rows[0]['cnt'] : 0;
-}
 
 $counts = array(
     'layouts' => expLayoutsTableCount( 'explayouts_layout' ),

@@ -1,76 +1,6 @@
 <?php
-require_once( 'extension/explayouts_core/classes/explayoutscorelayoutservice.php' );
-require_once( 'extension/explayouts_core/classes/explayoutscoreruleservice.php' );
-eZDebug::updateSettings( array( 'debug-enabled' => false ) );
-$module = $Params['Module'];
 
-if ( !eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
-{
-    return $module->handleError( eZError::KERNEL_ACCESS_DENIED, 'kernel' );
-}
-
-$message = '';
-$error = '';
-
-$layoutService = new expLayoutsCoreLayoutService();
-
-$http = eZHTTPTool::instance();
-if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPostVariable( 'DeleteLayout' ) )
-{
-    $deleteId = (int)$http->postVariable( 'DeleteLayoutID' );
-    if ( $layoutService->delete( $deleteId ) )
-        $message = 'Layout deleted.';
-    else
-        $error = 'Layout not found.';
-}
-
-$layouts = $layoutService->listAll( false );
-
-$ruleService = new expLayoutsCoreRuleService();
-$rules = $ruleService->listAll( true );
-$mappingsCount = array();
-foreach ( $rules as $rule )
-{
-    $lid = (int)$rule->attribute( 'layout_id' );
-    if ( !isset( $mappingsCount[$lid] ) )
-        $mappingsCount[$lid] = 0;
-    $mappingsCount[$lid]++;
-}
-
-$tpl = eZTemplate::factory();
-$layoutTypeIcons = array();
-foreach ( $layouts as $layout )
-{
-    $type = (string)$layout->attribute( 'layout_type' );
-    if ( !isset( $layoutTypeIcons[$type] ) )
-    {
-        $zones = expLayoutsLayoutType::getZones( $type );
-        $layoutTypeIcons[$type] = generateLayoutIconSvg( $zones );
-    }
-}
-
-
-// Paged. These lists have no ceiling: an installation with a layout per page,
-// or a rule per site per class, drew every one of them on one screen.
-// expAdminPagination is this fork's kernel helper; the guard keeps the
-// extension working on a kernel that has not got it.
-$pageLimit  = class_exists( 'expAdminPagination' )
-            ? expAdminPagination::limit( 'explayouts_ui/layout_list' ) : 25;
-$pageOffset = class_exists( 'expAdminPagination' )
-            ? expAdminPagination::offset( $Params ) : 0;
-$pageCount  = count( $layouts );
-$layouts = class_exists( 'expAdminPagination' )
-        ? expAdminPagination::page( $layouts, $pageOffset, $pageLimit )
-        : $layouts;
-$tpl->setVariable( 'layouts', $layouts );
-$tpl->setVariable( 'page_count', $pageCount );
-$tpl->setVariable( 'limit', $pageLimit );
-$tpl->setVariable( 'view_parameters', array( 'offset' => $pageOffset ) );
-$tpl->setVariable( 'mappings_count', $mappingsCount );
-$tpl->setVariable( 'message', $message );
-$tpl->setVariable( 'error', $error );
-$tpl->setVariable( 'layout_type_icons', $layoutTypeIcons );
-
+if ( !function_exists( 'generateLayoutIconSvg' ) ) {
 function generateLayoutIconSvg( $zones )
 {
     $header = array();
@@ -146,6 +76,80 @@ function generateLayoutIconSvg( $zones )
     $svg .= '</svg>';
     return $svg;
 }
+}
+
+require_once( 'extension/explayouts_core/classes/explayoutscorelayoutservice.php' );
+require_once( 'extension/explayouts_core/classes/explayoutscoreruleservice.php' );
+eZDebug::updateSettings( array( 'debug-enabled' => false ) );
+$module = $Params['Module'];
+
+if ( !eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
+{
+    return $module->handleError( eZError::KERNEL_ACCESS_DENIED, 'kernel' );
+}
+
+$message = '';
+$error = '';
+
+$layoutService = new expLayoutsCoreLayoutService();
+
+$http = eZHTTPTool::instance();
+if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPostVariable( 'DeleteLayout' ) )
+{
+    $deleteId = (int)$http->postVariable( 'DeleteLayoutID' );
+    if ( $layoutService->delete( $deleteId ) )
+        $message = 'Layout deleted.';
+    else
+        $error = 'Layout not found.';
+}
+
+$layouts = $layoutService->listAll( false );
+
+$ruleService = new expLayoutsCoreRuleService();
+$rules = $ruleService->listAll( true );
+$mappingsCount = array();
+foreach ( $rules as $rule )
+{
+    $lid = (int)$rule->attribute( 'layout_id' );
+    if ( !isset( $mappingsCount[$lid] ) )
+        $mappingsCount[$lid] = 0;
+    $mappingsCount[$lid]++;
+}
+
+$tpl = eZTemplate::factory();
+$layoutTypeIcons = array();
+foreach ( $layouts as $layout )
+{
+    $type = (string)$layout->attribute( 'layout_type' );
+    if ( !isset( $layoutTypeIcons[$type] ) )
+    {
+        $zones = expLayoutsLayoutType::getZones( $type );
+        $layoutTypeIcons[$type] = generateLayoutIconSvg( $zones );
+    }
+}
+
+
+// Paged. These lists have no ceiling: an installation with a layout per page,
+// or a rule per site per class, drew every one of them on one screen.
+// expAdminPagination is this fork's kernel helper; the guard keeps the
+// extension working on a kernel that has not got it.
+$pageLimit  = class_exists( 'expAdminPagination' )
+            ? expAdminPagination::limit( 'explayouts_ui/layout_list' ) : 25;
+$pageOffset = class_exists( 'expAdminPagination' )
+            ? expAdminPagination::offset( $Params ) : 0;
+$pageCount  = count( $layouts );
+$layouts = class_exists( 'expAdminPagination' )
+        ? expAdminPagination::page( $layouts, $pageOffset, $pageLimit )
+        : $layouts;
+$tpl->setVariable( 'layouts', $layouts );
+$tpl->setVariable( 'page_count', $pageCount );
+$tpl->setVariable( 'limit', $pageLimit );
+$tpl->setVariable( 'view_parameters', array( 'offset' => $pageOffset ) );
+$tpl->setVariable( 'mappings_count', $mappingsCount );
+$tpl->setVariable( 'message', $message );
+$tpl->setVariable( 'error', $error );
+$tpl->setVariable( 'layout_type_icons', $layoutTypeIcons );
+
 
 $Result = array();
 $Result['content'] = $tpl->fetch( 'design:explayouts_ui/layout_list.tpl' );
