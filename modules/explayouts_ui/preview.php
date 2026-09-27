@@ -195,6 +195,11 @@ if ( $previewNode )
 $Result = array();
 $Result['content_info'] = $contentInfo;
 $Result['content'] = $previewContent;
+// As a content view has it: blocks read $module_result.node_id
+// (the list blocks' Load more sends it): set after the render, it came too
+// late and Load more did nothing.
+if ( $previewNode )
+    $Result['node_id'] = (int)$previewNode->attribute( 'node_id' );
 $tpl->setVariable( 'module_result', $Result );
 
 $Result['pagelayout'] = true;
