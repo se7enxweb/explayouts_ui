@@ -16,7 +16,7 @@ if ( $http->hasPostVariable( 'import' ) )
         $data = json_decode( $json, true );
         if ( !is_array( $data ) )
         {
-            $error = 'Invalid JSON file.';
+            $error = ezpI18n::tr( 'design/admin/explayouts_ui/transfer_import', 'Invalid JSON file.' );
         }
         else
         {
@@ -42,7 +42,7 @@ if ( $http->hasPostVariable( 'import' ) )
     }
     else
     {
-        $error = 'No file uploaded.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/transfer_import', 'No file uploaded.' );
     }
 }
 

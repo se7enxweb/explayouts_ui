@@ -63,41 +63,41 @@
     <div class="layouts-content">
         <div id="layouts" class="nl-layouts-view-grid" style="display: block;">
             <div class="layouts-header">
-                <h2 class="layouts-title">Layouts</h2>
+                <h2 class="layouts-title">{'Layouts'|i18n( 'design/admin/explayouts_ui/layout_list' )}</h2>
                 <div class="layouts-controls">
-                    <a style="display: none" href="#" class="nl-btn js-export">Export</a>
+                    <a style="display: none" href="#" class="nl-btn js-export">{'Export'|i18n( 'design/admin/explayouts_ui/layout_list' )}</a>
                     <a href="#" class="nl-btn js-change-layouts-view" style="display: none;"></a>
                     <div class="layout-sorting-controls">
                         <label for="layout-sorting-sort"><i class="material-icons">sort_by_alpha</i></label>
                         <select id="layout-sorting-sort" class="nl-select">
-                            <option value="name">Name</option>
-                            <option value="description">Description</option>
-                            <option value="modified">Last modified</option>
-                            <option value="type">Layout type</option>
-                            <option value="mappings">Mappings</option>
+                            <option value="name">{'Name'|i18n( 'design/admin/explayouts_ui/layout_list' )}</option>
+                            <option value="description">{'Description'|i18n( 'design/admin/explayouts_ui/layout_list' )}</option>
+                            <option value="modified">{'Last modified'|i18n( 'design/admin/explayouts_ui/layout_list' )}</option>
+                            <option value="type">{'Layout type'|i18n( 'design/admin/explayouts_ui/layout_list' )}</option>
+                            <option value="mappings">{'Mappings'|i18n( 'design/admin/explayouts_ui/layout_list' )}</option>
                         </select>
                         <select id="layout-sorting-direction" class="nl-select">
-                            <option value="asc">Ascending</option>
-                            <option value="desc">Descending</option>
+                            <option value="asc">{'Ascending'|i18n( 'design/admin/explayouts_ui/layout_list' )}</option>
+                            <option value="desc">{'Descending'|i18n( 'design/admin/explayouts_ui/layout_list' )}</option>
                         </select>
                     </div>
                     <a href={concat('explayouts_ui_api/app#layout')|ezurl} id="add-new-button" class="nl-btn nl-btn-primary js-open-ngl">
-                        <i class="material-icons">add</i> New layout
+                        <i class="material-icons">add</i> {'New layout'|i18n( 'design/admin/explayouts_ui/layout_list' )}
                     </a>
                 </div>
             </div>
 
             <div class="nl-layouts-head" style="display: none;">
                 <div class="nl-layout-info">
-                    <div class="nl-layout-type"><a class="js-reorder-layouts" data-sorting="type">Layout type<i class="sort-icon"></i></a></div>
+                    <div class="nl-layout-type"><a class="js-reorder-layouts" data-sorting="type">{'Layout type'|i18n( 'design/admin/explayouts_ui/layout_list' )}<i class="sort-icon"></i></a></div>
                     <div class="nl-layout-text">
-                        <div class="nl-layout-name"><div class="nl-export-checkbox"><input type="checkbox" id="toggleSelectAll"><label for="toggleSelectAll"></label></div><a class="js-reorder-layouts active sorting-asc" data-sorting="name">Name<i class="sort-icon"></i></a></div>
-                        <div class="nl-layout-description"><a class="js-reorder-layouts" data-sorting="description">Description<i class="sort-icon"></i></a></div>
-                        <div class="nl-layout-modified"><a class="js-reorder-layouts" data-sorting="modified">Last modified<i class="sort-icon"></i></a></div>
+                        <div class="nl-layout-name"><div class="nl-export-checkbox"><input type="checkbox" id="toggleSelectAll"><label for="toggleSelectAll"></label></div><a class="js-reorder-layouts active sorting-asc" data-sorting="name">{'Name'|i18n( 'design/admin/explayouts_ui/layout_list' )}<i class="sort-icon"></i></a></div>
+                        <div class="nl-layout-description"><a class="js-reorder-layouts" data-sorting="description">{'Description'|i18n( 'design/admin/explayouts_ui/layout_list' )}<i class="sort-icon"></i></a></div>
+                        <div class="nl-layout-modified"><a class="js-reorder-layouts" data-sorting="modified">{'Last modified'|i18n( 'design/admin/explayouts_ui/layout_list' )}<i class="sort-icon"></i></a></div>
                     </div>
                 </div>
                 <div class="nl-layout-actions">
-                    <div class="nl-layout-data"><a class="js-reorder-layouts" data-sorting="mappings">Mappings<i class="sort-icon"></i></a></div>
+                    <div class="nl-layout-data"><a class="js-reorder-layouts" data-sorting="mappings">{'Mappings'|i18n( 'design/admin/explayouts_ui/layout_list' )}<i class="sort-icon"></i></a></div>
                 </div>
             </div>
 
@@ -117,24 +117,24 @@
                                     <div class="nl-layout-name"><a href={concat('explayouts_ui_api/app#layout/',$layout.id)|ezurl}>{$layout.name|wash}</a></div>
                                     <div class="nl-layout-description">{$layout.identifier|wash}</div>
                                     <div class="nl-layout-modified"><p>{$layout.modified|datetime( 'custom', '%Y-%m-%d %H:%M' )}</p></div>
-                                    {if ne($layout.status,2)}<span class="unpublished-label">Draft</span>{/if}
+                                    {if ne($layout.status,2)}<span class="unpublished-label">{'Draft'|i18n( 'design/admin/explayouts_ui/layout_list' )}</span>{/if}
                                 </div>
                             </div>
                             <div class="nl-layout-actions">
                                 <div class="nl-layout-data">
                                     <div class="meta-info">
                                         <i class="material-icons">link</i>
-                                        <span>{if is_set($mappings_count[$layout.id])}{$mappings_count[$layout.id]}{else}0{/if} mappings</span>
+                                        <span>{'%count mappings'|i18n( 'design/admin/explayouts_ui/layout_list',, hash( '%count', first_set( $mappings_count[$layout.id], 0 ) ) )}</span>
                                     </div>
                                 </div>
                                 <div class="nl-dropdown" data-position="right">
                                     <button class="nl-btn nl-dropdown-toggle" type="button"><i class="material-icons">more_horiz</i></button>
                                     <ul class="nl-dropdown-menu main-dropdown">
-                                        <li><a href={concat('explayouts_ui/layout_preview/',$layout.id,'/',$layout.status)|ezurl} target="_blank"><i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:4px;">visibility</i> Preview</a></li>
+                                        <li><a href={concat('explayouts_ui/layout_preview/',$layout.id,'/',$layout.status)|ezurl} target="_blank"><i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:4px;">visibility</i> {'Preview'|i18n( 'design/admin/explayouts_ui/layout_list' )}</a></li>
                                         <li>
-                                            <form method="post" action={'explayouts_ui/layout_list'|ezurl} style="display:inline;margin:0;" onsubmit="return confirm('Delete this layout and all its zones/blocks?');">
+                                            <form method="post" action={'explayouts_ui/layout_list'|ezurl} style="display:inline;margin:0;" onsubmit="return confirm('{'Delete this layout and all its zones/blocks?'|i18n( 'design/admin/explayouts_ui/layout_list' )|wash( javascript )}');">
                                                 <input type="hidden" name="DeleteLayoutID" value="{$layout.id|wash}" />
-                                                <button type="submit" name="DeleteLayout" style="display:block;width:100%;text-align:left;border:0;background:transparent;cursor:pointer;padding:.6em 1em;">Delete</button>
+                                                <button type="submit" name="DeleteLayout" style="display:block;width:100%;text-align:left;border:0;background:transparent;cursor:pointer;padding:.6em 1em;">{'Delete'|i18n( 'design/admin/explayouts_ui/layout_list' )}</button>
                                             </form>
                                         </li>
                                     </ul>
@@ -160,7 +160,7 @@
 
 
             {if count($layouts)|eq(0)}
-                <p class="nl-no-items" style="display: block;">There are no layouts defined</p>
+                <p class="nl-no-items" style="display: block;">{'There are no layouts defined'|i18n( 'design/admin/explayouts_ui/layout_list' )}</p>
             {/if}
         </div>
     </div>

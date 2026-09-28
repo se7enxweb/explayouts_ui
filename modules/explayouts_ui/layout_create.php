@@ -15,7 +15,7 @@ if ( $http->hasPostVariable( 'CreateLayout' ) )
     $layoutType = trim( $http->postVariable( 'LayoutType' ) );
 
     if ( $name === '' )
-        $name = 'New layout';
+        $name = ezpI18n::tr( 'design/admin/explayouts_ui/layout_create', 'New layout' );
     if ( $identifier === '' )
     {
         $identifier = strtolower( trim( preg_replace( '/[^a-zA-Z0-9_-]/', '_', $name ), '_' ) );

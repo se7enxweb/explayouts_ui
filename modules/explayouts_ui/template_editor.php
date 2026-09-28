@@ -26,7 +26,7 @@ if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WI
         $selectedPath = $_GET['file'];
         $content = expLayoutsTemplateEditor::read( $selectedPath );
         if ( $content === false )
-            expTeJsonResponse( array( 'success' => false, 'error' => 'Unable to read template: ' . $selectedPath ) );
+            expTeJsonResponse( array( 'success' => false, 'error' => ezpI18n::tr( 'design/admin/explayouts_ui/template_editor', 'Unable to read template: %path', null, array( '%path' => $selectedPath ) ) ) );
         expTeJsonResponse( array( 'success' => true, 'content' => $content ) );
     }
 
@@ -36,10 +36,10 @@ if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WI
         $content = isset( $_POST['TemplateContent'] ) ? $_POST['TemplateContent'] : '';
         $content = str_replace( "\r\n", "\n", $content );
         $ok = expLayoutsTemplateEditor::save( $selectedPath, $content );
-        expTeJsonResponse( array( 'success' => $ok, 'message' => $ok ? 'Saved' : 'Save failed' ) );
+        expTeJsonResponse( array( 'success' => $ok, 'message' => $ok ? 'Saved' : ezpI18n::tr( 'design/admin/explayouts_ui/template_editor', 'Save failed' ) ) );
     }
 
-    expTeJsonResponse( array( 'success' => false, 'error' => 'Unknown request' ) );
+    expTeJsonResponse( array( 'success' => false, 'error' => ezpI18n::tr( 'design/admin/explayouts_ui/template_editor', 'Unknown request' ) ) );
 }
 
 $templates = expLayoutsTemplateEditor::listTemplates();
@@ -72,7 +72,7 @@ if ( !file_exists( $templateFile ) )
 {
     $Result = array();
     $Result['pagelayout'] = false;
-    $Result['content'] = 'Template not found.';
+    $Result['content'] = ezpI18n::tr( 'design/admin/explayouts_ui/template_editor', 'Template not found.' );
     return $Result;
 }
 

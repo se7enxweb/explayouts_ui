@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>7x Template Editor</title>
+    <title>{'7x Template Editor'|i18n( 'design/admin/explayouts_ui/template_editor' )}</title>
     <style>
         :root {
             --bg: #0f172a;
@@ -54,26 +54,42 @@
 <div class="app">
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h1>7x Template Editor <small id="tpl-count"></small></h1>
-            <input type="text" id="filter" placeholder="Filter templates..." autocomplete="off">
+            <h1>{'7x Template Editor'|i18n( 'design/admin/explayouts_ui/template_editor' )} <small id="tpl-count"></small></h1>
+            <input type="text" id="filter" placeholder="{'Filter templates...'|i18n( 'design/admin/explayouts_ui/template_editor' )}" autocomplete="off">
         </div>
         <nav class="flat-list" id="tree"></nav>
         <div class="resizer" id="resizer"></div>
     </aside>
     <main class="main">
         <div class="toolbar">
-            <button class="btn secondary" id="new-file">New</button>
-            <button class="btn" id="save-file">Save</button>
-            <button class="btn secondary exit-btn" id="exit-editor" title="Return to admin">×</button>
-            <span class="path" id="path">No file selected</span>
+            <button class="btn secondary" id="new-file">{'New'|i18n( 'design/admin/explayouts_ui/template_editor' )}</button>
+            <button class="btn" id="save-file">{'Save'|i18n( 'design/admin/explayouts_ui/template_editor' )}</button>
+            <button class="btn secondary exit-btn" id="exit-editor" title="{'Return to admin'|i18n( 'design/admin/explayouts_ui/template_editor' )}">×</button>
+            <span class="path" id="path">{'No file selected'|i18n( 'design/admin/explayouts_ui/template_editor' )}</span>
             <span class="status" id="status"></span>
         </div>
         <div class="editor-wrap" id="editor-wrap">
-            <div class="empty">Select a template from the list to start editing.</div>
+            <div class="empty">{'Select a template from the list to start editing.'|i18n( 'design/admin/explayouts_ui/template_editor' )}</div>
         </div>
     </main>
 </div>
 
+<script>
+window.TPL_I18N = {ldelim}
+    not_array: '{'TPL_FILES is not an array. Check the server response.'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    no_match: '{'No templates match.'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    render_error: '{'Render error: %message'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    load_error: '{'Load error: %message'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    no_file: '{'No file selected'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    saved: '{'Saved'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    save_failed: '{'Save failed: %message'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    save_error: '{'Save error: %message'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    new_path: '{'New template path (relative to design/ or extension/, must end in .tpl):'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    must_end_tpl: '{'Path must end in .tpl'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    count: '{'(%count templates)'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}',
+    new_file_error: '{'New file error: %message'|i18n( 'design/admin/explayouts_ui/template_editor' )|wash( javascript )}'
+{rdelim};
+</script>
 <script>
 window.TPL_FILES = {$files_json};
 window.BASE_URL = {$base_url};
@@ -133,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             tree.innerHTML = '';
             if (!Array.isArray(window.TPL_FILES)) {
-                showError(tree, 'TPL_FILES is not an array. Check the server response.');
+                showError(tree, TPL_I18N.not_array);
                 return;
             }
             var lower = (term || '').toLowerCase();
@@ -141,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? window.TPL_FILES.filter(function(p) { return p.toLowerCase().indexOf(lower) !== -1; })
                 : window.TPL_FILES;
             if (!files.length) {
-                tree.innerHTML = '<p class="empty">No templates match.</p>';
+                tree.innerHTML = '<p class="empty">' + TPL_I18N.no_match + '</p>';
                 return;
             }
             files.forEach(function(file) {
@@ -154,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tree.appendChild(btn);
             });
         } catch (e) {
-            showError(tree, 'Render error: ' + e.message);
+            showError(tree, TPL_I18N.render_error.replace('%message', e.message));
         }
     }
 
@@ -219,13 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(function(err) { showStatus(err.message, false); });
         } catch (e) {
-            showStatus('Load error: ' + e.message, false);
+            showStatus(TPL_I18N.load_error.replace('%message', e.message), false);
         }
     }
 
     function saveFile() {
         try {
-            if (!currentPath) { showStatus('No file selected', false); return; }
+            if (!currentPath) { showStatus(TPL_I18N.no_file, false); return; }
             var body = 'SaveTemplate=1&ezxform_token=' + encodeURIComponent(CSRF_TOKEN)
                        + '&SelectedPath=' + encodeURIComponent(currentPath)
                        + '&TemplateContent=' + encodeURIComponent(editor.value);
@@ -239,11 +255,11 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                showStatus(data.message || 'Saved', data.success);
+                showStatus(data.message || TPL_I18N.saved, data.success);
             })
-            .catch(function(err) { showStatus('Save failed: ' + err.message, false); });
+            .catch(function(err) { showStatus(TPL_I18N.save_failed.replace('%message', err.message), false); });
         } catch (e) {
-            showStatus('Save error: ' + e.message, false);
+            showStatus(TPL_I18N.save_error.replace('%message', e.message), false);
         }
     }
 
@@ -261,10 +277,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     newBtn.addEventListener('click', function() {
         try {
-            var p = prompt('New template path (relative to design/ or extension/, must end in .tpl):');
+            var p = prompt(TPL_I18N.new_path);
             if (!p) return;
             var endsWithTpl = p.length >= 4 && p.lastIndexOf('.tpl') === p.length - 4;
-            if (!endsWithTpl) { showStatus('Path must end in .tpl', false); return; }
+            if (!endsWithTpl) { showStatus(TPL_I18N.must_end_tpl, false); return; }
             currentPath = p;
             createEditor();
             pathEl.textContent = p;
@@ -273,10 +289,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!Array.isArray(window.TPL_FILES)) window.TPL_FILES = [];
             window.TPL_FILES.push(p);
             window.TPL_FILES.sort();
-            countEl.textContent = '(' + window.TPL_FILES.length + ' templates)';
+            countEl.textContent = TPL_I18N.count.replace('%count', window.TPL_FILES.length);
             renderFlat(filter.value);
         } catch (e) {
-            showStatus('New file error: ' + e.message, false);
+            showStatus(TPL_I18N.new_file_error.replace('%message', e.message), false);
         }
     });
 
@@ -288,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (window.TPL_FILES && window.TPL_FILES.length) {
-        countEl.textContent = '(' + window.TPL_FILES.length + ' templates)';
+        countEl.textContent = TPL_I18N.count.replace('%count', window.TPL_FILES.length);
     } else {
         countEl.textContent = '(0 templates)';
     }

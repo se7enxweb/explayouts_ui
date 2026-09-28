@@ -56,7 +56,7 @@ if ( $http->hasPostVariable( 'SaveBlock' ) )
         $collection->store();
     }
 
-    $message = 'Block saved.';
+    $message = ezpI18n::tr( 'design/admin/explayouts_ui/block_edit', 'Block saved.' );
     $existingParams = array();
     foreach ( expLayoutsBlockParameter::fetchByBlock( $blockId ) as $param )
     {
@@ -77,11 +77,11 @@ if ( $http->hasPostVariable( 'AddCollectionItem' ) && $hasCollection )
     {
         $item = expLayoutsCollectionItem::create( $collection->attribute( 'id' ), $nodeId );
         $item->store();
-        $message = 'Item added to collection.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/block_edit', 'Item added to collection.' );
     }
     else
     {
-        $error = 'Invalid Node ID.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/block_edit', 'Invalid Node ID.' );
     }
 }
 
@@ -92,7 +92,7 @@ if ( $http->hasPostVariable( 'RemoveCollectionItem' ) && $collection )
     if ( $item && (int)$item->attribute( 'collection_id' ) === (int)$collection->attribute( 'id' ) )
     {
         $item->remove();
-        $message = 'Item removed from collection.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/block_edit', 'Item removed from collection.' );
     }
 }
 

@@ -98,9 +98,9 @@ if ( eZUser::currentUser()->hasAccessTo( 'explayouts', 'edit' ) && $http->hasPos
 {
     $deleteId = (int)$http->postVariable( 'DeleteLayoutID' );
     if ( $layoutService->delete( $deleteId ) )
-        $message = 'Layout deleted.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/layout_list', 'Layout deleted.' );
     else
-        $error = 'Layout not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/layout_list', 'Layout not found.' );
 }
 
 $layouts = $layoutService->listAll( false );

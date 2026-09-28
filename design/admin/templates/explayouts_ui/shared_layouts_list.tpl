@@ -26,10 +26,10 @@
     <div class="layouts-content">
         <div class="nl-layouts-view-grid" style="display: block;">
             <div class="layouts-header">
-                <h2 class="layouts-title">Shared layouts</h2>
+                <h2 class="layouts-title">{'Shared layouts'|i18n( 'design/admin/explayouts_ui/shared_layouts_list' )}</h2>
                 <div class="layouts-controls">
                     <a href={concat('explayouts_ui_api/app#layout')|ezurl} id="add-new-button" class="nl-btn nl-btn-primary js-open-ngl">
-                        <i class="material-icons">add</i> New shared layout
+                        <i class="material-icons">add</i> {'New shared layout'|i18n( 'design/admin/explayouts_ui/shared_layouts_list' )}
                     </a>
                 </div>
             </div>
@@ -47,20 +47,20 @@
                                     <div class="nl-layout-name"><a href={concat('explayouts_ui_api/app#layout/',$layout.id)|ezurl}>{$layout.name|wash}</a></div>
                                     <div class="nl-layout-description">{$layout.identifier|wash}</div>
                                     <div class="nl-layout-modified"><p>{$layout.modified|datetime( 'custom', '%Y-%m-%d %H:%M' )}</p></div>
-                                    {if ne($layout.status,2)}<span class="unpublished-label">Draft</span>{/if}
+                                    {if ne($layout.status,2)}<span class="unpublished-label">{'Draft'|i18n( 'design/admin/explayouts_ui/shared_layouts_list' )}</span>{/if}
                                 </div>
                             </div>
                             <div class="nl-layout-actions">
                                 <div class="nl-layout-data">
                                     <div class="meta-info">
                                         <i class="material-icons">share</i>
-                                        <span>{if is_set($shared_counts[$layout.id])}{$shared_counts[$layout.id]}{else}0{/if} references</span>
+                                        <span>{'%count references'|i18n( 'design/admin/explayouts_ui/shared_layouts_list',, hash( '%count', first_set( $shared_counts[$layout.id], 0 ) ) )}</span>
                                     </div>
                                 </div>
                                 <div class="nl-dropdown" data-position="right">
                                     <button class="nl-btn nl-dropdown-toggle" type="button"><i class="material-icons">more_horiz</i></button>
                                     <ul class="nl-dropdown-menu main-dropdown">
-                                        <li><a href={concat('explayouts_ui/layout_preview/',$layout.id,'/',$layout.status)|ezurl} target="_blank"><i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:4px;">visibility</i> Preview</a></li>
+                                        <li><a href={concat('explayouts_ui/layout_preview/',$layout.id,'/',$layout.status)|ezurl} target="_blank"><i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:4px;">visibility</i> {'Preview'|i18n( 'design/admin/explayouts_ui/shared_layouts_list' )}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
 
 
             {if count($layouts)|eq(0)}
-                <p class="nl-no-items" style="display: block;">There are no shared layouts referenced by other layouts yet.</p>
+                <p class="nl-no-items" style="display: block;">{'There are no shared layouts referenced by other layouts yet.'|i18n( 'design/admin/explayouts_ui/shared_layouts_list' )}</p>
             {/if}
         </div>
     </div>

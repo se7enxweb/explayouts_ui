@@ -73,7 +73,7 @@ if ( $http->hasPostVariable( 'SaveRule' ) )
     }
     $ruleService->setConditions( (int)$rule->attribute( 'id' ), $conditions );
 
-    $message = 'Rule saved.';
+    $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_edit', 'Rule saved.' );
 }
 
 $layouts = expLayoutsLayout::fetchList();
@@ -92,5 +92,5 @@ $Result = array();
 $Result['content'] = $tpl->fetch( 'design:explayouts_ui/rule_edit.tpl' );
 $Result['left_menu'] = 'design:parts/explayouts_ui/menu.tpl';
 $Result['path'] = array( array( 'url' => false,
-                                'text' => ezpI18n::tr( 'explayouts_ui/rule', $ruleId > 0 ? 'Edit Rule' : 'New Rule' ) ) );
+                                'text' => ( $ruleId > 0 ? ezpI18n::tr( 'explayouts_ui/rule', 'Edit Rule' ) : ezpI18n::tr( 'explayouts_ui/rule', 'New Rule' ) ) ) );
 return $Result;

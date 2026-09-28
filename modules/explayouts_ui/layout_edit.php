@@ -98,7 +98,7 @@ if ( $http->hasPostVariable( 'SaveDraft' ) )
         $layout->setAttribute( 'status', 1 );
     $layout->store();
     expLayoutEnsureZones( $layout );
-    $message = 'Draft saved.';
+    $message = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Draft saved.' );
 }
 
 if ( $http->hasPostVariable( 'Publish' ) )
@@ -129,11 +129,11 @@ if ( $http->hasPostVariable( 'DeleteZone' ) )
             expLayoutDeleteBlock( (int)$block->attribute( 'id' ) );
         }
         $zone->remove();
-        $message = 'Zone deleted.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Zone deleted.' );
     }
     else
     {
-        $error = 'Zone not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Zone not found.' );
     }
 }
 
@@ -161,11 +161,11 @@ if ( $http->hasPostVariable( 'DeleteBlock' ) )
     if ( $block && (int)$block->attribute( 'layout_id' ) === (int)$layout->attribute( 'id' ) )
     {
         expLayoutDeleteBlock( $deleteBlockId );
-        $message = 'Block deleted.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Block deleted.' );
     }
     else
     {
-        $error = 'Block not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Block not found.' );
     }
 }
 
@@ -197,7 +197,7 @@ if ( $http->hasPostVariable( 'MoveBlockUp' ) || $http->hasPostVariable( 'MoveBlo
             $current->setAttribute( 'position', $tmp );
             $swap->store();
             $current->store();
-            $message = 'Block moved up.';
+            $message = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Block moved up.' );
         }
         elseif ( $http->hasPostVariable( 'MoveBlockDown' ) && $index >= 0 && $index < count( $blocks ) - 1 )
         {
@@ -208,12 +208,12 @@ if ( $http->hasPostVariable( 'MoveBlockUp' ) || $http->hasPostVariable( 'MoveBlo
             $current->setAttribute( 'position', $tmp );
             $swap->store();
             $current->store();
-            $message = 'Block moved down.';
+            $message = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Block moved down.' );
         }
     }
     else
     {
-        $error = 'Block not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Block not found.' );
     }
 }
 
@@ -233,11 +233,11 @@ if ( $http->hasPostVariable( 'MoveBlockToZone' ) )
         $block->setAttribute( 'position', $newPosition );
         $block->store();
         expLayoutReorderBlocks( $oldZoneId );
-        $message = 'Block moved to zone.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Block moved to zone.' );
     }
     else
     {
-        $error = 'Cannot move block.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/layout_edit', 'Cannot move block.' );
     }
 }
 
@@ -274,5 +274,5 @@ $Result = array();
 $Result['content'] = $tpl->fetch( 'design:explayouts_ui/layout_edit.tpl' );
 $Result['left_menu'] = 'design:parts/explayouts_ui/menu.tpl';
 $Result['path'] = array( array( 'url' => false,
-                                'text' => ezpI18n::tr( 'explayouts_ui/layout', $layoutId > 0 ? 'Edit Layout' : 'New Layout' ) ) );
+                                'text' => ( $layoutId > 0 ? ezpI18n::tr( 'explayouts_ui/layout', 'Edit Layout' ) : ezpI18n::tr( 'explayouts_ui/layout', 'New Layout' ) ) ) );
 return $Result;

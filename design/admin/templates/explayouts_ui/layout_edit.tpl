@@ -11,30 +11,30 @@
             {if $error}<div class="message-error">{$error|wash}</div>{/if}
 
             <form method="post" action={concat('explayouts_ui/layout_edit/',$layout.id)|ezurl} class="nl-layout-form">
-                <label>Identifier</label>
+                <label>{'Identifier'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</label>
                 <input type="text" name="Identifier" value="{$layout.identifier|wash}" />
 
-                <label>Name</label>
+                <label>{'Name'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</label>
                 <input type="text" name="Name" value="{$layout.name|wash}" />
 
-                <label>Layout type</label>
+                <label>{'Layout type'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</label>
                 <select name="LayoutType" class="nl-select">
-                    <option value="">-- Select --</option>
+                    <option value="">{'-- Select --'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</option>
                     {foreach $available_types as $typeInfo}
                         <option value="{$typeInfo.identifier|wash}" {if eq($layout.layout_type,$typeInfo.identifier)}selected="selected"{/if}>{$typeInfo.name|wash}</option>
                     {/foreach}
                 </select>
-                <em class="nl-hint">Selecting a type auto-creates zones on save.</em>
+                <em class="nl-hint">{'Selecting a type auto-creates zones on save.'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</em>
 
                 <div class="nl-form-actions">
-                    <button type="submit" name="SaveDraft" class="nl-btn"><i class="material-icons">save</i> Save draft</button>
-                    <button type="submit" name="Publish" class="nl-btn nl-btn-primary"><i class="material-icons">publish</i> Publish</button>
-                    <a class="nl-btn" href={'explayouts_ui/layout_list'|ezurl}>Cancel</a>
+                    <button type="submit" name="SaveDraft" class="nl-btn"><i class="material-icons">save</i> {'Save draft'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</button>
+                    <button type="submit" name="Publish" class="nl-btn nl-btn-primary"><i class="material-icons">publish</i> {'Publish'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</button>
+                    <a class="nl-btn" href={'explayouts_ui/layout_list'|ezurl}>{'Cancel'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</a>
                 </div>
             </form>
 
             <div class="nl-zones">
-                <h3>Zones</h3>
+                <h3>{'Zones'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</h3>
                 {if count($zones)}
                     {foreach $zones as $zoneEntry}
                         {def $zone=$zoneEntry.zone}
@@ -44,7 +44,7 @@
                                 <h4>{$zone.identifier|wash}</h4>
                                 <form method="post" action={concat('explayouts_ui/layout_edit/',$layout.id)|ezurl} style="display:inline;margin:0;">
                                     <input type="hidden" name="DeleteZoneID" value="{$zone.id|wash}" />
-                                    <button type="submit" name="DeleteZone" class="nl-btn nl-btn-small" onclick="return confirm('Delete this zone and all its blocks?');"><i class="material-icons">delete</i> Delete zone</button>
+                                    <button type="submit" name="DeleteZone" class="nl-btn nl-btn-small" onclick="return confirm('{'Delete this zone and all its blocks?'|i18n( 'design/admin/explayouts_ui/layout_edit' )|wash( javascript )}');"><i class="material-icons">delete</i> {'Delete zone'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</button>
                                 </form>
                             </div>
 
@@ -55,7 +55,7 @@
                                             <span class="nl-block-name">{$block.name|wash}</span>
                                             <span class="nl-block-type">{$block.definition_identifier|wash}</span>
                                             <div class="nl-block-actions">
-                                                <a class="nl-btn nl-btn-small" href={concat('explayouts_ui/block_edit/',$block.id)|ezurl}><i class="material-icons">edit</i> Edit</a>
+                                                <a class="nl-btn nl-btn-small" href={concat('explayouts_ui/block_edit/',$block.id)|ezurl}><i class="material-icons">edit</i> {'Edit'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</a>
                                                 <form method="post" action={concat('explayouts_ui/layout_edit/',$layout.id)|ezurl} style="display:inline;margin:0;">
                                                     <input type="hidden" name="MoveBlockID" value="{$block.id|wash}" />
                                                     <button type="submit" name="MoveBlockUp" class="nl-btn nl-btn-small"><i class="material-icons">arrow_upward</i></button>
@@ -70,18 +70,18 @@
                                                             {/if}
                                                         {/foreach}
                                                     </select>
-                                                    <button type="submit" name="MoveBlockToZone" class="nl-btn nl-btn-small">Move</button>
+                                                    <button type="submit" name="MoveBlockToZone" class="nl-btn nl-btn-small">{'Move'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</button>
                                                 </form>
                                                 <form method="post" action={concat('explayouts_ui/layout_edit/',$layout.id)|ezurl} style="display:inline;margin:0;">
                                                     <input type="hidden" name="DeleteBlockID" value="{$block.id|wash}" />
-                                                    <button type="submit" name="DeleteBlock" class="nl-btn nl-btn-small" onclick="return confirm('Delete this block?');"><i class="material-icons">delete</i></button>
+                                                    <button type="submit" name="DeleteBlock" class="nl-btn nl-btn-small" onclick="return confirm('{'Delete this block?'|i18n( 'design/admin/explayouts_ui/layout_edit' )|wash( javascript )}');"><i class="material-icons">delete</i></button>
                                                 </form>
                                             </div>
                                         </div>
                                     {/foreach}
                                 </div>
                             {else}
-                                <p class="nl-no-items">No blocks yet.</p>
+                                <p class="nl-no-items">{'No blocks yet.'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</p>
                             {/if}
 
                             {if count($available_blocks)}
@@ -92,18 +92,18 @@
                                             <option value="{$blockInfo.identifier|wash}">{$blockInfo.name|wash}</option>
                                         {/foreach}
                                     </select>
-                                    <button type="submit" name="AddBlock" class="nl-btn nl-btn-primary nl-btn-small"><i class="material-icons">add</i> Add block</button>
+                                    <button type="submit" name="AddBlock" class="nl-btn nl-btn-primary nl-btn-small"><i class="material-icons">add</i> {'Add block'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</button>
                                 </form>
                             {/if}
                         </div>
                     {/foreach}
                 {else}
-                    <p class="nl-no-items">No zones yet. Choose a layout type and save to auto-create zones.</p>
+                    <p class="nl-no-items">{'No zones yet. Choose a layout type and save to auto-create zones.'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</p>
                 {/if}
 
                 <form method="post" action={concat('explayouts_ui/layout_edit/',$layout.id)|ezurl} class="nl-add-zone">
-                    <input type="text" name="ZoneIdentifier" value="" placeholder="zone identifier" />
-                    <button type="submit" name="AddZone" class="nl-btn nl-btn-primary"><i class="material-icons">add</i> Add custom zone</button>
+                    <input type="text" name="ZoneIdentifier" value="" placeholder="{'zone identifier'|i18n( 'design/admin/explayouts_ui/layout_edit' )}" />
+                    <button type="submit" name="AddZone" class="nl-btn nl-btn-primary"><i class="material-icons">add</i> {'Add custom zone'|i18n( 'design/admin/explayouts_ui/layout_edit' )}</button>
                 </form>
             </div>
         </div>

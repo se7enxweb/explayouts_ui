@@ -56,11 +56,11 @@ if ( $canEdit && $http->hasPostVariable( 'AddRule' ) )
         }
         $ruleService->setConditions( $ruleId, $conditions );
 
-        $message = 'Mapping added.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping added.' );
     }
     else
     {
-        $error = 'Mapping could not be created.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping could not be created.' );
     }
 }
 
@@ -106,11 +106,11 @@ if ( $canEdit && $http->hasPostVariable( 'SaveRule' ) )
         }
         $ruleService->setConditions( $ruleId, $conditions );
 
-        $message = 'Mapping saved.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping saved.' );
     }
     else
     {
-        $error = 'Mapping not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping not found.' );
     }
 }
 
@@ -122,11 +122,11 @@ if ( $canEdit && $http->hasPostVariable( 'EnableRule' ) )
     if ( $rule )
     {
         $ruleService->update( $ruleId, array( 'enabled' => 1 ) );
-        $message = 'Mapping enabled.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping enabled.' );
     }
     else
     {
-        $error = 'Mapping not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping not found.' );
     }
 }
 
@@ -138,11 +138,11 @@ if ( $canEdit && $http->hasPostVariable( 'DisableRule' ) )
     if ( $rule )
     {
         $ruleService->update( $ruleId, array( 'enabled' => 0 ) );
-        $message = 'Mapping disabled.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping disabled.' );
     }
     else
     {
-        $error = 'Mapping not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping not found.' );
     }
 }
 
@@ -154,11 +154,11 @@ if ( $canEdit && $http->hasPostVariable( 'UnlinkRule' ) )
     if ( $rule )
     {
         $ruleService->update( $ruleId, array( 'layout_id' => 0 ) );
-        $message = 'Layout unlinked.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Layout unlinked.' );
     }
     else
     {
-        $error = 'Mapping not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping not found.' );
     }
 }
 
@@ -167,9 +167,9 @@ if ( $canEdit && $http->hasPostVariable( 'DeleteRule' ) )
 {
     $deleteId = (int)$http->postVariable( 'DeleteRuleID' );
     if ( $ruleService->delete( $deleteId ) )
-        $message = 'Mapping deleted.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping deleted.' );
     else
-        $error = 'Mapping not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping not found.' );
 }
 
 // Handle rule copy (edit permission required)
@@ -177,9 +177,9 @@ if ( $canEdit && $http->hasPostVariable( 'CopyRule' ) )
 {
     $copyId = (int)$http->postVariable( 'CopyRuleID' );
     if ( $ruleService->copy( $copyId ) )
-        $message = 'Mapping duplicated.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping duplicated.' );
     else
-        $error = 'Mapping not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping not found.' );
 }
 
 // Handle clear layout cache (edit permission required)
@@ -192,11 +192,11 @@ if ( $canEdit && $http->hasPostVariable( 'ClearLayoutCache' ) )
         // Clear resolver caches for this mapping
         if ( method_exists( 'expLayoutsResolver', 'clearCache' ) )
             expLayoutsResolver::clearCache();
-        $message = 'Layout cache cleared.';
+        $message = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Layout cache cleared.' );
     }
     else
     {
-        $error = 'Mapping not found.';
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/rule_list', 'Mapping not found.' );
     }
 }
 

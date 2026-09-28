@@ -1,14 +1,14 @@
 <div class="context-block">
-    <div class="box-header"><h1 class="context-title">Edit block</h1></div>
+    <div class="box-header"><h1 class="context-title">{'Edit block'|i18n( 'design/admin/explayouts_ui/block_edit' )}</h1></div>
     <div class="box-ml">
         {if $message}<div class="message-feedback">{$message|wash}</div>{/if}
         {if $error}<div class="message-error">{$error|wash}</div>{/if}
 
         <form method="post" action={concat('explayouts_ui/block_edit/',$block.id)|ezurl}>
-            <label>Name:</label>
+            <label>{'Name:'|i18n( 'design/admin/explayouts_ui/block_edit' )}</label>
             <input type="text" name="Name" value="{$block.name|wash}" size="60" /><br/><br/>
 
-            <label>View type:</label>
+            <label>{'View type:'|i18n( 'design/admin/explayouts_ui/block_edit' )}</label>
             <select name="ViewType">
                 {foreach $view_types as $vt}
                     <option value="{$vt|wash}" {if eq($block.view_type,$vt)}selected="selected"{/if}>{$vt|wash}</option>
@@ -33,17 +33,17 @@
 
             {if $has_collection}
                 {if $collection}
-                    <h3>Collection</h3>
-                    <label>Type:</label>
+                    <h3>{'Collection'|i18n( 'design/admin/explayouts_ui/block_edit' )}</h3>
+                    <label>{'Type:'|i18n( 'design/admin/explayouts_ui/block_edit' )}</label>
                     <select name="CollectionType">
-                        <option value="manual" {if eq($collection.collection_type,'manual')}selected="selected"{/if}>Manual</option>
-                        <option value="query" {if eq($collection.collection_type,'query')}selected="selected"{/if}>Query-based</option>
+                        <option value="manual" {if eq($collection.collection_type,'manual')}selected="selected"{/if}>{'Manual'|i18n( 'design/admin/explayouts_ui/block_edit' )}</option>
+                        <option value="query" {if eq($collection.collection_type,'query')}selected="selected"{/if}>{'Query-based'|i18n( 'design/admin/explayouts_ui/block_edit' )}</option>
                     </select><br/><br/>
 
-                    <label>Offset:</label>
+                    <label>{'Offset:'|i18n( 'design/admin/explayouts_ui/block_edit' )}</label>
                     <input type="number" name="CollectionOffset" value="{$collection.offset_value|wash}" size="10" /><br/><br/>
 
-                    <label>Limit:</label>
+                    <label>{'Limit:'|i18n( 'design/admin/explayouts_ui/block_edit' )}</label>
                     <input type="number" name="CollectionLimit" value="{$collection.limit_value|wash}" size="10" /><br/><br/>
                 {else}
                     <input type="hidden" name="CollectionType" value="manual" />
@@ -52,17 +52,17 @@
                 {/if}
             {/if}
 
-            <input class="defaultbutton" type="submit" name="SaveBlock" value="Save block" />
-            <a class="button" href={concat('explayouts_ui_api/app#layout/',$block.layout_id)|ezurl}>Back to layout</a>
+            <input class="defaultbutton" type="submit" name="SaveBlock" value="{'Save block'|i18n( 'design/admin/explayouts_ui/block_edit' )}" />
+            <a class="button" href={concat('explayouts_ui_api/app#layout/',$block.layout_id)|ezurl}>{'Back to layout'|i18n( 'design/admin/explayouts_ui/block_edit' )}</a>
         </form>
 
         {if $has_collection}
             <hr/>
             {if $collection}
-                <h3>Manual items</h3>
+                <h3>{'Manual items'|i18n( 'design/admin/explayouts_ui/block_edit' )}</h3>
                 {if count($collection_items)}
                     <table class="list" cellspacing="0">
-                        <tr><th>Node ID</th><th>Position</th><th>&nbsp;</th></tr>
+                        <tr><th>{'Node ID'|i18n( 'design/admin/explayouts_ui/block_edit' )}</th><th>{'Position'|i18n( 'design/admin/explayouts_ui/block_edit' )}</th><th>&nbsp;</th></tr>
                         {foreach $collection_items as $item}
                             <tr>
                                 <td>{$item.value_id|wash}</td>
@@ -70,23 +70,23 @@
                                 <td>
                                     <form method="post" action={concat('explayouts_ui/block_edit/',$block.id)|ezurl} style="display:inline;margin:0;">
                                         <input type="hidden" name="CollectionItemID" value="{$item.id|wash}" />
-                                        <button type="submit" name="RemoveCollectionItem" class="button">Remove</button>
+                                        <button type="submit" name="RemoveCollectionItem" class="button">{'Remove'|i18n( 'design/admin/explayouts_ui/block_edit' )}</button>
                                     </form>
                                 </td>
                             </tr>
                         {/foreach}
                     </table>
                 {else}
-                    <p>No items yet.</p>
+                    <p>{'No items yet.'|i18n( 'design/admin/explayouts_ui/block_edit' )}</p>
                 {/if}
 
                 <form method="post" action={concat('explayouts_ui/block_edit/',$block.id)|ezurl}>
-                    <label>Add item by Node ID:</label>
+                    <label>{'Add item by Node ID:'|i18n( 'design/admin/explayouts_ui/block_edit' )}</label>
                     <input type="number" name="CollectionNodeID" value="" size="10" />
-                    <button type="submit" name="AddCollectionItem" class="button">Add</button>
+                    <button type="submit" name="AddCollectionItem" class="button">{'Add'|i18n( 'design/admin/explayouts_ui/block_edit' )}</button>
                 </form>
             {else}
-                <p>Save the block to create a collection.</p>
+                <p>{'Save the block to create a collection.'|i18n( 'design/admin/explayouts_ui/block_edit' )}</p>
             {/if}
         {/if}
     </div>

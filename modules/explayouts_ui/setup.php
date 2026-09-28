@@ -38,7 +38,7 @@ switch ( $dbType )
         break;
 
     default:
-        $error = 'Unsupported database type: ' . $dbType;
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/setup', 'Unsupported database type: %type', null, array( '%type' => $dbType ) );
 }
 
 if ( $schemaFile && $http->hasPostVariable( 'InstallSchema' ) )
@@ -46,13 +46,13 @@ if ( $schemaFile && $http->hasPostVariable( 'InstallSchema' ) )
     $path = eZSys::rootDir() . '/' . $schemaFile;
     if ( !file_exists( $path ) )
     {
-        $error = 'Schema file not found: ' . $schemaFile;
+        $error = ezpI18n::tr( 'design/admin/explayouts_ui/setup', 'Schema file not found: %file', null, array( '%file' => $schemaFile ) );
     }
     elseif ( in_array( $dbType, array( 'mongo', 'mongodb' ) ) )
     {
         $result = expLayoutsMongoInstaller::install( $path );
         if ( $result['success'] )
-            $message = 'MongoDB collections created: ' . $result['created'] . ', indexes: ' . $result['indexes'];
+            $message = ezpI18n::tr( 'design/admin/explayouts_ui/setup', 'MongoDB collections created: %created, indexes: %indexes', null, array( '%created' => $result['created'], '%indexes' => $result['indexes'] ) );
         else
             $error = $result['error'];
     }
@@ -80,9 +80,9 @@ if ( $schemaFile && $http->hasPostVariable( 'InstallSchema' ) )
         }
 
         if ( $failed > 0 )
-            $error = 'Executed ' . $executed . ' queries, ' . $failed . ' failed.';
+            $error = ezpI18n::tr( 'design/admin/explayouts_ui/setup', 'Executed %executed queries, %failed failed.', null, array( '%executed' => $executed, '%failed' => $failed ) );
         else
-            $message = 'Database schema installed (' . $executed . ' queries executed).';
+            $message = ezpI18n::tr( 'design/admin/explayouts_ui/setup', 'Database schema installed (%executed queries executed).', null, array( '%executed' => $executed ) );
     }
 }
 
