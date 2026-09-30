@@ -13,7 +13,7 @@ class explayouts_uiInfo
 {
     public static function info()
     {
-        return array( 'Name' => "explayouts_ui",
+        return array( 'Name' => "Exponential Layouts UI",
                       'Version' => "1.3.4",
                       'Copyright' => "Copyright (C) 1998 - 2026 7x. All rights reserved.",
                       'License' => "GNU General Public License v2.0 (or any later version)",
