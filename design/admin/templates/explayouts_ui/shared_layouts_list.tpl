@@ -1,7 +1,5 @@
-{ezcss_load(array('netgen/layouts-admin.css','netgen/layouts-ibexa.css','nglayouts-ui.css'))}
+{ezcss_require(array('netgen/layouts-admin.css','netgen/layouts-ibexa.css','nglayouts-ui.css'))}
 {ezscript_load(array('netgen/layouts-admin.js','netgen/layouts-ibexa.js'))}
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 {literal}<style>
 .nl-layout-type { text-align: center; width: 110px; flex-shrink: 0; }
 .nl-layout-type p { margin: 6px 0 0; font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.03em; }

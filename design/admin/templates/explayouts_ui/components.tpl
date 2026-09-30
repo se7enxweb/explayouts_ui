@@ -1,6 +1,4 @@
-{ezcss_load(array('netgen/layouts-admin.css','netgen/layouts-ibexa.css','nglayouts-ui.css'))}
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+{ezcss_require(array('netgen/layouts-admin.css','netgen/layouts-ibexa.css','nglayouts-ui.css'))}
 {literal}<style>
 .components-content { padding: 1.5rem; }
 .layouts-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 1.5rem; }
