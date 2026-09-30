@@ -1,12 +1,21 @@
-html, body, #leftmenu, #maincontent, #maincontent-design, #fix, .ng-layouts-app, .layouts-content {
+/* This stylesheet is also loaded on every node view, by the node's Layouts tab, so the rules for the page itself (its
+   scrollbars and the dark sidebar) apply only on the Layouts pages, whose #page carries ezexplayoutsuinavigationpart;
+   the content structure sidebar of a node view keeps the admin's own look. */
+html:has(#page.ezexplayoutsuinavigationpart), html:has(#page.ezexplayoutsuinavigationpart) body,
+#page.ezexplayoutsuinavigationpart #leftmenu, #page.ezexplayoutsuinavigationpart #maincontent,
+#page.ezexplayoutsuinavigationpart #maincontent-design, #page.ezexplayoutsuinavigationpart #fix,
+.ng-layouts-app, .layouts-content {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
 }
-html::-webkit-scrollbar, body::-webkit-scrollbar, #leftmenu::-webkit-scrollbar, #maincontent::-webkit-scrollbar, #maincontent-design::-webkit-scrollbar, #fix::-webkit-scrollbar, .ng-layouts-app::-webkit-scrollbar, .layouts-content::-webkit-scrollbar {
+html:has(#page.ezexplayoutsuinavigationpart)::-webkit-scrollbar, html:has(#page.ezexplayoutsuinavigationpart) body::-webkit-scrollbar,
+#page.ezexplayoutsuinavigationpart #leftmenu::-webkit-scrollbar, #page.ezexplayoutsuinavigationpart #maincontent::-webkit-scrollbar,
+#page.ezexplayoutsuinavigationpart #maincontent-design::-webkit-scrollbar, #page.ezexplayoutsuinavigationpart #fix::-webkit-scrollbar,
+.ng-layouts-app::-webkit-scrollbar, .layouts-content::-webkit-scrollbar {
     display: none !important;
 }
 
-#leftmenu {
+#page.ezexplayoutsuinavigationpart #leftmenu {
     overflow: hidden !important;
     background: #1f2937;
     min-height: auto;
