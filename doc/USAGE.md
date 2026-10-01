@@ -36,8 +36,8 @@ Both UIs operate on the same `explayouts_*` data through the `explayouts_core` s
 
 The admin design ships the UI assets under `design/admin`:
 
-- `stylesheets/nglayouts-ui.css` and `stylesheets/netgen/` — app shell CSS
-- `javascript/netgen/layouts-admin.js`, `javascript/netgen/layouts-ibexa.js` — application scripts
+- `stylesheets/explayouts-ui.css` and `stylesheets/netgen/` — app shell CSS
+- `javascript/netgen/layouts-exponential.js` — the application script (it uses the page's jQuery, ezjscore's jQuery 4); `javascript/netgen/layouts-admin.js` ships with the extension but is not loaded by its pages
 - `templates/explayouts_ui/` and `templates/parts/` — the module view templates
 
 ## Customization

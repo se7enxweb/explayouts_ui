@@ -4,7 +4,7 @@ Exponential Layouts UI
 General description
 -------------------
 
-Exponential Layouts UI (`explayouts_ui`) is the admin user interface extension for Exponential Layouts on Exponential 6 / Exponential Legacy. It adds an "Exponential Layouts UI" tab to the admin interface with legacy module views for managing layouts, mapping rules and blocks, and ships the admin app UI assets (JS/CSS shell) used by the layouts editor, including `nglayouts-ui.css` and the `layouts-admin.js` / `layouts-ibexa.js` application scripts under `design/admin`.
+Exponential Layouts UI (`explayouts_ui`) is the admin user interface extension for Exponential Layouts on Exponential 6 / Exponential Legacy. It adds an "Exponential Layouts UI" tab to the admin interface with legacy module views for managing layouts, mapping rules and blocks, and ships the admin app UI assets (JS/CSS shell) used by the layouts editor, including `explayouts-ui.css` and the `layouts-exponential.js` application script under `design/admin`.
 
 It is an Exponential Legacy port inspired by the `netgen/layouts-ui` package. The extension contains no PHP classes of its own: its module views call the `explayouts_core` services and the `explayouts` value objects, and its list screens link into the modern SPA editor served by `explayouts_ui_api` (`/explayouts_ui_api/app#layout/<id>`).
 
@@ -41,7 +41,7 @@ The following features are provided by the Exponential Layouts UI extension:
 - Modern editor integration - The list screens deep-link into the SPA served by `explayouts_ui_api` (`/explayouts_ui_api/app#layout` to create/list, `/explayouts_ui_api/app#layout/<id>` to edit). Both UIs operate on the same `explayouts_*` data through the `explayouts_core` services, so changes made in one appear in the other.
 - Policy-driven access - List views use the `read` module function, editing views use `edit`; the admin tab requires the `explayouts/read` policy. Grant matching module policies to editor roles.
 - Template editor safety - Editable roots are limited by `explayouts.ini` `[TemplateEditorSettings] AllowedTemplateRoots[]`.
-- Shipped admin assets - `design/admin` contains `stylesheets/nglayouts-ui.css` and `stylesheets/netgen/` (app shell CSS), `javascript/netgen/layouts-admin.js` and `javascript/netgen/layouts-ibexa.js` (application scripts), and the module view templates under `templates/explayouts_ui/` and `templates/parts/`.
+- Shipped admin assets - `design/admin` contains `stylesheets/explayouts-ui.css` and `stylesheets/netgen/` (app shell CSS), `javascript/netgen/layouts-admin.js` and `javascript/netgen/layouts-exponential.js` (application scripts), and the module view templates under `templates/explayouts_ui/` and `templates/parts/`.
 - Shipped settings - `settings/module.ini.append.php` registers the `explayouts_ui` module (`read` and `edit` functions for policies), `settings/menu.ini.append.php` adds the navigation part, top menu tab (`explayouts_ui/dashboard`) and left menu links, and `settings/design.ini.append.php` registers the design extension.
 - No PHP classes by design - The module view scripts are thin controllers over the `explayouts_core` services, keeping the UI replaceable without touching domain logic.
 

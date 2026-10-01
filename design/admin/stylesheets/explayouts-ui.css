@@ -35,7 +35,7 @@ html:has(#page.ezexplayoutsuinavigationpart)::-webkit-scrollbar, html:has(#page.
     min-height: auto;
 }
 
-#leftmenu .nglayouts-sidebar {
+#leftmenu .explayouts-sidebar {
     width: 100%;
     height: auto;
     background: transparent;
@@ -47,7 +47,7 @@ html:has(#page.ezexplayoutsuinavigationpart)::-webkit-scrollbar, html:has(#page.
     overflow: hidden;
 }
 
-#leftmenu .nglayouts-sidebar a {
+#leftmenu .explayouts-sidebar a {
     display: flex;
     align-items: center;
     gap: .5rem;
@@ -60,18 +60,18 @@ html:has(#page.ezexplayoutsuinavigationpart)::-webkit-scrollbar, html:has(#page.
     text-overflow: ellipsis;
 }
 
-#leftmenu .nglayouts-sidebar a:hover,
-#leftmenu .nglayouts-sidebar a.active {
+#leftmenu .explayouts-sidebar a:hover,
+#leftmenu .explayouts-sidebar a.active {
     background: #2563eb;
     color: #fff;
 }
 
-#leftmenu .nglayouts-sidebar a .material-icons {
+#leftmenu .explayouts-sidebar a .material-icons {
     font-size: 1.125rem;
     flex: 0 0 auto;
 }
 
-#leftmenu .nglayouts-sidebar a span {
+#leftmenu .explayouts-sidebar a span {
     flex: 1 1;
     overflow: hidden;
     text-overflow: ellipsis;

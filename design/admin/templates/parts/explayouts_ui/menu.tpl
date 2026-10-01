@@ -1,4 +1,4 @@
-<nav class="nglayouts-sidebar">
+<nav class="explayouts-sidebar">
     <a href={concat('explayouts_ui/rule_list')|ezurl} class="{if $module_result.uri|extract(1)|eq('explayouts_ui/rule_list')}active{/if}">
         <i class="material-icons">view_list</i>
         <span>{'Layout mappings'|i18n( 'design/admin/parts/explayouts_ui/menu' )}</span>

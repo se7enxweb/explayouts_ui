@@ -1,4 +1,4 @@
-{ezcss_require(array('netgen/layouts-admin.css','netgen/layouts-ibexa.css','nglayouts-ui.css'))}
+{ezcss_require(array('netgen/layouts-admin.css','netgen/layouts-exponential.css','explayouts-ui.css'))}
 {literal}<style>
 #rules { visibility: visible !important; }
 #rules .message-feedback,

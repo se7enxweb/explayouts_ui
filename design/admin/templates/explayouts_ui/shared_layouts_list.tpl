@@ -1,5 +1,6 @@
-{ezcss_require(array('netgen/layouts-admin.css','netgen/layouts-ibexa.css','nglayouts-ui.css'))}
-{ezscript_load(array('netgen/layouts-admin.js','netgen/layouts-ibexa.js'))}
+{ezcss_require(array('netgen/layouts-admin.css','netgen/layouts-exponential.css','explayouts-ui.css'))}
+{* layouts-admin.js is not loaded: its content browser stops at once without Netgen's page tags, so none of it ever ran here, and these pages have their own scripts. *}
+{ezscript_load(array('netgen/layouts-exponential.js'))}
 {literal}<style>
 .nl-layout-type { text-align: center; width: 110px; flex-shrink: 0; }
 .nl-layout-type p { margin: 6px 0 0; font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.03em; }

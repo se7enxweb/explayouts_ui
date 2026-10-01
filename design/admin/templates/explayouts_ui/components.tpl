@@ -1,4 +1,4 @@
-{ezcss_require(array('netgen/layouts-admin.css','netgen/layouts-ibexa.css','nglayouts-ui.css'))}
+{ezcss_require(array('netgen/layouts-admin.css','netgen/layouts-exponential.css','explayouts-ui.css'))}
 {literal}<style>
 .components-content { padding: 1.5rem; }
 .layouts-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 1.5rem; }
