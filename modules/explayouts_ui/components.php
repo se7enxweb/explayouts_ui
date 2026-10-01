@@ -80,7 +80,8 @@ foreach ( $componentClassIdentifiers as $identifier )
     }
 }
 
-// 2) Resolve all ibexa_component_* block usages up front
+// 2) Resolve all exp_component_* block usages up front (blocks still stored as
+//    ibexa_component_* appear once explayouts' updatecomponentblockidentifiers.php has run)
 if ( $db->databaseName() === 'mongo' )
 {
     // MongoDB has no JOIN and the driver refuses SQL it cannot translate, so
@@ -89,7 +90,7 @@ if ( $db->databaseName() === 'mongo' )
     $blockRows = array();
     $publishedBlocks = $db->arrayQuery(
         "SELECT id, layout_id, view_type, definition_identifier FROM explayouts_block"
-        . " WHERE definition_identifier LIKE 'ibexa_component_%' AND status = 2" );
+        . " WHERE definition_identifier LIKE 'exp_component_%' AND status = 2" );
 
     $blocksById = array();
     foreach ( $publishedBlocks as $block )
@@ -120,7 +121,7 @@ else
     $blockSql = "SELECT b.id, b.layout_id, b.view_type, b.definition_identifier, bp.value as content_value
                  FROM explayouts_block b
                  JOIN explayouts_block_parameter bp ON bp.block_id = b.id
-                 WHERE b.definition_identifier LIKE 'ibexa_component_%'
+                 WHERE b.definition_identifier LIKE 'exp_component_%'
                    AND bp.name = 'content'
                    AND b.status = 2";
     $blockRows = $db->arrayQuery( $blockSql );
