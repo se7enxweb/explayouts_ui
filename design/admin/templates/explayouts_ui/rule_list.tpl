@@ -225,7 +225,7 @@
                                                 </li>
                                             {/if}
 
-                                            {if $canEdit and $layout}
+                                            {if and( $canEdit, $layout )}
                                                 <li>
                                                     <form method="post" action={'explayouts_ui/rule_list'|ezurl}>
                                                         <input type="hidden" name="RuleID" value="{$rule.id|wash}" />
