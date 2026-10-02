@@ -1,0 +1,297 @@
+<?php
+/**
+ * The code of extension/explayouts_ui/modules/explayouts_ui/components.php, moved into a class (#207 stage 1). The file extension/explayouts_ui/modules/explayouts_ui/components.php is one call to it.
+ * Guide: doc/bc/6.0/cli_cronjob_view_abstractions.md
+ */
+
+namespace
+{
+if ( !function_exists( 'expComponentsResolveContent' ) ) {
+/**
+ * Resolves a component block content parameter to the matching eZ content object,
+ * using the same fallback logic as sevenxThemesMediaOperators::componentContent().
+ */
+function expComponentsResolveContent( $value )
+{
+    $id = (int)$value;
+    if ( $id <= 0 )
+        return false;
+
+    $object = eZContentObject::fetchByRemoteID( 'media-o-' . ( $id + 776 ) );
+    if ( !$object ) $object = eZContentObject::fetchByRemoteID( 'media-o-' . $id );
+    if ( !$object ) $object = eZContentObject::fetch( $id + 776 );
+    if ( !$object ) $object = eZContentObject::fetch( $id );
+    return $object;
+}
+}
+
+if ( !function_exists( 'expComponentsHumanizeStyle' ) ) {
+/**
+ * Converts a view_type identifier like "features_style_2" into a human readable style label.
+ */
+function expComponentsHumanizeStyle( $viewType )
+{
+    return ucfirst( str_replace( '_', ' ', $viewType ) );
+}
+}
+}
+
+namespace Exponential\View\Extension\ExplayoutsUi\ExplayoutsUi
+{
+
+class Components extends \Exponential\Runnable\ModuleView
+{
+    public function run( array $scope )
+    {
+        // the including function's variables ($Params, $Module, $cli, ...)
+        foreach ( array_keys( $scope ) as $__name )
+            if ( $__name !== 'this' && $__name !== 'scope' )
+                ${$__name} = &$scope[$__name];
+        unset( $__name );
+
+        \eZDebug::updateSettings( array( 'debug-enabled' => false ) );
+        $module = $Params['Module'];
+
+        if ( !\eZUser::currentUser()->hasAccessTo( 'explayouts', 'read' ) )
+        {
+            return $this->viewResult( isset( $Result ) ? $Result : null,  $module->handleError( \eZError::KERNEL_ACCESS_DENIED, 'kernel' ) );
+        }
+
+        $componentClassIdentifiers = array(
+            'ng_component_about',
+            'ng_component_features',
+            'ng_component_hero',
+            'ng_component_lead',
+            'ng_component_logos',
+            'ng_component_quote',
+        );
+
+        $http = \eZHTTPTool::instance();
+
+        // Filter / sort parameters
+        $filterContentType = '';
+        $filterShowOnlyUnused = false;
+        $sortType = 'name';
+        $sortDirection = 'ascending';
+
+        if ( $http->hasGetVariable( 'component_filter' ) )
+        {
+            $filter = $http->getVariable( 'component_filter' );
+            if ( isset( $filter['contentType'] ) )
+                $filterContentType = (string)$filter['contentType'];
+            if ( isset( $filter['showOnlyUnused'] ) && $filter['showOnlyUnused'] == '1' )
+                $filterShowOnlyUnused = true;
+            if ( isset( $filter['sortType'] ) && in_array( $filter['sortType'], array( 'name', 'last_modified' ) ) )
+                $sortType = (string)$filter['sortType'];
+            if ( isset( $filter['sortDirection'] ) && in_array( $filter['sortDirection'], array( 'ascending', 'descending' ) ) )
+                $sortDirection = (string)$filter['sortDirection'];
+        }
+
+        $db = \eZDB::instance();
+
+        // 1) Fetch all ng_component_* classes and their names
+        $componentClasses = array();
+        foreach ( $componentClassIdentifiers as $identifier )
+        {
+            $class = \eZContentClass::fetchByIdentifier( $identifier );
+            if ( $class )
+            {
+                $componentClasses[$identifier] = $class;
+            }
+        }
+
+        // 2) Resolve all exp_component_* block usages up front (blocks still stored as
+        //    ibexa_component_* appear once explayouts' updatecomponentblockidentifiers.php has run)
+        if ( $db->databaseName() === 'mongo' )
+        {
+            // MongoDB has no JOIN and the driver refuses SQL it cannot translate, so
+            // this listing came back empty on MongoDB however many components existed.
+            // The two collections are read in turn and matched here instead.
+            $blockRows = array();
+            $publishedBlocks = $db->arrayQuery(
+                "SELECT id, layout_id, view_type, definition_identifier FROM explayouts_block"
+                . " WHERE definition_identifier LIKE 'exp_component_%' AND status = 2" );
+
+            $blocksById = array();
+            foreach ( $publishedBlocks as $block )
+                $blocksById[(int)$block['id']] = $block;
+
+            if ( $blocksById )
+            {
+                $parameters = $db->arrayQuery(
+                    "SELECT block_id, value FROM explayouts_block_parameter WHERE name = 'content'"
+                    . ' AND block_id IN ( ' . implode( ', ', array_keys( $blocksById ) ) . ' )' );
+
+                // An INNER JOIN yields one row per matching parameter, so a block with
+                // no content parameter drops out and one with several repeats.
+                foreach ( $parameters as $parameter )
+                {
+                    $blockId = (int)$parameter['block_id'];
+                    if ( !isset( $blocksById[$blockId] ) )
+                        continue;
+
+                    $row = $blocksById[$blockId];
+                    $row['content_value'] = $parameter['value'];
+                    $blockRows[] = $row;
+                }
+            }
+        }
+        else
+        {
+            $blockSql = "SELECT b.id, b.layout_id, b.view_type, b.definition_identifier, bp.value as content_value
+                         FROM explayouts_block b
+                         JOIN explayouts_block_parameter bp ON bp.block_id = b.id
+                         WHERE b.definition_identifier LIKE 'exp_component_%'
+                           AND bp.name = 'content'
+                           AND b.status = 2";
+            $blockRows = $db->arrayQuery( $blockSql );
+        }
+
+        if ( !is_array( $blockRows ) )
+            $blockRows = array();
+
+        $layoutIds = array();
+        $rawUsages = array();
+        foreach ( $blockRows as $row )
+        {
+            $layoutIds[] = (int)$row['layout_id'];
+            $rawUsages[] = $row;
+        }
+
+        // Fetch layout names
+        $layoutNames = array();
+        if ( !empty( $layoutIds ) )
+        {
+            $layoutIds = array_unique( $layoutIds );
+            $layoutSql = "SELECT id, name, identifier FROM explayouts_layout WHERE id IN (" . implode( ',', $layoutIds ) . ")";
+            $layoutRows = $db->arrayQuery( $layoutSql );
+            foreach ( $layoutRows as $layoutRow )
+            {
+                $layoutNames[(int)$layoutRow['id']] = array(
+                    'name' => (string)$layoutRow['name'],
+                    'identifier' => (string)$layoutRow['identifier'],
+                );
+            }
+        }
+
+        $usagesByObjectId = array();
+        foreach ( $rawUsages as $row )
+        {
+            $contentValue = (int)$row['content_value'];
+            $object = expComponentsResolveContent( $contentValue );
+            if ( !$object )
+                continue;
+
+            $objectId = (int)$object->attribute( 'id' );
+            $layoutId = (int)$row['layout_id'];
+            $layoutName = isset( $layoutNames[$layoutId] ) ? $layoutNames[$layoutId]['name'] : ( 'Layout ' . $layoutId );
+            $layoutIdentifier = isset( $layoutNames[$layoutId] ) ? $layoutNames[$layoutId]['identifier'] : '';
+
+            $usagesByObjectId[$objectId][] = array(
+                'layout_id' => $layoutId,
+                'layout_name' => $layoutName,
+                'layout_identifier' => $layoutIdentifier,
+                'view_type' => (string)$row['view_type'],
+                'style_name' => expComponentsHumanizeStyle( (string)$row['view_type'] ),
+            );
+        }
+
+        // 3) Build component list
+        $components = array();
+        foreach ( $componentClasses as $identifier => $class )
+        {
+            if ( !empty( $filterContentType ) && $identifier !== $filterContentType )
+                continue;
+
+            $conditions = array( 'contentclass_id' => (int)$class->attribute( 'id' ) );
+            $objects = \eZContentObject::fetchList( true, $conditions );
+
+            foreach ( $objects as $object )
+            {
+                $objectId = (int)$object->attribute( 'id' );
+                $usages = isset( $usagesByObjectId[$objectId] ) ? $usagesByObjectId[$objectId] : array();
+
+                if ( $filterShowOnlyUnused && !empty( $usages ) )
+                    continue;
+
+                $node = $object->attribute( 'main_node' );
+                $nodeId = $node ? (int)$node->attribute( 'node_id' ) : 0;
+
+                // Name links to the object's nice URL (admin siteaccess friendly URL).
+                // Fallback to edit for objects with no node assignment.
+                if ( $nodeId > 0 )
+                {
+                    $urlAlias = (string)$node->attribute( 'url_alias' );
+                    $viewUrl = $urlAlias !== '' ? $urlAlias : 'content/view/full/' . $nodeId;
+                }
+                else
+                {
+                    $viewUrl = 'content/edit/' . $objectId;
+                }
+
+                $components[] = array(
+                    'id' => $objectId,
+                    'name' => (string)$object->attribute( 'name' ),
+                    'remote_id' => (string)$object->attribute( 'remote_id' ),
+                    'class_identifier' => $identifier,
+                    'class_name' => (string)$class->attribute( 'name' ),
+                    'modified' => (int)$object->attribute( 'modified' ),
+                    'node_id' => $nodeId,
+                    'view_url' => $viewUrl,
+                    'edit_url' => 'content/edit/' . $objectId,
+                    'count' => count( $usages ),
+                    'usages' => $usages,
+                );
+            }
+        }
+
+        // 4) Sort
+        usort( $components, function( $a, $b ) use ( $sortType, $sortDirection )
+        {
+            if ( $sortType === 'last_modified' )
+            {
+                $cmp = $a['modified'] - $b['modified'];
+            }
+            else
+            {
+                $cmp = strcasecmp( $a['name'], $b['name'] );
+            }
+            return $sortDirection === 'descending' ? -$cmp : $cmp;
+        } );
+
+        $tpl = \eZTemplate::factory();
+
+        // Paged. These lists have no ceiling: an installation with a layout per page,
+        // or a rule per site per class, drew every one of them on one screen.
+        // expAdminPagination is this fork's kernel helper; the guard keeps the
+        // extension working on a kernel that has not got it.
+        $pageLimit  = class_exists( 'expAdminPagination' )
+                    ? \expAdminPagination::limit( 'explayouts_ui/components' ) : 25;
+        $pageOffset = class_exists( 'expAdminPagination' )
+                    ? \expAdminPagination::offset( $Params ) : 0;
+        $pageCount  = count( $components );
+        $components = class_exists( 'expAdminPagination' )
+                ? \expAdminPagination::page( $components, $pageOffset, $pageLimit )
+                : $components;
+        $tpl->setVariable( 'components', $components );
+        $tpl->setVariable( 'page_count', $pageCount );
+        $tpl->setVariable( 'limit', $pageLimit );
+        $tpl->setVariable( 'view_parameters', array( 'offset' => $pageOffset ) );
+        $tpl->setVariable( 'component_classes', $componentClasses );
+        $tpl->setVariable( 'filter_content_type', $filterContentType );
+        $tpl->setVariable( 'filter_show_only_unused', $filterShowOnlyUnused );
+        $tpl->setVariable( 'sort_type', $sortType );
+        $tpl->setVariable( 'sort_direction', $sortDirection );
+
+        $Result = array();
+        $Result['content'] = $tpl->fetch( 'design:explayouts_ui/components.tpl' );
+        $Result['left_menu'] = 'design:parts/explayouts_ui/menu.tpl';
+        $Result['path'] = array( array( 'url' => false,
+                                        'text' => \ezpI18n::tr( 'explayouts_ui/components', 'Components' ) ) );
+        return $this->viewResult( isset( $Result ) ? $Result : null,  $Result );
+
+        return $this->viewResult( isset( $Result ) ? $Result : null, null );
+    }
+}
+
+}
