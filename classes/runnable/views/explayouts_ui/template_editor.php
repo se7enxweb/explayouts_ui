@@ -96,12 +96,16 @@ class TemplateEditor extends \Exponential\Runnable\ModuleView
             return $this->viewResult( isset( $Result ) ? $Result : null,  $Result );
         }
 
-        $html = file_get_contents( $templateFile );
-        $html = str_replace(
-            array( '{$files_json}', '{$selected_json}', '{$initial_content_json}', '{$base_url}', '{$csrf_token}' ),
-            array( $filesJson, $selectedJson, $initialJson, $baseUrl, $csrfJson ),
-            $html
-        );
+        // The page is a template: its texts are translation strings ({'...'|i18n( ... )}) and its script uses
+        // {ldelim}/{rdelim}, so it goes through the template engine. Reading the file and replacing the five
+        // values by hand sent that template code to the browser as it was, and the page's script failed.
+        $tpl = \eZTemplate::factory();
+        $tpl->setVariable( 'files_json', $filesJson );
+        $tpl->setVariable( 'selected_json', $selectedJson );
+        $tpl->setVariable( 'initial_content_json', $initialJson );
+        $tpl->setVariable( 'base_url', $baseUrl );
+        $tpl->setVariable( 'csrf_token', $csrfJson );
+        $html = $tpl->fetch( 'design:explayouts_ui/template_editor.tpl' );
 
         $Result = array();
         $Result['pagelayout'] = false;

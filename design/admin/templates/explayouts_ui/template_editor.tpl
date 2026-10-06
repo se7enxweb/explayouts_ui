@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{'7x Template Editor'|i18n( 'design/admin/explayouts_ui/template_editor' )}</title>
     <style>
+    {literal}
         :root {
             --bg: #0f172a;
             --panel: #1e293b;
@@ -48,6 +49,7 @@
         textarea#tpl-editor { flex: 1; padding: 1rem; background: var(--bg); color: var(--fg); border: none; outline: none; resize: none; line-height: 1.5; font-family: var(--font); font-size: 14px; tab-size: 2; white-space: pre; overflow: auto; }
         .empty { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 1.2rem; }
         .error-box { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--danger); padding: 1rem; text-align: center; }
+    {/literal}
     </style>
 </head>
 <body>
@@ -96,7 +98,8 @@ window.BASE_URL = {$base_url};
 window.SELECTED = {$selected_json};
 window.INITIAL = {$initial_content_json};
 window.CSRF_TOKEN = {$csrf_token};
-
+{* the editor script itself: plain JavaScript, kept out of the template parser *}
+{literal}
 document.addEventListener('DOMContentLoaded', function() {
     if (!Array.isArray(window.TPL_FILES)) {
         window.TPL_FILES = [];
@@ -317,6 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateLineNumbers();
     }
 });
+{/literal}
 </script>
 </body>
 </html>
