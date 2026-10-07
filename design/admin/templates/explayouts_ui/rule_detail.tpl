@@ -19,7 +19,11 @@
 
                     {if is_set($layout)}
                         <div class="rule-layout-info">
-                            {if and(is_set($layoutType),is_set($layoutType.zones),count($layoutType.zones)|gt(0))}
+                            {* and() evaluates every argument: a rule whose layout type is unknown ($layoutType false)
+                               must not reach $layoutType.zones, which logs "Cannot retrieve attribute of a boolean" *}
+                            {def $layoutZoneCount = 0}
+                            {if is_set($layoutType)}{if $layoutType}{if is_set($layoutType.zones)}{set $layoutZoneCount = count($layoutType.zones)}{/if}{/if}{/if}
+                            {if $layoutZoneCount|gt(0)}
                                 <div class="rule-layout-info-icon">
                                     {if $layoutType}<i class="layout-icon {if $layoutType.identifier}{$layoutType.identifier|wash}{/if}" {if and($layoutType.icon,ne($layoutType.icon,''))}style="background-image:url('{concat('/extension/explayouts/design/standard/images/explayouts_standard/layout_types/',$layoutType.icon,'.svg')|wash}')"{/if}></i>{/if}
                                 </div>
@@ -33,6 +37,7 @@
                                     <p>{'Invalid layout'|i18n( 'design/admin/explayouts_ui/rule_detail' )}</p>
                                 </div>
                             {/if}
+                            {undef $layoutZoneCount}
                         </div>
 
                         <div class="nl-layout-options">
