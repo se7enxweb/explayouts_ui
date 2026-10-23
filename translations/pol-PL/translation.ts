@@ -5,7 +5,7 @@
     <name>design/admin/explayouts_ui/block_edit</name>
     <message>
         <source>Edit block</source>
-        <translation>Edytuj blok</translation>
+        <translation>Edytować blok</translation>
     </message>
     <message>
         <source>Name:</source>
@@ -41,11 +41,11 @@
     </message>
     <message>
         <source>Save block</source>
-        <translation>Zapisz blok</translation>
+        <translation>Zapisać blok</translation>
     </message>
     <message>
         <source>Back to layout</source>
-        <translation>Wróć do układu</translation>
+        <translation>Wrócić do układu</translation>
     </message>
     <message>
         <source>Manual items</source>
@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>Usuń</translation>
+        <translation>Usunąć</translation>
     </message>
     <message>
         <source>No items yet.</source>
@@ -69,11 +69,11 @@
     </message>
     <message>
         <source>Add item by Node ID:</source>
-        <translation>Dodaj element według ID węzła:</translation>
+        <translation>Dodać element według ID węzła:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Dodaj</translation>
+        <translation>Dodać</translation>
     </message>
     <message>
         <source>Save the block to create a collection.</source>
@@ -116,7 +116,7 @@
     </message>
     <message>
         <source>Show only unused</source>
-        <translation>Pokaż tylko nieużywane</translation>
+        <translation>Pokazać tylko nieużywane</translation>
     </message>
     <message>
         <source>Sort</source>
@@ -148,7 +148,7 @@
     </message>
     <message>
         <source>Submit</source>
-        <translation>Zastosuj</translation>
+        <translation>Zastosować</translation>
     </message>
     <message>
         <source>Count</source>
@@ -160,7 +160,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation>Edytuj</translation>
+        <translation>Edytować</translation>
     </message>
     <message>
         <source>Not used</source>
@@ -168,7 +168,7 @@
     </message>
     <message>
         <source>Edit &apos;%name&apos;</source>
-        <translation>Edytuj '%name'</translation>
+        <translation>Edytować &apos;%name&apos;</translation>
     </message>
     <message>
         <source>There are no components matching the selected filters.</source>
@@ -247,7 +247,7 @@
     </message>
     <message>
         <source>Open</source>
-        <translation>Otwórz</translation>
+        <translation>Otworzyć</translation>
     </message>
     <message>
         <source>There are no layouts yet</source>
@@ -286,11 +286,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulować</translation>
     </message>
     <message>
         <source>Create layout</source>
-        <translation>Utwórz układ</translation>
+        <translation>Utworzyć układ</translation>
     </message>
 </context>
 <context>
@@ -309,7 +309,7 @@
     </message>
     <message>
         <source>-- Select --</source>
-        <translation>-- Wybierz --</translation>
+        <translation>-- Wybrać --</translation>
     </message>
     <message>
         <source>Selecting a type auto-creates zones on save.</source>
@@ -317,15 +317,15 @@
     </message>
     <message>
         <source>Save draft</source>
-        <translation>Zapisz wersję roboczą</translation>
+        <translation>Zapisać wersję roboczą</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Opublikuj</translation>
+        <translation>Opublikować</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulować</translation>
     </message>
     <message>
         <source>Zones</source>
@@ -337,15 +337,15 @@
     </message>
     <message>
         <source>Delete zone</source>
-        <translation>Usuń strefę</translation>
+        <translation>Usunąć strefę</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Edytuj</translation>
+        <translation>Edytować</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation>Przenieś</translation>
+        <translation>Przenieść</translation>
     </message>
     <message>
         <source>Delete this block?</source>
@@ -357,7 +357,7 @@
     </message>
     <message>
         <source>Add block</source>
-        <translation>Dodaj blok</translation>
+        <translation>Dodać blok</translation>
     </message>
     <message>
         <source>No zones yet. Choose a layout type and save to auto-create zones.</source>
@@ -369,7 +369,7 @@
     </message>
     <message>
         <source>Add custom zone</source>
-        <translation>Dodaj własną strefę</translation>
+        <translation>Dodać własną strefę</translation>
     </message>
     <message>
         <source>Draft saved.</source>
@@ -413,19 +413,19 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>Usunąć</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation>Przenieś w dół</translation>
+        <translation>Przenieść w dół</translation>
     </message>
     <message>
         <source>Move to zone</source>
-        <translation>Przenieś do strefy</translation>
+        <translation>Przenieść do strefy</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation>Przenieś w górę</translation>
+        <translation>Przenieść w górę</translation>
     </message>
 </context>
 <context>
@@ -436,7 +436,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksportuj</translation>
+        <translation>Eksportować</translation>
     </message>
     <message>
         <source>Name</source>
@@ -488,7 +488,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>Usunąć</translation>
     </message>
     <message>
         <source>There are no layouts defined</source>
@@ -504,7 +504,7 @@
     </message>
     <message>
         <source>Sort by</source>
-        <translation>Sortuj według</translation>
+        <translation>Sortować według</translation>
     </message>
     <message>
         <source>Order</source>
@@ -512,7 +512,7 @@
     </message>
     <message>
         <source>Open</source>
-        <translation>Otwórz</translation>
+        <translation>Otworzyć</translation>
     </message>
 </context>
 <context>
@@ -531,7 +531,7 @@
     </message>
     <message>
         <source>Import</source>
-        <translation>Importuj</translation>
+        <translation>Importować</translation>
     </message>
 </context>
 <context>
@@ -546,15 +546,15 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulować</translation>
     </message>
     <message>
         <source>Add mapping</source>
-        <translation>Dodaj przypisanie</translation>
+        <translation>Dodać przypisanie</translation>
     </message>
     <message>
         <source>Save changes</source>
-        <translation>Zapisz zmiany</translation>
+        <translation>Zapisać zmiany</translation>
     </message>
     <message>
         <source>Mapped layout:</source>
@@ -566,7 +566,7 @@
     </message>
     <message>
         <source>Edit layout</source>
-        <translation>Edytuj układ</translation>
+        <translation>Edytować układ</translation>
     </message>
     <message>
         <source>No mapped layout</source>
@@ -574,7 +574,7 @@
     </message>
     <message>
         <source>Link layout</source>
-        <translation>Połącz układ</translation>
+        <translation>Połączyć układ</translation>
     </message>
     <message>
         <source>(none)</source>
@@ -638,15 +638,15 @@
     </message>
     <message>
         <source>View in CMS</source>
-        <translation>Wyświetl w CMS</translation>
+        <translation>Wyświetlić w CMS</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>Usunąć</translation>
     </message>
     <message>
         <source>Add target</source>
-        <translation>Dodaj cel</translation>
+        <translation>Dodać cel</translation>
     </message>
     <message>
         <source>Conditions:</source>
@@ -682,7 +682,7 @@
     </message>
     <message>
         <source>Add condition</source>
-        <translation>Dodaj warunek</translation>
+        <translation>Dodać warunek</translation>
     </message>
     <message>
         <source>Target type</source>
@@ -697,7 +697,7 @@
     <name>design/admin/explayouts_ui/rule_edit</name>
     <message>
         <source>Edit Rule</source>
-        <translation>Edytuj regułę</translation>
+        <translation>Edytować regułę</translation>
     </message>
     <message>
         <source>New Rule</source>
@@ -741,7 +741,7 @@
     </message>
     <message>
         <source>Save rule</source>
-        <translation>Zapisz regułę</translation>
+        <translation>Zapisać regułę</translation>
     </message>
     <message>
         <source>Back</source>
@@ -832,15 +832,15 @@
     </message>
     <message>
         <source>Edit layout</source>
-        <translation>Edytuj układ</translation>
+        <translation>Edytować układ</translation>
     </message>
     <message>
         <source>Link other layout</source>
-        <translation>Połącz inny układ</translation>
+        <translation>Połączyć inny układ</translation>
     </message>
     <message>
         <source>Link layout</source>
-        <translation>Połącz układ</translation>
+        <translation>Połączyć układ</translation>
     </message>
     <message>
         <source>Details</source>
@@ -848,19 +848,19 @@
     </message>
     <message>
         <source>Edit description</source>
-        <translation>Edytuj opis</translation>
+        <translation>Edytować opis</translation>
     </message>
     <message>
         <source>Duplicate mapping</source>
-        <translation>Duplikuj przypisanie</translation>
+        <translation>Zduplikować przypisanie</translation>
     </message>
     <message>
         <source>Enable mapping</source>
-        <translation>Włącz przypisanie</translation>
+        <translation>Włączyć przypisanie</translation>
     </message>
     <message>
         <source>Deactivate mapping</source>
-        <translation>Wyłącz przypisanie</translation>
+        <translation>Wyłączyć przypisanie</translation>
     </message>
     <message>
         <source>Delete this mapping?</source>
@@ -868,27 +868,27 @@
     </message>
     <message>
         <source>Delete mapping</source>
-        <translation>Usuń przypisanie</translation>
+        <translation>Usunąć przypisanie</translation>
     </message>
     <message>
         <source>Unlink layout</source>
-        <translation>Odłącz układ</translation>
+        <translation>Odłączyć układ</translation>
     </message>
     <message>
         <source>Clear layout cache</source>
-        <translation>Wyczyść pamięć podręczną układów</translation>
+        <translation>Wyczyścić pamięć podręczną układów</translation>
     </message>
     <message>
         <source>View in CMS</source>
-        <translation>Wyświetl w CMS</translation>
+        <translation>Wyświetlić w CMS</translation>
     </message>
     <message>
         <source>Select content classes</source>
-        <translation>Wybierz klasy treści</translation>
+        <translation>Wybrać klasy treści</translation>
     </message>
     <message>
         <source>Select siteaccesses</source>
-        <translation>Wybierz dostępy do witryny</translation>
+        <translation>Wybrać dostępy do witryny</translation>
     </message>
     <message>
         <source>Mapping added.</source>
@@ -932,11 +932,11 @@
     </message>
     <message>
         <source>Choose a location</source>
-        <translation>Wybierz lokalizację</translation>
+        <translation>Wybrać lokalizację</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Zamknij</translation>
+        <translation>Zamknąć</translation>
     </message>
     <message>
         <source>A mapping links a layout to pages: the first enabled mapping by priority whose targets and conditions match the page wins.</source>
@@ -975,7 +975,7 @@
     </message>
     <message>
         <source>Install / update schema</source>
-        <translation>Zainstaluj / zaktualizuj schemat</translation>
+        <translation>Zainstalować / zaktualizować schemat</translation>
     </message>
     <message>
         <source>Run the schema DDL? Existing data in these tables will not be removed because CREATE TABLE IF NOT EXISTS is used.</source>
@@ -987,7 +987,7 @@
     </message>
     <message>
         <source>Back to layouts</source>
-        <translation>Wróć do układów</translation>
+        <translation>Wrócić do układów</translation>
     </message>
     <message>
         <source>Unsupported database type: %type</source>
@@ -1069,7 +1069,7 @@
     </message>
     <message>
         <source>Search</source>
-        <translation>Szukaj</translation>
+        <translation>Szukać</translation>
     </message>
     <message>
         <source>Name or path</source>
@@ -1093,7 +1093,7 @@
     </message>
     <message>
         <source>Show</source>
-        <translation>Pokaż</translation>
+        <translation>Pokazać</translation>
     </message>
     <message>
         <source>All templates</source>
@@ -1121,11 +1121,11 @@
     </message>
     <message>
         <source>Review changes</source>
-        <translation>Przejrzyj zmiany</translation>
+        <translation>Przejrzeć zmiany</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Zapisz</translation>
+        <translation>Zapisać</translation>
     </message>
     <message>
         <source>Select a template from the list to start editing.</source>
@@ -1145,7 +1145,7 @@
     </message>
     <message>
         <source>Revert to original</source>
-        <translation>Przywróć oryginał</translation>
+        <translation>Przywrócić oryginał</translation>
     </message>
     <message>
         <source>The template goes back to the original the editor kept before its first change. The version saved now stays in the backup.</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message>
         <source>Compare with</source>
-        <translation>Porównaj z</translation>
+        <translation>Porównać z</translation>
     </message>
     <message>
         <source>The saved template</source>
@@ -1169,7 +1169,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation>Zamknij</translation>
+        <translation>Zamknąć</translation>
     </message>
     <message>
         <source>Path</source>
@@ -1181,11 +1181,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulować</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation>Utwórz</translation>
+        <translation>Utworzyć</translation>
     </message>
     <message>
         <source>%shown of %count templates</source>
@@ -1328,7 +1328,7 @@
     <name>design/admin/explayouts_ui/transfer_import</name>
     <message>
         <source>Import</source>
-        <translation>Importuj</translation>
+        <translation>Importować</translation>
     </message>
     <message>
         <source>Please choose a JSON file containing entities to import</source>
@@ -1336,7 +1336,7 @@
     </message>
     <message>
         <source>Select file</source>
-        <translation>Wybierz plik</translation>
+        <translation>Wybrać plik</translation>
     </message>
     <message>
         <source>(No file selected)</source>
@@ -1348,15 +1348,15 @@
     </message>
     <message>
         <source>Copy existing entities</source>
-        <translation>Kopiuj istniejące encje</translation>
+        <translation>Kopiować istniejące encje</translation>
     </message>
     <message>
         <source>Overwrite existing entities</source>
-        <translation>Nadpisz istniejące encje</translation>
+        <translation>Nadpisać istniejące encje</translation>
     </message>
     <message>
         <source>Skip existing entities</source>
-        <translation>Pomiń istniejące encje</translation>
+        <translation>Pominąć istniejące encje</translation>
     </message>
     <message>
         <source>Invalid JSON file.</source>
@@ -1399,7 +1399,7 @@
     </message>
     <message>
         <source>Choose another file</source>
-        <translation>Wybierz inny plik</translation>
+        <translation>Wybrać inny plik</translation>
     </message>
     <message>
         <source>Compared with this installation</source>
@@ -1407,15 +1407,15 @@
     </message>
     <message>
         <source>Create</source>
-        <translation>Utwórz</translation>
+        <translation>Utworzyć</translation>
     </message>
     <message>
         <source>Create a copy</source>
-        <translation>Utwórz kopię</translation>
+        <translation>Utworzyć kopię</translation>
     </message>
     <message>
         <source>Create a copy: a new layout with the content of the file</source>
-        <translation>Utwórz kopię: nowy układ z zawartością pliku</translation>
+        <translation>Utworzyć kopię: nowy układ z zawartością pliku</translation>
     </message>
     <message>
         <source>Created</source>
@@ -1427,11 +1427,11 @@
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksportuj</translation>
+        <translation>Eksportować</translation>
     </message>
     <message>
         <source>Export everything</source>
-        <translation>Eksportuj wszystko</translation>
+        <translation>Eksportować wszystko</translation>
     </message>
     <message>
         <source>Export layouts</source>
@@ -1443,7 +1443,7 @@
     </message>
     <message>
         <source>Export the selection</source>
-        <translation>Eksportuj zaznaczenie</translation>
+        <translation>Eksportować zaznaczenie</translation>
     </message>
     <message>
         <source>Exported from</source>
@@ -1467,11 +1467,11 @@
     </message>
     <message>
         <source>Import</source>
-        <translation>Importuj</translation>
+        <translation>Importować</translation>
     </message>
     <message>
         <source>Import another file</source>
-        <translation>Importuj inny plik</translation>
+        <translation>Importować inny plik</translation>
     </message>
     <message>
         <source>Import layouts</source>
@@ -1483,7 +1483,7 @@
     </message>
     <message>
         <source>Include open drafts (only published layouts otherwise)</source>
-        <translation>Uwzględnij otwarte wersje robocze (w przeciwnym razie tylko opublikowane układy)</translation>
+        <translation>Uwzględnić otwarte wersje robocze (w przeciwnym razie tylko opublikowane układy)</translation>
     </message>
     <message>
         <source>Item</source>
@@ -1491,7 +1491,7 @@
     </message>
     <message>
         <source>Keep the IDs of the file</source>
-        <translation>Zachowaj ID z pliku</translation>
+        <translation>Zachować ID z pliku</translation>
     </message>
     <message>
         <source>Kind</source>
@@ -1515,7 +1515,7 @@
     </message>
     <message>
         <source>Leave them out (and the mappings that need them)</source>
-        <translation>Pomiń je (oraz przypisania, które ich wymagają)</translation>
+        <translation>Pominąć je (oraz przypisania, które ich wymagają)</translation>
     </message>
     <message>
         <source>Links to</source>
@@ -1543,11 +1543,11 @@
     </message>
     <message>
         <source>Overwrite</source>
-        <translation>Nadpisz</translation>
+        <translation>Nadpisać</translation>
     </message>
     <message>
         <source>Overwrite it: a new draft with the content of the file</source>
-        <translation>Nadpisz: nowa wersja robocza z zawartością pliku</translation>
+        <translation>Nadpisać: nowa wersja robocza z zawartością pliku</translation>
     </message>
     <message>
         <source>Path</source>
@@ -1567,7 +1567,7 @@
     </message>
     <message>
         <source>Publish overwritten layouts and copies (otherwise they stay drafts)</source>
-        <translation>Opublikuj nadpisane układy i kopie (w przeciwnym razie pozostaną wersjami roboczymi)</translation>
+        <translation>Opublikować nadpisane układy i kopie (w przeciwnym razie pozostaną wersjami roboczymi)</translation>
     </message>
     <message>
         <source>References without a match here</source>
@@ -1587,11 +1587,11 @@
     </message>
     <message>
         <source>Skip</source>
-        <translation>Pomiń</translation>
+        <translation>Pominąć</translation>
     </message>
     <message>
         <source>Skip it: keep what is here</source>
-        <translation>Pomiń: zachowaj to, co jest tutaj</translation>
+        <translation>Pominąć: zachować to, co jest tutaj</translation>
     </message>
     <message>
         <source>Status</source>
@@ -1599,7 +1599,7 @@
     </message>
     <message>
         <source>Stop the import</source>
-        <translation>Przerwij import</translation>
+        <translation>Przerwać import</translation>
     </message>
     <message>
         <source>Strategy</source>
@@ -1667,7 +1667,7 @@
     </message>
     <message>
         <source>Update the preview</source>
-        <translation>Zaktualizuj podgląd</translation>
+        <translation>Zaktualizować podgląd</translation>
     </message>
     <message>
         <source>What was written</source>
@@ -1806,18 +1806,18 @@
     </message>
     <message>
         <source>Export</source>
-        <translation>Eksportuj</translation>
+        <translation>Eksportować</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation>Importuj</translation>
+        <translation>Importować</translation>
     </message>
 </context>
 <context>
     <name>explayouts_ui/block</name>
     <message>
         <source>Edit Block</source>
-        <translation>Edytuj blok</translation>
+        <translation>Edytować blok</translation>
     </message>
 </context>
 <context>
@@ -1842,7 +1842,7 @@
     </message>
     <message>
         <source>Edit Layout</source>
-        <translation>Edytuj układ</translation>
+        <translation>Edytować układ</translation>
     </message>
     <message>
         <source>Layouts</source>
@@ -1864,7 +1864,7 @@
     <name>explayouts_ui/rule</name>
     <message>
         <source>Edit Rule</source>
-        <translation>Edytuj regułę</translation>
+        <translation>Edytować regułę</translation>
     </message>
     <message>
         <source>New Rule</source>
@@ -1927,7 +1927,7 @@
     </message>
     <message>
         <source>Import</source>
-        <translation>Importuj</translation>
+        <translation>Importować</translation>
     </message>
     <message>
         <source>Template editor</source>

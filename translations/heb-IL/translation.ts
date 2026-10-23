@@ -1131,7 +1131,7 @@
     </message>
     <message>
         <source>Select a template from the list to start editing.</source>
-        <translation>בחרו תבנית מהרשימה כדי להתחיל לערוך.</translation>
+        <translation>יש לבחור תבנית מהרשימה כדי להתחיל לערוך.</translation>
     </message>
     <message>
         <source>Template text</source>
@@ -1859,7 +1859,7 @@
     </message>
     <message>
         <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
-        <translation>אין siteaccess ציבורי לתצוגה מקדימה של פריסה זו. הגדירו explayouts.ini [PreviewSettings] SiteAccess עבור ממשק ניהול זה.</translation>
+        <translation>אין גישת אתר ציבורית לתצוגה מקדימה של פריסה זו. יש להגדיר explayouts.ini [PreviewSettings] SiteAccess עבור ממשק ניהול זה.</translation>
     </message>
 </context>
 <context>
