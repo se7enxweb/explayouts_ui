@@ -84,4 +84,14 @@ class RuleTemplatesTest extends TestCase
         $this->assertStringNotContainsString( 'insertAdjacentHTML', $script );
         $this->assertStringNotContainsString( '<a href="#" class="remove-setting', $script );
     }
+
+    public function testANewListConditionOpensItsList()
+    {
+        // a new class or siteaccess condition has an empty value list: its multiple select opens at once, on adding
+        // the condition and on changing its type, instead of waiting for a click on an empty value
+        $script = file_get_contents( dirname( __DIR__ ) . '/design/admin/javascript/explayouts_ui_rule_list.js' );
+        $this->assertStringContainsString( 'function openConditionList(li)', $script );
+        $this->assertStringContainsString( "list.appendChild(li);\n            if (isMulti) openConditionList(li);", $script );
+        $this->assertStringContainsString( 'if (multi) openConditionList(li);', $script );
+    }
 }

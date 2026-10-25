@@ -233,6 +233,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    /** A new class or siteaccess condition has no value yet, so its value is an empty list with nothing to click on:
+        its multiple select is opened right away (the same as clicking the value of an existing condition). */
+    function openConditionList(li) {
+        var span = li.querySelector('.js-setting-edit');
+        if (span && !li.classList.contains('editing')) span.click();
+    }
+
     document.querySelectorAll('.js-add-condition').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -251,6 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 removeButton()
             ]);
             list.appendChild(li);
+            if (isMulti) openConditionList(li);
 
             var typeSelect = li.querySelector('.js-condition-type-select');
             if (typeSelect) {
@@ -259,6 +267,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (valueSpan) {
                         var multi = (this.value === 'class' || this.value === 'content_type' || this.value === 'siteaccess');
                         valueSpan.replaceChildren.apply(valueSpan, [el('strong', {}, [buildConditionLabel(this.value) + ':'])].concat(buildConditionValueControl(this.value, multi ? '[]' : '')));
+                        li.classList.remove('editing');
+                        if (multi) openConditionList(li);
                     }
                 });
             }
