@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Pśeglěd wugótowanja</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Žeden zjawny pśistup k sedłu za pśeglěd togo wugótowanja. Nastajśo explayouts.ini [PreviewSettings] SiteAccess za toś tu administraciju.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

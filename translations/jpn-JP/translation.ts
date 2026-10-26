@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>レイアウトのプレビュー</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>このレイアウトをプレビューする公開サイトアクセスがありません。この管理画面用に explayouts.ini [PreviewSettings] SiteAccess を設定してください。</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

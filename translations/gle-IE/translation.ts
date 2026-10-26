@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Réamhamharc ar an leagan amach</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Níl aon rochtain suímh phoiblí ann chun réamhamharc a dhéanamh ar an leagan amach seo. Socraigh explayouts.ini [PreviewSettings] SiteAccess don riarachán seo.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

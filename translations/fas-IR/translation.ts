@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>پیش‌نمایش چیدمان</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>هیچ دسترسی سایت عمومی برای پیش‌نمایش این چیدمان وجود ندارد. لطفاً explayouts.ini [PreviewSettings] SiteAccess را برای این مدیریت تنظیم کنید.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

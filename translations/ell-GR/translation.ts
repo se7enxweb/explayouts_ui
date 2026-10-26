@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Προεπισκόπηση διάταξης</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Δεν υπάρχει δημόσια πρόσβαση ιστότοπου για την προεπισκόπηση αυτής της διάταξης. Ορίστε το explayouts.ini [PreviewSettings] SiteAccess για αυτή τη διαχείριση.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

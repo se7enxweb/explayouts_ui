@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Elrendezés előnézete</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Nincs nyilvános webhely-hozzáférés az elrendezés előnézetéhez. Állítsa be az explayouts.ini [PreviewSettings] SiteAccess értékét ehhez az adminisztrációhoz.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

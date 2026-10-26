@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Pamje paraprake e faqosjes</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Nuk ka qasje publike në sajt për parapamjen e kësaj faqosjeje. Caktoni explayouts.ini [PreviewSettings] SiteAccess për këtë administrim.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

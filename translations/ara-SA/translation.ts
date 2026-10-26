@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>معاينة التخطيط</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>لا يوجد siteaccess عام لمعاينة هذا التخطيط فيه. يُرجى ضبط explayouts.ini [PreviewSettings] SiteAccess لهذه الإدارة.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

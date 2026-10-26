@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>د ترتیب مخکتنه</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>د دې ترتیب د مخکتنې لپاره هېڅ عامه د سایټ لاسرسی نشته. د دې ادارې لپاره explayouts.ini [PreviewSettings] SiteAccess وټاکئ.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

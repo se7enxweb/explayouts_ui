@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Ara t-tqassim minn qabel</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>M&apos;hemm l-ebda aċċess pubbliku għas-sit fejn tara dan it-tqassim minn qabel. Issettja explayouts.ini [PreviewSettings] SiteAccess għal din l-amministrazzjoni.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

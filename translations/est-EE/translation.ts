@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Paigutuse eelvaade</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Selle paigutuse eelvaate jaoks pole avalikku saidi juurdepääsu. Määrake selle halduse jaoks explayouts.ini [PreviewSettings] SiteAccess.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

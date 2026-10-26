@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Попередній перегляд макета</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Немає публічного доступу до сайту для попереднього перегляду цього макета. Задайте explayouts.ini [PreviewSettings] SiteAccess для цього адміністрування.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

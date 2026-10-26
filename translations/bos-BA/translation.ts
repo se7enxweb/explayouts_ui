@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Pretpregled rasporeda</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Nema javnog pristupa web-stranici za pretpregled ovog rasporeda. Postavite explayouts.ini [PreviewSettings] SiteAccess za ovu administraciju.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

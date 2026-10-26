@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Inissiineq siumut takuuk</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Inissiinerup matuma siumut takunissaanut nittartakkamut isaariaqanngilaq tamanut ammasumik. Allaffissornermut matumunnga explayouts.ini [PreviewSettings] SiteAccess aalajangersaruk.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>

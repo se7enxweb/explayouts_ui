@@ -1855,6 +1855,10 @@
         <source>Preview layout</source>
         <translation>Esikatsele asettelua</translation>
     </message>
+    <message>
+        <source>No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.</source>
+        <translation>Asettelun esikatseluun ei ole julkista sivustoyhteyttä. Määritä tälle hallinnalle explayouts.ini [PreviewSettings] SiteAccess.</translation>
+    </message>
 </context>
 <context>
     <name>explayouts_ui/rule</name>
