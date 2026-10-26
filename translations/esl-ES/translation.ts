@@ -1057,7 +1057,7 @@
     <name>design/admin/explayouts_ui/template_editor</name>
     <message>
         <source>Edit the templates that draw layouts and blocks. Every change is checked by the template engine and shown as a list of differences before it is saved; the first save keeps the original, so it can be put back.</source>
-        <translation>Edite las plantillas que dibujan los diseños y los bloques. Cada cambio lo comprueba el motor de plantillas y se muestra como una lista de diferencias antes de guardarlo; el primer guardado conserva el original, para poder restaurarlo.</translation>
+        <translation>Edita las plantillas que dibujan los diseños y los bloques. Cada cambio lo comprueba el motor de plantillas y se muestra como una lista de diferencias antes de guardarlo; el primer guardado conserva el original, para poder restaurarlo.</translation>
     </message>
     <message>
         <source>Templates</source>

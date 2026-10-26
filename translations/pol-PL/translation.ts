@@ -309,7 +309,7 @@
     </message>
     <message>
         <source>-- Select --</source>
-        <translation>-- Wybierz --</translation>
+        <translation>-- Wybrać --</translation>
     </message>
     <message>
         <source>Selecting a type auto-creates zones on save.</source>
@@ -1567,7 +1567,7 @@
     </message>
     <message>
         <source>Publish overwritten layouts and copies (otherwise they stay drafts)</source>
-        <translation>Opublikuj nadpisane układy i kopie (w przeciwnym razie pozostaną wersjami roboczymi)</translation>
+        <translation>Opublikować nadpisane układy i kopie (w przeciwnym razie pozostaną wersjami roboczymi)</translation>
     </message>
     <message>
         <source>References without a match here</source>

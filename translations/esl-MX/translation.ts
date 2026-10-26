@@ -413,7 +413,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>Move down</source>
@@ -488,7 +488,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>There are no layouts defined</source>
@@ -508,7 +508,7 @@
     </message>
     <message>
         <source>Order</source>
-        <translation>Pedido</translation>
+        <translation>Orden</translation>
     </message>
     <message>
         <source>Open</source>
@@ -642,7 +642,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>Add target</source>
@@ -1379,7 +1379,7 @@
     </message>
     <message>
         <source>%written items written, %entries resolver cache entries of the affected layouts removed.</source>
-        <translation>Se escribieron %written elementos y se eliminaron %entries entradas de la caché del resolvedor de las disposiciones afectadas.</translation>
+        <translation>Se escribieron %written elementos y se eliminaron %entries entradas del caché del resolvedor de las disposiciones afectadas.</translation>
     </message>
     <message>
         <source>A .zip made by Export or by ./console exp:layouts export, up to 64 MB.</source>
