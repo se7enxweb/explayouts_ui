@@ -51,7 +51,7 @@
     border-color: var(--a4-accent);
     background-color: var(--a4-accent-soft);
 }
-.explayouts-te .explayouts-te-file-name { font-weight: 600; overflow-wrap: anywhere; }
+.explayouts-te .explayouts-te-file-name { font-weight: var(--a4-weight-strong); overflow-wrap: anywhere; }
 .explayouts-te .explayouts-te-file-folder {
     color: var(--a4-muted);
     font-family: var(--a4-mono);
@@ -142,11 +142,11 @@
 /* the highlighted parts */
 .explayouts-te-highlight .te-c { color: var(--a4-muted); font-style: italic; }
 .explayouts-te-highlight .te-b,
-.explayouts-te-highlight .te-k { color: var(--a4-accent-text); font-weight: 700; }
+.explayouts-te-highlight .te-k { color: var(--a4-accent-text); font-weight: var(--a4-weight-bold); }
 .explayouts-te-highlight .te-v { color: var(--a4-info); }
 .explayouts-te-highlight .te-o { color: var(--a4-warn); }
 .explayouts-te-highlight .te-s { color: var(--a4-ok); }
-.explayouts-te-highlight .te-t { color: var(--a4-info); font-weight: 700; }
+.explayouts-te-highlight .te-t { color: var(--a4-info); font-weight: var(--a4-weight-bold); }
 .explayouts-te-highlight .te-a { color: var(--a4-warn); }
 
 .explayouts-te .explayouts-te-foot { flex-wrap: wrap; gap: var(--a4-space-2) var(--a4-space-4); padding: var(--a4-space-3) var(--a4-space-4); }
