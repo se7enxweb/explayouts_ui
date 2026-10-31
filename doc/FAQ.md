@@ -2,7 +2,7 @@
 
 ## How does this differ from netgen/layouts-ui?
 
-`netgen/layouts-ui` is the JavaScript admin app (Backbone-based) for Netgen Layouts, mounted in a Symfony backend. Here the roles are split: `explayouts_ui` provides classic server-rendered eZ admin module views plus the admin CSS/JS assets, while `explayouts_ui_api` serves the SPA shell and the JSON API the app scripts talk to.
+`netgen/layouts-ui` is the JavaScript admin app (Backbone-based) for the upstream layouts engine, mounted in a Symfony backend. Here the roles are split: `explayouts_ui` provides classic server-rendered eZ admin module views plus the admin CSS/JS assets, while `explayouts_ui_api` serves the SPA shell and the JSON API the app scripts talk to.
 
 ## Do I need explayouts_ui_api as well?
 
