@@ -155,8 +155,8 @@ class Preview extends \Exponential\Runnable\ModuleView
             \eZDebug::writeWarning( $reason, 'explayouts_ui/layout_preview' );
             $Result = array();
             $Result['content'] = '<p class="message-error">' . htmlspecialchars( \ezpI18n::tr( 'explayouts_ui/preview',
-                'No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.' ) )
-                . '</p><p>' . htmlspecialchars( $reason ) . '</p>';
+                'No public siteaccess to preview this layout in. Set explayouts.ini [PreviewSettings] SiteAccess for this administration.' ), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 )
+                . '</p><p>' . htmlspecialchars( $reason, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 ) . '</p>';
             $Result['path'] = array( array( 'url' => false, 'text' => \ezpI18n::tr( 'explayouts_ui/preview', 'Preview layout' ) ) );
             return $this->viewResult( isset( $Result ) ? $Result : null, $Result );
         }
