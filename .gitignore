@@ -8,3 +8,4 @@ var/
 \#*\#
 data/data.sql.backup*
 data/data.sql.full_before
+.phpunit.result.cache

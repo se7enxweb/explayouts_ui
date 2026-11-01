@@ -21,6 +21,9 @@ class RuleTemplatesTest extends TestCase
         return file_get_contents( $file );
     }
 
+    /**
+     * @dataProvider designs
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider( 'designs' )]
     public function testLabelsFromTheRulesAreWashed( $design )
     {
@@ -35,6 +38,7 @@ class RuleTemplatesTest extends TestCase
     /**
      * Every label variable of the rule templates falls back to the stored type when it has no translation, so none of
      * them may reach the page unwashed, whatever its name (ruleTargetTypeLabel, rowConditionLabel ...).
+     * @dataProvider designs
      */
     #[\PHPUnit\Framework\Attributes\DataProvider( 'designs' )]
     public function testNoLabelVariableIsOutputUnwashed( $design )
@@ -49,6 +53,9 @@ class RuleTemplatesTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider designs
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider( 'designs' )]
     public function testPageActionsAreButtons( $design )
     {
@@ -57,6 +64,9 @@ class RuleTemplatesTest extends TestCase
             $this->assertDoesNotMatchRegularExpression( '/<a\b[^>]*\b' . $hook . '\b/', $tpl, $hook . ' is a link' );
     }
 
+    /**
+     * @dataProvider designs
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider( 'designs' )]
     public function testTypeSelectsAndTextFieldsHaveNames( $design )
     {

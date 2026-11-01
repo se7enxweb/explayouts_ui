@@ -25,6 +25,9 @@ class SchemaStatementTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider statements
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider( 'statements' )]
     public function testTheTableOfAStatement( $statement, $table )
     {

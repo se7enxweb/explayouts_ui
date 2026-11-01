@@ -18,6 +18,10 @@ if ( !class_exists( 'Exponential\\Runnable\\ModuleView', false ) )
 
 class PreviewSiteAccessStop extends Exception {}
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 #[RunTestsInSeparateProcesses]
 class PreviewSiteAccessTest extends TestCase
 {
