@@ -416,14 +416,17 @@ class expLayoutsUiTemplateEditor extends expLayoutsTemplateEditor
         return $path;
     }
 
-    /** A file or folder made by a server running as root gets the owner and group of its folder. */
+    /**
+     * A file or folder the editor made gets the group of its folder (where the server's user may set it), and with a
+     * server running as root also the owner, so the files of a design keep one owner and group.
+     */
     protected static function takeOwnerOfParent( $file )
     {
-        if ( !function_exists( 'posix_geteuid' ) || posix_geteuid() !== 0 )
-            return;
         $parent = dirname( $file );
-        @chown( $file, fileowner( $parent ) );
-        @chgrp( $file, filegroup( $parent ) );
+        if ( function_exists( 'posix_geteuid' ) && posix_geteuid() === 0 )
+            @chown( $file, fileowner( $parent ) );
+        if ( filegroup( $file ) !== filegroup( $parent ) )
+            @chgrp( $file, filegroup( $parent ) );
     }
 
     // ---------------------------------------------------------------- the original
