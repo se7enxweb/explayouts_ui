@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.33 (2026-11-03)
+
+- Updated: The template editor takes view parameters only: `explayouts_ui/template_editor/<path>/(siteaccess)/<name>/(design)/<base>`; the old `?file=` address opens the list.
+- Updated: The template editor lists the layout templates of the whole design chain of a chosen public siteaccess and shows which file is drawn and which ones it overrides.
+- Added: Templates outside `AllowedTemplateRoots` are read-only in the template editor, with "Create override" into an allowed design that comes before them.
+
 ## 1.3.32 (2026-10-29)
 
 - Updated: One copyright notice, Exponential Foundation and 7x.
