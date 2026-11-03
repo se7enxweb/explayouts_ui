@@ -226,3 +226,21 @@
     .explayouts-te .explayouts-te-file { grid-template-columns: minmax(0, 1fr); }
     .explayouts-te .explayouts-te-file-tags { grid-column: 1; grid-row: auto; justify-content: flex-start; margin-top: var(--a4-space-1); }
 }
+
+/* ---- the siteaccess chooser and the override of a read-only template ---- */
+.explayouts-te .explayouts-te-siteaccess-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--a4-space-2);
+    align-items: center;
+}
+.explayouts-te .explayouts-te-siteaccess-row .a4-input { flex: 1 1 auto; min-width: 0; }
+.explayouts-te .explayouts-te-override {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--a4-space-2);
+    align-items: center;
+    margin-top: var(--a4-space-2);
+}
+.explayouts-te .explayouts-te-override .a4-input { flex: 1 1 240px; min-width: 0; width: auto; }
+.explayouts-te .explayouts-te-override[hidden] { display: none; }

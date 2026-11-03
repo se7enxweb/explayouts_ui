@@ -15,7 +15,7 @@ All views live on the `explayouts_ui` module and are reached from the "Layouts" 
 | `/explayouts_ui/rule_list` | Layout mapping rules |
 | `/explayouts_ui/rule_edit/(RuleID)/<id>` | Edit a rule, its targets and conditions |
 | `/explayouts_ui/transfer_import` | Import layouts/rules from a transfer file |
-| `/explayouts_ui/template_editor` | Search, edit (syntax check and diff before saving) and revert layout templates (`read` and `edit`; roots limited by `explayouts.ini` `[TemplateEditorSettings] AllowedTemplateRoots[]`, new files only with `AllowNewTemplates=enabled`) |
+| `/explayouts_ui/template_editor[/<path>][/(siteaccess)/<name>][/(design)/<base>]` | Search the templates of a siteaccess's design chain, edit (syntax check and diff before saving), revert, or create an override of a read-only one (`read` and `edit`; writes limited by `explayouts.ini` `[TemplateEditorSettings] AllowedTemplateRoots[]`, new files only with `AllowNewTemplates=enabled`) |
 | `/explayouts_ui/layout_preview/<layout_id>/<status>` | Preview a layout |
 | `/explayouts_ui/components` | The content component blocks and the content they show |
 | `/explayouts_ui/setup` | Setup/status (`edit` policy function) |

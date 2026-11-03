@@ -11,6 +11,6 @@
 </div></div>
 
 <div class="box-bc"><div class="box-ml"><div class="box-content">
-{include uri='design:explayouts_ui/parts/template_editor_body.tpl' editor_json=$editor_json template_count=$template_count designs=$designs groups=$groups selected_path=$selected_path can_edit=$can_edit allow_new_templates=$allow_new_templates}
+{include uri='design:explayouts_ui/parts/template_editor_body.tpl' editor_json=$editor_json template_count=$template_count designs=$designs design=$design siteaccesses=$siteaccesses siteaccess=$siteaccess groups=$groups selected_path=$selected_path can_edit=$can_edit allow_new_templates=$allow_new_templates}
 </div></div></div>
 </div>

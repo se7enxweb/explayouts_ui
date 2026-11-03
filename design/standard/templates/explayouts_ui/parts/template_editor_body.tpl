@@ -3,7 +3,8 @@
    Shared admin components (.a4-*) and the module classes .explayouts-te-* (stylesheets/explayouts_ui_template_editor.css);
    no inline style or script: the values are the JSON data block #explayouts-ui-te-data, read by
    javascript/explayouts_ui_template_editor.js.
-   Variables: $editor_json (rows, base_url, selected, csrf_token, can_edit, allow_new), $template_count, $selected_path (open from the start), $designs,
+   Variables: $editor_json (rows, bases, base_url, siteaccess, design, selected, csrf_token, can_edit, allow_new), $template_count,
+   $selected_path (open from the start), $designs (the design chain: base, design, extension), $design, $siteaccesses, $siteaccess,
    $groups, $can_edit, $allow_new_templates. *}
 
 <p class="a4-intro">{'Edit the templates that draw layouts and blocks. Every change is checked by the template engine and shown as a list of differences before it is saved; the first save keeps the original, so it can be put back.'|i18n( 'design/admin/explayouts_ui/template_editor' )}</p>
@@ -18,6 +19,17 @@
         <div class="a4-card-actions"><button type="button" class="a4-btn a4-btn-small" id="te-new">{'New template'|i18n( 'design/admin/explayouts_ui/template_editor' )}</button></div>
         {/if}
     </div>
+    <form class="a4-filterbar explayouts-te-filters explayouts-te-siteaccess" method="post" action={'explayouts_ui/template_editor'|ezurl}>
+        <div class="a4-field">
+            <label class="a4-label" for="te-siteaccess">{'Siteaccess'|i18n( 'design/admin/explayouts_ui/template_editor' )}</label>
+            <div class="a4-toolbar explayouts-te-siteaccess-row">
+                <select class="a4-input" id="te-siteaccess" name="SiteAccess">
+                    {foreach $siteaccesses as $name}<option value="{$name|wash}"{if eq( $name, $siteaccess )} selected="selected"{/if}>{$name|wash}</option>{/foreach}
+                </select>
+                <button type="submit" class="a4-btn a4-btn-small" name="ChooseSiteAccessButton" value="1">{'Show'|i18n( 'design/admin/explayouts_ui/template_editor' )}</button>
+            </div>
+        </div>
+    </form>
     <div class="a4-filterbar explayouts-te-filters" role="search">
         <div class="a4-field">
             <label class="a4-label" for="te-search">{'Search'|i18n( 'design/admin/explayouts_ui/template_editor' )}</label>
@@ -27,7 +39,7 @@
             <label class="a4-label" for="te-design">{'Design'|i18n( 'design/admin/explayouts_ui/template_editor' )}</label>
             <select class="a4-input" id="te-design">
                 <option value="">{'All designs'|i18n( 'design/admin/explayouts_ui/template_editor' )}</option>
-                {foreach $designs as $design}<option value="{$design|wash}">{$design|wash}</option>{/foreach}
+                {foreach $designs as $d}<option value="{$d.base|wash}"{if eq( $d.base, $design )} selected="selected"{/if}>{$d.design|wash}{if $d.extension} ({$d.extension|wash}){/if}</option>{/foreach}
             </select>
         </div>
         <div class="a4-field">
@@ -66,6 +78,17 @@
         {/if}
     </div>
     <div class="a4-notice is-bad explayouts-te-problems" id="te-problems" role="alert" hidden="hidden"></div>
+    {if $can_edit}
+    <div class="a4-notice is-info explayouts-te-problems" id="te-readonly" hidden="hidden">
+        <p class="a4-notice-title">{'This template is read-only here.'|i18n( 'design/admin/explayouts_ui/template_editor' )}</p>
+        <p>{'Its design is not one the editor may change (explayouts.ini [TemplateEditorSettings] AllowedTemplateRoots). To change it, create an override in a design that comes before it for this siteaccess.'|i18n( 'design/admin/explayouts_ui/template_editor' )}</p>
+        <div class="a4-toolbar explayouts-te-override" id="te-override-box" hidden="hidden">
+            <label class="a4-label" for="te-override-target">{'Create override in'|i18n( 'design/admin/explayouts_ui/template_editor' )}</label>
+            <select class="a4-input" id="te-override-target"></select>
+            <button type="button" class="a4-btn a4-btn-small a4-btn-primary" id="te-override">{'Create override'|i18n( 'design/admin/explayouts_ui/template_editor' )}</button>
+        </div>
+    </div>
+    {/if}
     <p class="a4-empty explayouts-te-empty" id="te-empty"{if $selected_path} hidden="hidden"{/if}>{'Select a template from the list to start editing.'|i18n( 'design/admin/explayouts_ui/template_editor' )}</p>
     <div class="explayouts-te-code" id="te-code" {if $selected_path|not}hidden="hidden"{/if}>
         <div class="explayouts-te-gutter" id="te-gutter" aria-hidden="true"></div>
@@ -156,7 +179,10 @@
     'checking', 'Checking...'|i18n( 'design/admin/explayouts_ui/template_editor' ),
     'reverted', 'The original is back.'|i18n( 'design/admin/explayouts_ui/template_editor' ),
     'new_tpl', 'The path must end in .tpl'|i18n( 'design/admin/explayouts_ui/template_editor' ),
-    'new_hint', 'New template, not saved yet'|i18n( 'design/admin/explayouts_ui/template_editor' )
+    'new_hint', 'New template, not saved yet'|i18n( 'design/admin/explayouts_ui/template_editor' ),
+    'winner', 'Drawn for %siteaccess'|i18n( 'design/admin/explayouts_ui/template_editor' ),
+    'overrides', 'Overrides: %paths'|i18n( 'design/admin/explayouts_ui/template_editor' ),
+    'read_only', 'Read-only'|i18n( 'design/admin/explayouts_ui/template_editor' )
 ) )}, "editor": {$editor_json}{rdelim}{/set-block}
 <script type="application/json" id="explayouts-ui-te-data">{$explayouts_ui_te_data|explode( '<' )|implode( '\u003c' )|explode( '>' )|implode( '\u003e' )}</script>
 {undef $explayouts_ui_te_data}

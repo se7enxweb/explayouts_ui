@@ -1284,6 +1284,34 @@
         <translation>New template, not saved yet</translation>
     </message>
     <message>
+        <source>This template is read-only here.</source>
+        <translation>This template is read-only here.</translation>
+    </message>
+    <message>
+        <source>Its design is not one the editor may change (explayouts.ini [TemplateEditorSettings] AllowedTemplateRoots). To change it, create an override in a design that comes before it for this siteaccess.</source>
+        <translation>Its design is not one the editor may change (explayouts.ini [TemplateEditorSettings] AllowedTemplateRoots). To change it, create an override in a design that comes before it for this siteaccess.</translation>
+    </message>
+    <message>
+        <source>Create override in</source>
+        <translation>Create override in</translation>
+    </message>
+    <message>
+        <source>Create override</source>
+        <translation>Create override</translation>
+    </message>
+    <message>
+        <source>Drawn for %siteaccess</source>
+        <translation>Drawn for %siteaccess</translation>
+    </message>
+    <message>
+        <source>Overrides: %paths</source>
+        <translation>Overrides: %paths</translation>
+    </message>
+    <message>
+        <source>Read-only</source>
+        <translation>Read-only</translation>
+    </message>
+    <message>
         <source>Template editor</source>
         <translation>Template editor</translation>
     </message>

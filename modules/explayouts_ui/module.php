@@ -78,7 +78,9 @@ $ViewList['template_editor'] = array(
     'script' => 'template_editor.php',
     'functions' => array( 'read', 'edit' ),
     'default_navigation_part' => 'ezexplayoutsuinavigationpart',
-    'params' => array( 'FilePath' )
+    // the template's path as the trailing parts of the address (as visual/templateedit), then (siteaccess) and (design)
+    'params' => array(),
+    'unordered_params' => array( 'siteaccess' => 'SiteAccess', 'design' => 'Design' )
 );
 
 // The layouts transfer: export and import are separate policies, so a role can be

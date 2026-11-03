@@ -105,6 +105,327 @@ class expLayoutsUiTemplateEditor extends expLayoutsTemplateEditor
         return array_values( array_unique( $found ) );
     }
 
+    // ---------------------------------------------------------------- the design chain of a siteaccess
+
+    /** The folder inside templates/ the editor shows: the templates of layouts, zones, blocks and items. */
+    const TEMPLATE_FOLDER = 'explayouts';
+
+    /**
+     * The public siteaccesses (AvailableSiteAccessList without the administrations: a siteaccess whose SiteDesign or
+     * AdditionalSiteDesignList names an admin* design), as name => SiteDesign.
+     *
+     * @return string[]
+     */
+    public static function frontSiteAccesses()
+    {
+        $siteIni = eZINI::instance( 'site.ini' );
+        $list = $siteIni->hasVariable( 'SiteAccessSettings', 'AvailableSiteAccessList' )
+            ? (array)$siteIni->variable( 'SiteAccessSettings', 'AvailableSiteAccessList' ) : array();
+        $front = array();
+        foreach ( array_unique( $list ) as $name )
+        {
+            $name = (string)$name;
+            if ( $name === '' || !preg_match( '~^[A-Za-z0-9_-]+$~', $name ) )
+                continue;
+            $ini = eZSiteAccess::getIni( $name, 'site.ini' );
+            $designs = array_merge( array( (string)$ini->variable( 'DesignSettings', 'SiteDesign' ) ),
+                $ini->hasVariable( 'DesignSettings', 'AdditionalSiteDesignList' ) ? (array)$ini->variable( 'DesignSettings', 'AdditionalSiteDesignList' ) : array() );
+            $admin = false;
+            foreach ( $designs as $design )
+                if ( strpos( (string)$design, 'admin' ) === 0 )
+                    $admin = true;
+            if ( !$admin )
+                $front[$name] = $designs[0];
+        }
+        return $front;
+    }
+
+    /**
+     * The siteaccess the editor opens with: the one the layouts are previewed in (explayouts' expLayoutsPreviewSiteAccess),
+     * else DefaultAccess, else the first public one; '' when there is none.
+     */
+    public static function defaultSiteAccess( array $front )
+    {
+        if ( class_exists( 'expLayoutsPreviewSiteAccess' ) )
+        {
+            $preview = expLayoutsPreviewSiteAccess::resolve();
+            if ( is_string( $preview ) && isset( $front[$preview] ) )
+                return $preview;
+        }
+        $default = (string)eZINI::instance( 'site.ini' )->variable( 'SiteSettings', 'DefaultAccess' );
+        if ( isset( $front[$default] ) )
+            return $default;
+        $names = array_keys( $front );
+        return $names ? (string)$names[0] : '';
+    }
+
+    /**
+     * The design bases of a siteaccess in the order the template engine looks in them (the kernel's
+     * eZTemplateDesignResource::allDesignBases: SiteDesign, AdditionalSiteDesignList, StandardDesign, each in the
+     * DesignExtensions first and then in design/), relative to the installation.
+     *
+     * @return string[]
+     */
+    public static function designBases( $siteAccess )
+    {
+        $root = rtrim( str_replace( '\\', '/', eZSys::rootDir() ), '/' );
+        $bases = array();
+        foreach ( eZTemplateDesignResource::allDesignBases( $siteAccess ) as $base )
+        {
+            $base = rtrim( str_replace( '\\', '/', (string)$base ), '/' );
+            if ( strpos( $base, $root . '/' ) === 0 )
+                $base = substr( $base, strlen( $root ) + 1 );
+            if ( $base !== '' && $base[0] !== '/' && self::cleanRelative( $base ) === $base )
+                $bases[] = $base;
+        }
+        return array_values( array_unique( $bases ) );
+    }
+
+    /**
+     * A relative path without '.', '..', empty or hidden parts and without a NUL, or '' when it has any of them.
+     */
+    public static function cleanRelative( $path )
+    {
+        if ( !is_string( $path ) || $path === '' || strpos( $path, "\0" ) !== false || strpos( $path, '\\' ) !== false )
+            return '';
+        foreach ( explode( '/', $path ) as $part )
+            if ( $part === '' || $part[0] === '.' )
+                return '';
+        return $path;
+    }
+
+    /**
+     * The rows of the template list of a design chain (no file system: the files are given), in the order of the
+     * chain. A template (its path inside templates/) is drawn from the first base that has it, the winner; the same
+     * template in later bases is overridden by it.
+     *
+     * @param string[] $bases the design bases in the chain's order
+     * @param array $files base => string[] the .tpl paths inside <base>/templates/
+     * @param callable|null $writable path => bool, whether the editor may write that file
+     * @return array[] path, base, base_index, design, extension, relative, name, group, winner (bool),
+     *         overridden_by (string[]: the files before it in the chain), overrides (string[]: the files after it),
+     *         writable (bool)
+     */
+    public static function chainRows( array $bases, array $files, $writable = null )
+    {
+        $byRelative = array();
+        foreach ( $bases as $index => $base )
+            foreach ( isset( $files[$base] ) ? (array)$files[$base] : array() as $relative )
+                $byRelative[$relative][] = $index;
+
+        $rows = array();
+        foreach ( $bases as $index => $base )
+        {
+            $where = self::locate( $base . '/templates/x.tpl' );
+            $list = isset( $files[$base] ) ? (array)$files[$base] : array();
+            sort( $list );
+            foreach ( $list as $relative )
+            {
+                $path = $base . '/templates/' . $relative;
+                $before = array();
+                $after = array();
+                foreach ( $byRelative[$relative] as $other )
+                {
+                    if ( $other < $index )
+                        $before[] = $bases[$other] . '/templates/' . $relative;
+                    else if ( $other > $index )
+                        $after[] = $bases[$other] . '/templates/' . $relative;
+                }
+                $folder = dirname( $relative );
+                $rows[] = array(
+                    'path' => $path,
+                    'base' => $base,
+                    'base_index' => $index,
+                    'design' => $where['design'],
+                    'extension' => $where['extension'],
+                    'relative' => $relative,
+                    'name' => basename( $relative ),
+                    'folder' => dirname( $path ),
+                    'group' => $folder === '.' ? '' : $folder,
+                    'winner' => !$before,
+                    'overridden_by' => $before,
+                    'overrides' => $after,
+                    'writable' => $writable ? (bool)call_user_func( $writable, $path ) : false,
+                );
+            }
+        }
+        return $rows;
+    }
+
+    /**
+     * The template list of a siteaccess: every .tpl in <base>/templates/explayouts/ of its design chain.
+     *
+     * @return array( 'bases' => string[], 'rows' => array[] ) see chainRows()
+     */
+    public static function chain( $siteAccess )
+    {
+        $root = eZSys::rootDir();
+        $bases = self::designBases( $siteAccess );
+        $files = array();
+        foreach ( $bases as $base )
+        {
+            $list = array();
+            $dir = $root . '/' . $base . '/templates/' . self::TEMPLATE_FOLDER;
+            if ( is_dir( $dir ) && !is_link( $dir ) )
+                self::scanRelative( $dir, self::TEMPLATE_FOLDER, $list );
+            $files[$base] = $list;
+        }
+        $rows = self::chainRows( $bases, $files, function ( $path ) { return self::isWritable( $path ); } );
+        foreach ( $rows as $i => $row )
+            $rows[$i]['changed'] = self::hasOriginal( $row['path'] );
+        return array( 'bases' => $bases, 'rows' => $rows );
+    }
+
+    protected static function scanRelative( $dir, $relative, array &$list )
+    {
+        foreach ( (array)@scandir( $dir ) as $entry )
+        {
+            if ( !is_string( $entry ) || $entry === '' || $entry[0] === '.' )
+                continue;
+            $full = $dir . '/' . $entry;
+            if ( is_link( $full ) )
+                continue;
+            if ( is_dir( $full ) )
+                self::scanRelative( $full, $relative . '/' . $entry, $list );
+            else if ( is_file( $full ) && substr( $entry, -4 ) === '.tpl' )
+                $list[] = $relative . '/' . $entry;
+        }
+    }
+
+    /**
+     * The file of a template the editor may read for a siteaccess: a .tpl in <base>/templates/explayouts/ of one of
+     * its design bases, or one inside explayouts.ini AllowedTemplateRoots; no symbolic link on the way, nothing
+     * outside the installation. False otherwise.
+     */
+    public static function readableFile( $path, $siteAccess )
+    {
+        $path = self::cleanRelative( ltrim( str_replace( '\\', '/', (string)$path ), '/' ) );
+        if ( $path === '' || substr( $path, -4 ) !== '.tpl' || strlen( basename( $path ) ) <= 4 )
+            return false;
+        $inChain = false;
+        if ( $siteAccess !== '' )
+            foreach ( self::designBases( $siteAccess ) as $base )
+                if ( strpos( $path, $base . '/templates/' . self::TEMPLATE_FOLDER . '/' ) === 0 )
+                    $inChain = true;
+        if ( !$inChain )
+            return self::resolve( $path );
+        $base = realpath( eZSys::rootDir() );
+        $real = $base === false ? false : realpath( $base . '/' . $path );
+        // realpath() equal to the path itself: no symbolic link anywhere on the way
+        return $real !== false && $real === $base . '/' . $path && is_file( $real ) ? $real : false;
+    }
+
+    public static function readFor( $path, $siteAccess )
+    {
+        $file = self::readableFile( $path, $siteAccess );
+        return $file !== false && is_readable( $file ) ? file_get_contents( $file ) : false;
+    }
+
+    /**
+     * Whether the editor may change a template in place: inside explayouts.ini [TemplateEditorSettings]
+     * AllowedTemplateRoots (the folders the installation lets the editor write; a design maintained elsewhere, such
+     * as one installed and updated by Composer, is left out of them) and writable by the web server.
+     */
+    public static function isWritable( $path )
+    {
+        $file = self::resolve( $path );
+        return $file !== false && is_file( $file ) && is_writable( $file );
+    }
+
+    /**
+     * Whether a path that does not exist yet lies inside AllowedTemplateRoots, without a symbolic link in the part
+     * that exists.
+     */
+    public static function mayCreate( $path )
+    {
+        $path = self::cleanRelative( $path );
+        if ( $path === '' || substr( $path, -4 ) !== '.tpl' )
+            return false;
+        $inRoot = false;
+        foreach ( self::allowedRoots() as $root )
+            if ( self::cleanRelative( $root ) === $root && strpos( $path, $root . '/' ) === 0 )
+                $inRoot = true;
+        if ( !$inRoot )
+            return false;
+        $base = realpath( eZSys::rootDir() );
+        if ( $base === false || file_exists( $base . '/' . $path ) || is_link( $base . '/' . $path ) )
+            return false;
+        $dir = dirname( $path );
+        while ( $dir !== '.' && $dir !== '' && !file_exists( $base . '/' . $dir ) )
+            $dir = dirname( $dir );
+        $existing = $dir === '.' || $dir === '' ? $base : $base . '/' . $dir;
+        return realpath( $existing ) === $existing && is_dir( $existing ) && is_writable( $existing );
+    }
+
+    /**
+     * The design bases where an override of a template can be created for a siteaccess: bases before the one the
+     * template is drawn from now (so the copy is the one drawn), where the copy is allowed and not there yet.
+     *
+     * @param array $row a row of chain()
+     * @param array $rows all rows of chain() (to find the winner)
+     * @param string[] $bases the chain
+     * @return string[] bases
+     */
+    public static function overrideTargets( array $row, array $rows, array $bases )
+    {
+        $winner = $row['base_index'];
+        foreach ( $rows as $other )
+            if ( $other['relative'] === $row['relative'] && $other['winner'] )
+                $winner = $other['base_index'];
+        $targets = array();
+        foreach ( $bases as $index => $base )
+            if ( $index < $winner && self::mayCreate( $base . '/templates/' . $row['relative'] ) )
+                $targets[] = $base;
+        return $targets;
+    }
+
+    /**
+     * Copies a template into another design base as an override (same path inside templates/), creating the folders
+     * it needs with the owner and group of the folder above when the server runs as root.
+     *
+     * @return string|false the new template's path
+     */
+    public static function createOverride( $source, $targetBase, $siteAccess )
+    {
+        $content = self::readFor( $source, $siteAccess );
+        if ( $content === false )
+            return false;
+        $chain = self::chain( $siteAccess );
+        $row = null;
+        foreach ( $chain['rows'] as $candidate )
+            if ( $candidate['path'] === $source )
+                $row = $candidate;
+        if ( $row === null || !in_array( $targetBase, self::overrideTargets( $row, $chain['rows'], $chain['bases'] ), true ) )
+            return false;
+        $path = $targetBase . '/templates/' . $row['relative'];
+        $root = realpath( eZSys::rootDir() );
+        $file = $root . '/' . $path;
+
+        $missing = array();
+        for ( $dir = dirname( $file ); !is_dir( $dir ); $dir = dirname( $dir ) )
+            $missing[] = $dir;
+        foreach ( array_reverse( $missing ) as $dir )
+        {
+            if ( !eZDir::mkdir( $dir, false, false ) )
+                return false;
+            self::takeOwnerOfParent( $dir );
+        }
+        if ( file_exists( $file ) || file_put_contents( $file, $content, LOCK_EX ) === false )
+            return false;
+        self::takeOwnerOfParent( $file );
+        return $path;
+    }
+
+    /** A file or folder made by a server running as root gets the owner and group of its folder. */
+    protected static function takeOwnerOfParent( $file )
+    {
+        if ( !function_exists( 'posix_geteuid' ) || posix_geteuid() !== 0 )
+            return;
+        $parent = dirname( $file );
+        @chown( $file, fileowner( $parent ) );
+        @chgrp( $file, filegroup( $parent ) );
+    }
+
     // ---------------------------------------------------------------- the original
 
     /**

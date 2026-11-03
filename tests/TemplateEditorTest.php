@@ -150,6 +150,61 @@ class TemplateEditorTest extends TestCase
         $this->assertSame( '', expLayoutsUiTemplateEditor::locate( 'settings/site.ini' )['design'] );
     }
 
+    // ---- the design chain
+
+    public function testTheFirstBaseOfTheChainWins()
+    {
+        $bases = array( 'extension/theme/design/media', 'extension/explayouts/design/standard', 'design/standard' );
+        $files = array(
+            'extension/theme/design/media' => array( 'explayouts/block/about.tpl' ),
+            'extension/explayouts/design/standard' => array( 'explayouts/zone.tpl', 'explayouts/block/about.tpl' ),
+            'design/standard' => array( 'explayouts/block/about.tpl' ),
+        );
+        $rows = expLayoutsUiTemplateEditor::chainRows( $bases, $files, function ( $path ) { return strpos( $path, 'extension/theme/' ) === 0; } );
+        $byPath = array_column( $rows, null, 'path' );
+        $this->assertCount( 4, $rows );
+
+        $media = $byPath['extension/theme/design/media/templates/explayouts/block/about.tpl'];
+        $this->assertTrue( $media['winner'] );
+        $this->assertSame( array(), $media['overridden_by'] );
+        $this->assertSame( array( 'extension/explayouts/design/standard/templates/explayouts/block/about.tpl',
+                                  'design/standard/templates/explayouts/block/about.tpl' ), $media['overrides'] );
+        $this->assertTrue( $media['writable'] );
+        $this->assertSame( array( 'media', 'theme', 'explayouts/block' ), array( $media['design'], $media['extension'], $media['group'] ) );
+
+        $standard = $byPath['extension/explayouts/design/standard/templates/explayouts/block/about.tpl'];
+        $this->assertFalse( $standard['winner'] );
+        $this->assertSame( array( 'extension/theme/design/media/templates/explayouts/block/about.tpl' ), $standard['overridden_by'] );
+        $this->assertSame( array( 'design/standard/templates/explayouts/block/about.tpl' ), $standard['overrides'] );
+        $this->assertFalse( $standard['writable'] );
+
+        $this->assertTrue( $byPath['extension/explayouts/design/standard/templates/explayouts/zone.tpl']['winner'] );
+        $this->assertSame( 2, $byPath['design/standard/templates/explayouts/block/about.tpl']['base_index'] );
+    }
+
+    public function testCleanRelativePaths()
+    {
+        $this->assertSame( 'design/standard/templates/a.tpl', expLayoutsUiTemplateEditor::cleanRelative( 'design/standard/templates/a.tpl' ) );
+        foreach ( array( '', '../x.tpl', 'design/../x.tpl', 'design//x.tpl', 'design/./x.tpl', '/design/x.tpl', "a\0.tpl", 'design\\x.tpl', 'design/.hidden/x.tpl', array( 'x' ) ) as $bad )
+            $this->assertSame( '', expLayoutsUiTemplateEditor::cleanRelative( $bad ), var_export( $bad, true ) );
+    }
+
+    /** The view takes view parameters only: no query string is read or written. */
+    public function testViewParametersOnly()
+    {
+        $root = dirname( __DIR__ );
+        $view = file_get_contents( $root . '/classes/runnable/views/explayouts_ui/template_editor.php' );
+        $this->assertStringNotContainsString( '$_GET', $view );
+        $this->assertStringNotContainsString( '$_REQUEST', $view );
+        $this->assertStringNotContainsString( 'getVariable(', $view );
+        $this->assertStringContainsString( "'/(siteaccess)/'", $view );
+        $module = file_get_contents( $root . '/modules/explayouts_ui/module.php' );
+        $this->assertStringContainsString( "'unordered_params' => array( 'siteaccess' => 'SiteAccess', 'design' => 'Design' )", $module );
+        $js = file_get_contents( $root . '/design/standard/javascript/explayouts_ui_template_editor.js' );
+        $this->assertStringNotContainsString( 'searchParams', $js );
+        $this->assertStringNotContainsString( "'?'", $js );
+    }
+
     // ---- the write rules
 
     public function testWritesArePostsByEditorsWithTheToken()
@@ -189,8 +244,9 @@ class TemplateEditorTest extends TestCase
         // handlePost() only for a POST, and a POST without the script's header is refused, not handled as a page
         $this->assertStringContainsString( "if ( \$method === 'POST' )\n                \$this->handlePost();", $view );
         $this->assertSame( 1, substr_count( $view, '$this->handlePost()' ) );
-        // the audit event of every save and revert
-        $this->assertSame( 2, substr_count( $view, 'self::afterWrite(' ) );
+        // the audit event of every save, revert and new override
+        $this->assertSame( 3, substr_count( $view, 'self::afterWrite(' ) );
+        $this->assertStringContainsString( 'createOverride(', substr( $view, $rules ) );
         $this->assertStringContainsString( "expAuditHook::emit( 'system.template.change'", $view );
     }
 

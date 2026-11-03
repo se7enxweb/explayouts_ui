@@ -7,6 +7,9 @@
    - Ctrl+S / Cmd+S or "Review changes": the server's syntax check and the diff against the saved template (or the
      original), then Save in the review. A syntax error refuses the save and lists the lines; a line jumps there.
    - Revert to original (with a confirmation), and a guard against leaving or switching with unsaved changes.
+   - The list is the design chain of one public siteaccess: which file each template is drawn from, which ones it
+     overrides; a read-only template can be copied as an override into a design that comes before it.
+   The address carries view parameters only: <base>/<path>/(siteaccess)/<name>/(design)/<base>.
    Every write is a POST with the form token; the server checks the policy again. */
 function explayoutsUiTemplateEditor() {
     'use strict';
@@ -20,6 +23,7 @@ function explayoutsUiTemplateEditor() {
     var T = data.i18n || {};
     var E = data.editor || {};
     var rows = Array.isArray(E.rows) ? E.rows : [];
+    var canEdit = !!E.can_edit;
     // the extension is named on a row only when the templates come from more than one
     var manyExtensions = rows.some(function (row) { return row.extension !== (rows[0] && rows[0].extension); });
 
@@ -34,6 +38,15 @@ function explayoutsUiTemplateEditor() {
         if (cls) { node.className = cls; }
         if (text !== undefined && text !== null) { node.textContent = text; }
         return node;
+    }
+    // the view's address with its view parameters: the template's path, (siteaccess), (design)
+    function viewUrl(path, design) {
+        var url = E.base_url || '';
+        var enc = function (p) { return p.split('/').map(encodeURIComponent).join('/'); };
+        if (path) { url += '/' + enc(path); }
+        if (E.siteaccess) { url += '/(siteaccess)/' + encodeURIComponent(E.siteaccess); }
+        if (design) { url += '/(design)/' + enc(design); }
+        return url;
     }
     function escapeHtml(s) {
         return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -98,6 +111,7 @@ function explayoutsUiTemplateEditor() {
     var review = $('te-review'), reviewSum = $('te-review-sum'), reviewChecks = $('te-review-checks'), reviewDiff = $('te-review-diff');
     var compare = $('te-compare'), reviewSave = $('te-review-save'), reviewClose = $('te-review-close');
     var newBtn = $('te-new'), newDialog = $('te-new-dialog'), newPath = $('te-new-path');
+    var readonlyBox = $('te-readonly'), overrideBox = $('te-override-box'), overrideTarget = $('te-override-target'), overrideBtn = $('te-override');
 
     var current = '';       // the path open in the editor
     var saved = '';         // its text as saved
@@ -116,7 +130,7 @@ function explayoutsUiTemplateEditor() {
 
     function updateButtons() {
         var changed = dirty();
-        if (saveBtn) { saveBtn.disabled = !changed || busy; }
+        if (saveBtn) { saveBtn.disabled = !changed || busy || text.readOnly; }
         if (reviewBtn) { reviewBtn.disabled = !current || busy; }
         if (!busy) { setStatus(current ? (changed ? T.unsaved : T.no_changes) : '', changed ? 'warn' : ''); }
     }
@@ -126,9 +140,10 @@ function explayoutsUiTemplateEditor() {
     function matches(row) {
         var q = (search.value || '').trim().toLowerCase();
         if (q && row.path.toLowerCase().indexOf(q) === -1) { return false; }
-        if (fDesign.value && row.design !== fDesign.value) { return false; }
+        if (fDesign.value && row.base !== fDesign.value) { return false; }
         if (fGroup.value && row.group !== fGroup.value) { return false; }
-        var overridden = row.overridden_by && row.overridden_by.length > 0;
+        // overridden: another design of the chain comes first, so this file is not the one drawn
+        var overridden = row.winner === false;
         if (fState.value === 'changed' && !row.changed) { return false; }
         if (fState.value === 'overridden' && !overridden) { return false; }
         if (fState.value === 'not-overridden' && overridden) { return false; }
@@ -153,9 +168,17 @@ function explayoutsUiTemplateEditor() {
             if (row.design) { tags.appendChild(el('span', 'a4-tag', row.design)); }
             if (row.extension && manyExtensions) { tags.appendChild(el('span', 'a4-tag is-mono', row.extension)); }
             if (row.changed) { tags.appendChild(el('span', 'a4-tag is-warn', T.changed)); }
-            if (row.overridden_by && row.overridden_by.length) {
-                tags.appendChild(el('span', 'a4-tag is-info', fmt(T.overridden, { count: row.overridden_by.length })));
+            if (row.winner === true && row.overrides && row.overrides.length) {
+                var won = el('span', 'a4-tag is-ok', fmt(T.winner, { siteaccess: E.siteaccess }));
+                won.title = fmt(T.overrides, { paths: row.overrides.join(', ') });
+                tags.appendChild(won);
             }
+            if (row.overridden_by && row.overridden_by.length) {
+                var lost = el('span', 'a4-tag is-info', fmt(T.overridden, { count: row.overridden_by.length }));
+                lost.title = fmt(T.overridden_by, { paths: row.overridden_by.join(', ') });
+                tags.appendChild(lost);
+            }
+            if (!row.writable) { tags.appendChild(el('span', 'a4-tag', T.read_only)); }
             btn.appendChild(tags);
             btn.addEventListener('click', function () { open(row.path); });
             li.appendChild(btn);
@@ -171,6 +194,22 @@ function explayoutsUiTemplateEditor() {
     [search, fDesign, fGroup, fState].forEach(function (control) {
         control.addEventListener(control === search ? 'input' : 'change', renderList);
     });
+    // the design filter is a view parameter of the address too
+    fDesign.addEventListener('change', function () { setAddress(); });
+
+    // the siteaccess chooser posts its form at once (the button stays for a page without the script)
+    var saSelect = $('te-siteaccess');
+    if (saSelect && saSelect.form) {
+        saSelect.addEventListener('change', function () {
+            if (dirty() && !window.confirm(T.discard)) { saSelect.value = E.siteaccess; return; }
+            var button = saSelect.form.querySelector('[name="ChooseSiteAccessButton"]');
+            if (typeof saSelect.form.requestSubmit === 'function') { saSelect.form.requestSubmit(button); } else { button.click(); }
+        });
+    }
+
+    function setAddress() {
+        try { window.history.replaceState(null, '', viewUrl(current, fDesign.value)); } catch (e) { /* the address stays as it is */ }
+    }
 
     /* ---- the editor ------------------------------------------------------------------------------------------ */
 
@@ -207,14 +246,33 @@ function explayoutsUiTemplateEditor() {
                 : (u.kind === 'block' ? fmt(T.used_blocks, { count: u.count, layouts: u.layouts }) : fmt(T.used_layouts, { count: u.count }));
             facts.appendChild(el('span', 'a4-tag' + (u.count ? ' is-accent' : ''), label));
         }
+        if (meta.winner === true) {
+            var won = el('span', 'a4-tag is-ok', fmt(T.winner, { siteaccess: E.siteaccess }));
+            if (meta.overrides && meta.overrides.length) { won.title = fmt(T.overrides, { paths: meta.overrides.join(', ') }); }
+            facts.appendChild(won);
+        }
         if (meta.overridden_by && meta.overridden_by.length) {
             var tag = el('span', 'a4-tag is-info', fmt(T.overridden, { count: meta.overridden_by.length }));
             tag.title = fmt(T.overridden_by, { paths: meta.overridden_by.join(', ') });
             facts.appendChild(tag);
         }
+        if (!meta.writable) { facts.appendChild(el('span', 'a4-tag', T.read_only)); }
         if (revertBox) {
-            revertBox.hidden = !meta.has_original;
+            revertBox.hidden = !meta.has_original || !meta.writable;
             revertBox.open = false;
+        }
+        // read-only: the text cannot be changed; an override can be made where the chain allows one
+        text.readOnly = !canEdit || !meta.writable;
+        if (readonlyBox) {
+            var targets = Array.isArray(meta.override_targets) ? meta.override_targets : [];
+            readonlyBox.hidden = meta.writable;
+            overrideBox.hidden = targets.length === 0;
+            overrideTarget.textContent = '';
+            targets.forEach(function (base) {
+                var option = el('option', '', base);
+                option.value = base;
+                overrideTarget.appendChild(option);
+            });
         }
     }
 
@@ -228,11 +286,7 @@ function explayoutsUiTemplateEditor() {
         foot.hidden = false;
         hideProblems();
         renderList();
-        try {
-            var url = new URL(window.location.href);
-            url.searchParams.set('file', path);
-            window.history.replaceState(null, '', url.toString());
-        } catch (e) { /* the address stays as it is */ }
+        setAddress();
     }
 
     function open(path) {
@@ -240,6 +294,7 @@ function explayoutsUiTemplateEditor() {
         if (dirty() && !window.confirm(T.discard)) { return; }
         isNew = false;
         meta = E.selected_meta && path === E.selected ? E.selected_meta : null;
+        if (readonlyBox) { readonlyBox.hidden = true; }
         showEditor(path);
         showMeta();
         text.value = '';
@@ -248,7 +303,7 @@ function explayoutsUiTemplateEditor() {
         busy = true;
         setStatus(T.loading, '');
         updateButtons();
-        request('GET', { file: path }).then(function (res) {
+        request('GET', path).then(function (res) {
             busy = false;
             if (!res.success) { throw new Error(res.error || ''); }
             if (path !== current) { return; }
@@ -316,12 +371,12 @@ function explayoutsUiTemplateEditor() {
     /* ---- the server ------------------------------------------------------------------------------------------ */
 
     function request(method, params) {
-        var url = E.base_url || '';
+        // GET: params is the template's path, sent as view parameters; POST: the form fields
+        var url = method === 'GET' ? viewUrl(params) : viewUrl('');
         var init = { method: method, credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } };
-        if (method === 'GET') {
-            url += (url.indexOf('?') === -1 ? '?' : '&') + new URLSearchParams(params).toString();
-        } else {
+        if (method !== 'GET') {
             var body = new URLSearchParams(params);
+            body.set('SiteAccess', E.siteaccess || '');
             body.set('ezxform_token', E.csrf_token || '');
             init.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             init.body = body.toString();
@@ -507,6 +562,25 @@ function explayoutsUiTemplateEditor() {
         });
     }
 
+    /* ---- override ------------------------------------------------------------------------------------------- */
+
+    if (overrideBtn) {
+        overrideBtn.addEventListener('click', function () {
+            if (busy || !current || !overrideTarget.value) { return; }
+            busy = true;
+            overrideBtn.disabled = true;
+            request('POST', { Action: 'override', SelectedPath: current, Target: overrideTarget.value }).then(function (res) {
+                if (!res.success) { throw new Error(res.error || ''); }
+                window.location.assign(res.url);
+            }).catch(function (err) {
+                busy = false;
+                overrideBtn.disabled = false;
+                updateButtons();
+                setStatus(fmt(T.save_error, { message: err.message }), 'bad');
+            });
+        });
+    }
+
     /* ---- new template ---------------------------------------------------------------------------------------- */
 
     if (newBtn && newDialog) {
@@ -528,12 +602,15 @@ function explayoutsUiTemplateEditor() {
             newDialog.close();
             if (!rows.some(function (row) { return row.path === p; })) {
                 rows.push({ path: p, name: p.slice(p.lastIndexOf('/') + 1), folder: p.slice(0, p.lastIndexOf('/')),
-                            design: '', group: '', extension: '', changed: false, overridden_by: [] });
+                            base: '', design: '', group: '', extension: '', changed: false, winner: null,
+                            overridden_by: [], overrides: [], writable: true });
                 rows.sort(function (a, b) { return a.path < b.path ? -1 : 1; });
             }
             isNew = true;
             meta = null;
             saved = '';
+            text.readOnly = !canEdit;
+            if (readonlyBox) { readonlyBox.hidden = true; }
             showEditor(p);
             text.value = '';
             showMeta();

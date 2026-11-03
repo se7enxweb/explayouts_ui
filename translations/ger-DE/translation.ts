@@ -1284,6 +1284,34 @@
         <translation>Neues Template, noch nicht gespeichert</translation>
     </message>
     <message>
+        <source>This template is read-only here.</source>
+        <translation>Dieses Template ist hier schreibgeschützt.</translation>
+    </message>
+    <message>
+        <source>Its design is not one the editor may change (explayouts.ini [TemplateEditorSettings] AllowedTemplateRoots). To change it, create an override in a design that comes before it for this siteaccess.</source>
+        <translation>Sein Design darf der Editor nicht ändern (explayouts.ini [TemplateEditorSettings] AllowedTemplateRoots). Um es zu ändern, legen Sie einen Override in einem Design an, das für diesen Siteaccess davor kommt.</translation>
+    </message>
+    <message>
+        <source>Create override in</source>
+        <translation>Override anlegen in</translation>
+    </message>
+    <message>
+        <source>Create override</source>
+        <translation>Override anlegen</translation>
+    </message>
+    <message>
+        <source>Drawn for %siteaccess</source>
+        <translation>Verwendet für %siteaccess</translation>
+    </message>
+    <message>
+        <source>Overrides: %paths</source>
+        <translation>Überschreibt: %paths</translation>
+    </message>
+    <message>
+        <source>Read-only</source>
+        <translation>Schreibgeschützt</translation>
+    </message>
+    <message>
         <source>Template editor</source>
         <translation>Template-Editor</translation>
     </message>
