@@ -22,7 +22,7 @@
     <form class="a4-filterbar explayouts-te-filters explayouts-te-siteaccess" method="post" action={'explayouts_ui/template_editor'|ezurl}>
         <div class="a4-field">
             <label class="a4-label" for="te-siteaccess">{'Siteaccess'|i18n( 'design/admin/explayouts_ui/template_editor' )}</label>
-            <div class="a4-toolbar explayouts-te-siteaccess-row">
+            <div class="explayouts-te-siteaccess-row">
                 <select class="a4-input" id="te-siteaccess" name="SiteAccess">
                     {foreach $siteaccesses as $name}<option value="{$name|wash}"{if eq( $name, $siteaccess )} selected="selected"{/if}>{$name|wash}</option>{/foreach}
                 </select>
@@ -82,7 +82,7 @@
     <div class="a4-notice is-info explayouts-te-problems" id="te-readonly" hidden="hidden">
         <p class="a4-notice-title">{'This template is read-only here.'|i18n( 'design/admin/explayouts_ui/template_editor' )}</p>
         <p>{'Its design is not one the editor may change (explayouts.ini [TemplateEditorSettings] AllowedTemplateRoots). To change it, create an override in a design that comes before it for this siteaccess.'|i18n( 'design/admin/explayouts_ui/template_editor' )}</p>
-        <div class="a4-toolbar explayouts-te-override" id="te-override-box" hidden="hidden">
+        <div class="explayouts-te-override" id="te-override-box" hidden="hidden">
             <label class="a4-label" for="te-override-target">{'Create override in'|i18n( 'design/admin/explayouts_ui/template_editor' )}</label>
             <select class="a4-input" id="te-override-target"></select>
             <button type="button" class="a4-btn a4-btn-small a4-btn-primary" id="te-override">{'Create override'|i18n( 'design/admin/explayouts_ui/template_editor' )}</button>
