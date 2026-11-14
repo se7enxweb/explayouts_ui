@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.34 (2026-11-14)
+
+- Added: The block edit view offers the item view types of a block (explayouts' list: the handler's and `ItemViewTypes[]`), with "Default of the view type" for none, and keeps a stored one the list does not offer.
+- Fixed: The block edit view checks what it stores before writing anything: a view type of the definition, an item view type of it, none or the stored one, and text for the name and the parameters.
+- Fixed: The tests run under PHPUnit 9, the last PHPUnit for PHP 8.0, as under PHPUnit 10 and later, and the preview escapes the same on PHP 8.0 as on 8.1+ (from Marco-JAC's pull request #16).
+- Updated: The documentation describes the item view type of the block edit form and how to run the tests; README and INSTALL name PHP 8.0 as the lowest PHP.
+
 ## 1.3.33 (2026-11-03)
 
 - Updated: The template editor takes view parameters only: `explayouts_ui/template_editor/<path>/(siteaccess)/<name>/(design)/<base>`; the old `?file=` address opens the list.
