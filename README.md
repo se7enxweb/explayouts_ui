@@ -96,10 +96,10 @@ Requirements
 The following requirements exists for using the Exponential Layouts UI extension:
 
 Exponential version
-- Make sure you use Exponential 6 / eZ Publish Legacy (required) or higher.
+- Make sure you use Exponential 6 / Exponential Legacy (required) or higher.
 
 PHP version
-- Make sure you have PHP 8.1 or higher.
+- Make sure you have PHP 8.0 or higher.
 
 Sibling extensions
 - `extension/explayouts` — value objects, `explayouts_*` tables, the template editor class and its settings.
@@ -180,6 +180,17 @@ copy of them). The file format and the import rules are described in `extension/
 - **Policies**: `explayouts_ui/transfer_export` and `explayouts_ui/transfer_import`. Before 1.3.22 the import page asked
   for `explayouts_ui/edit`; roles that should keep importing need `explayouts_ui/transfer_import` now (roles with
   `explayouts_ui/*` have it).
+
+Tests
+-----
+
+The PHPUnit tests (`tests/*Test.php`) need no database and carry their metadata both as docblock annotations and as
+attributes: they run under PHPUnit 9, the last PHPUnit for PHP 8.0, as under PHPUnit 10 and later. Run them from the
+installation's root:
+
+```bash
+php vendor/bin/phpunit -c extension/explayouts_ui/phpunit.xml.dist
+```
 
 Documentation
 -------------

@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Exponential Legacy / Exponential 6, PHP 8.1+
+- Exponential Legacy / Exponential 6, PHP 8.0+
 - `extension/explayouts` — value objects, `explayouts_*` tables, the template editor class and its settings
 - `extension/explayouts_core` — service classes used by the module views
 - `extension/explayouts_ui_api` — serves the modern SPA editor that the list screens link to (`/explayouts_ui_api/app`)

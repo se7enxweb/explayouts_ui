@@ -22,6 +22,25 @@ All views live on the `explayouts_ui` module and are reached from the "Layouts" 
 
 List views, the dashboard, the preview and the components use the `read` module function, the screens that change something use `edit` — grant matching module policies to editor roles. The SPA editor (`explayouts_ui_api`) has its own: `explayouts_ui_api/read` to open it, `explayouts_ui_api/edit` for every change.
 
+### Editing a block: view type and item view type
+
+The block edit form offers the view types of the block's definition (`ViewTypes[]`) and, for a definition that has
+any, its item view types: the handler's own list and `ItemViewTypes[<item view type>]=<label>` of
+`[BlockDefinition_<identifier>]` in `explayouts.ini` (explayouts' `expLayoutsBlockHandlerFactory::itemViewTypes()`).
+Every view type offers all item view types; "Default of the view type" stores none, and the design draws the view
+type's own. A design adds item views in its settings, with no code:
+
+```ini
+[BlockDefinition_list]
+ItemViewTypes[tile]=Tile
+```
+
+The form is checked before anything is written: a view type of the definition (or the one the block has), an item view
+type of it, none or the stored one, and text for the name and the parameters. A refused form saves nothing and says
+why ("Unknown view type.", "Unknown item view type.", "Invalid input."); the frontend templates include the templates
+named by both view types, so no other value is stored. An item view type the block has but the list no longer offers
+stays selected until an editor picks another. See explayouts' doc/USAGE.md, "Item view types", for the whole setting.
+
 ## Relationship to the modern editor
 
 This extension is the legacy (server-rendered) UI. For visual drag-and-drop editing, its list screens deep-link into the SPA served by `explayouts_ui_api`:
