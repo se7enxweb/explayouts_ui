@@ -41,6 +41,14 @@ class BlockEdit extends \Exponential\Runnable\ModuleView
 
         $blockInfo = \expLayoutsBlockHandlerFactory::getBlockInfo( $block->attribute( 'definition_identifier' ) );
         $hasCollection = isset( $blockInfo['has_collection'] ) && $blockInfo['has_collection'];
+        // the item view types of the definition: explayouts' factory's list (the handler's and ItemViewTypes[]), or
+        // with an explayouts that has none yet, the handler's own
+        if ( isset( $blockInfo['item_view_types'] ) && is_array( $blockInfo['item_view_types'] ) )
+            $itemViewTypes = $blockInfo['item_view_types'];
+        else if ( method_exists( '\expLayoutsBlockHandlerFactory', 'itemViewTypes' ) )
+            $itemViewTypes = (array)\expLayoutsBlockHandlerFactory::itemViewTypes( (string)$block->attribute( 'definition_identifier' ) );
+        else
+            $itemViewTypes = is_object( $handler ) && method_exists( $handler, 'getItemViewTypes' ) ? (array)$handler->getItemViewTypes() : array();
 
         $collection = false;
         if ( $hasCollection )
@@ -51,15 +59,47 @@ class BlockEdit extends \Exponential\Runnable\ModuleView
 
         if ( $http->hasPostVariable( 'SaveBlock' ) )
         {
-            $block->setAttribute( 'name', trim( $http->postVariable( 'Name' ) ) );
-            $block->setAttribute( 'view_type', trim( $http->postVariable( 'ViewType' ) ) );
+            // validated before anything is written, as explayouts' own block edit view does: a view type of the
+            // block's definition (ViewTypes[]), an item view type of it (the handler's list and ItemViewTypes[]), none
+            // or the stored one, text for the name and every parameter (no arrays); a refused form saves nothing. The
+            // frontend templates include the templates named by both view types.
+            $viewTypes = isset( $blockInfo['view_types'] ) && is_array( $blockInfo['view_types'] ) ? $blockInfo['view_types'] : array( 'default' );
+            $viewType = is_string( $http->postVariable( 'ViewType' ) ) ? trim( $http->postVariable( 'ViewType' ) ) : '';
+            $name = $http->postVariable( 'Name' );
+            $values = array();
+            foreach ( $parameters as $parameterName => $definition )
+            {
+                $value = $http->hasPostVariable( 'Parameter_' . $parameterName ) ? $http->postVariable( 'Parameter_' . $parameterName ) : '';
+                if ( !is_scalar( $value ) )
+                {
+                    $error = \ezpI18n::tr( 'design/admin/explayouts_ui/block_edit', 'Invalid input.' );
+                    break;
+                }
+                $values[$parameterName] = (string)$value;
+            }
+            if ( $error === '' && $viewType !== (string)$block->attribute( 'view_type' ) && !in_array( $viewType, $viewTypes, true ) )
+                $error = \ezpI18n::tr( 'design/admin/explayouts_ui/block_edit', 'Unknown view type.' );
+            if ( $error === '' && !is_string( $name ) )
+                $error = \ezpI18n::tr( 'design/admin/explayouts_ui/block_edit', 'Invalid input.' );
+
+            $storedItemViewType = (string)$block->attribute( 'item_view_type' );
+            $itemViewType = $storedItemViewType;
+            if ( $http->hasPostVariable( 'ItemViewType' ) )
+                $itemViewType = is_string( $http->postVariable( 'ItemViewType' ) ) ? trim( $http->postVariable( 'ItemViewType' ) ) : false;
+            if ( $error === '' && ( $itemViewType === false
+                 || ( $itemViewType !== '' && $itemViewType !== $storedItemViewType && !isset( $itemViewTypes[$itemViewType] ) ) ) )
+                $error = \ezpI18n::tr( 'design/admin/explayouts_ui/block_edit', 'Unknown item view type.' );
+        }
+
+        if ( $http->hasPostVariable( 'SaveBlock' ) && $error === '' )
+        {
+            $block->setAttribute( 'name', trim( $name ) );
+            $block->setAttribute( 'view_type', $viewType );
+            $block->setAttribute( 'item_view_type', $itemViewType );
             $block->store();
 
-            foreach ( $parameters as $name => $definition )
-            {
-                $value = $http->hasPostVariable( 'Parameter_' . $name ) ? $http->postVariable( 'Parameter_' . $name ) : '';
-                \expLayoutsBlockParameter::set( $blockId, $name, $value );
-            }
+            foreach ( $values as $parameterName => $value )
+                \expLayoutsBlockParameter::set( $blockId, $parameterName, $value );
 
             if ( $hasCollection && $http->hasPostVariable( 'CollectionType' ) )
             {
@@ -125,6 +165,7 @@ class BlockEdit extends \Exponential\Runnable\ModuleView
         $tpl->setVariable( 'parameters', $parameters );
         $tpl->setVariable( 'existing_params', $existingParams );
         $tpl->setVariable( 'view_types', $viewTypes );
+        $tpl->setVariable( 'item_view_types', $itemViewTypes );
         $tpl->setVariable( 'has_collection', $hasCollection );
         $tpl->setVariable( 'collection', $collection );
         $tpl->setVariable( 'collection_items', $collectionItems );

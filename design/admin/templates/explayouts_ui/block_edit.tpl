@@ -16,6 +16,20 @@
                 {/foreach}
             </select><br/><br/>
 
+            {* Item view types are an axis of their own: every view type offers all of them (the handler's list and
+               ItemViewTypes[] of [BlockDefinition_*]). '' is the view type's own; a stored one the list does not offer
+               stays selected, so saving does not change it unasked. *}
+            {if or( $item_view_types|count, ne( $block.item_view_type, '' ) )}
+            <label>{'Item view type:'|i18n( 'design/admin/explayouts_ui/block_edit' )}</label>
+            <select name="ItemViewType">
+                <option value=""{if eq( $block.item_view_type, '' )} selected="selected"{/if}>{'Default of the view type'|i18n( 'design/admin/explayouts_ui/block_edit' )}</option>
+                {foreach $item_view_types as $ivt => $ivt_label}
+                    <option value="{$ivt|wash}"{if eq( $block.item_view_type, $ivt )} selected="selected"{/if}>{$ivt_label|wash}</option>
+                {/foreach}
+                {if and( ne( $block.item_view_type, '' ), is_set( $item_view_types[$block.item_view_type] )|not )}<option value="{$block.item_view_type|wash}" selected="selected">{$block.item_view_type|wash}</option>{/if}
+            </select><br/><br/>
+            {/if}
+
             {foreach $parameters as $name => $definition}
                 {def $val=''}
                 {if is_set($existing_params[$name])}{set $val=$existing_params[$name]}{/if}
