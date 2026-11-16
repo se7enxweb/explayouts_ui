@@ -139,9 +139,13 @@ class Preview extends \Exponential\Runnable\ModuleView
         // expLayoutsPreviewSiteAccess finds none with this database: say so instead of mixing two installations.
         // expLayoutsPreviewSiteAccess comes with a newer explayouts: an older one keeps the preview it had, in
         // DefaultAccess, so updating explayouts_ui alone takes nothing away.
+        // The site of this layout where explayouts tells it from the layout's rules (resolveForLayout(): an
+        // administration may serve several sites, se7enxweb/exponential#364), else the administration's.
         if ( class_exists( 'expLayoutsPreviewSiteAccess' ) )
         {
-            $siteAccess = \expLayoutsPreviewSiteAccess::resolve();
+            $siteAccess = method_exists( 'expLayoutsPreviewSiteAccess', 'resolveForLayout' )
+                ? \expLayoutsPreviewSiteAccess::resolveForLayout( $layoutId )
+                : \expLayoutsPreviewSiteAccess::resolve();
             $reason = \expLayoutsPreviewSiteAccess::$lastError;
         }
         else

@@ -3,6 +3,7 @@
  * The layout preview renders in the public siteaccess of the administration in use (expLayoutsPreviewSiteAccess of
  * explayouts), not in site.ini [SiteSettings] DefaultAccess: in an installation serving several sites that is the
  * default of the whole installation, another site's, whose settings and design then ran on this site's database.
+ * Where explayouts tells the site of the layout from its rules (resolveForLayout()), the preview switches to that one.
  * Where no siteaccess qualifies the preview says so instead of switching. An explayouts too old to say keeps the
  * preview it had, in DefaultAccess.
  *
@@ -26,7 +27,7 @@ class PreviewSiteAccessStop extends Exception {}
 class PreviewSiteAccessTest extends TestCase
 {
     /** Stand-ins of the kernel and of explayouts up to the siteaccess switch; $preview: the answer of resolve(), or null for an explayouts without the class */
-    protected static function standIns( $preview, $reason = '' )
+    protected static function standIns( $preview, $reason = '', $layoutSites = null )
     {
         if ( !class_exists( 'eZUser', false ) )
             eval( 'class eZUser { public static function currentUser() { return new self(); } public function hasAccessTo( $m, $f = false ) { return true; } }' );
@@ -42,7 +43,10 @@ class PreviewSiteAccessTest extends TestCase
             eval( 'class eZINI { public function variable( $g, $n ) { return $n === "DefaultAccess" ? "other_site" : ""; } public static function instance( $f = "site.ini" ) { return new self(); } }' );
         if ( $preview !== null )
         {
-            eval( 'class expLayoutsPreviewSiteAccess { public static $lastError = ""; public static function resolve() { return ' . var_export( $preview, true ) . '; } }' );
+            // $layoutSites: layout id => site, for an explayouts with resolveForLayout()
+            eval( 'class expLayoutsPreviewSiteAccess { public static $lastError = ""; public static function resolve() { return ' . var_export( $preview, true ) . '; }'
+                  . ( $layoutSites === null ? '' : ' public static function resolveForLayout( $id ) { $sites = ' . var_export( $layoutSites, true ) . '; return isset( $sites[$id] ) ? $sites[$id] : self::resolve(); }' )
+                  . ' }' );
             expLayoutsPreviewSiteAccess::$lastError = $reason;
         }
         $GLOBALS['eZCurrentAccess'] = array( 'name' => 'site_admin', 'type' => 1 );
@@ -69,6 +73,23 @@ class PreviewSiteAccessTest extends TestCase
         $loaded = null;
         self::preview( $loaded );
         $this->assertSame( 'site', $loaded, 'not DefaultAccess (other_site)' );
+    }
+
+    public function testThePreviewSwitchesToTheSiteOfTheLayout()
+    {
+        // layout 2 belongs to the site starter (its rules), the administration previews in site
+        self::standIns( 'site', '', array( 2 => 'starter' ) );
+        $loaded = null;
+        self::preview( $loaded );
+        $this->assertSame( 'starter', $loaded, 'the site of layout 2, not the administration\'s (site)' );
+    }
+
+    public function testALayoutWithoutASiteGetsThePublicSiteaccessOfTheAdministration()
+    {
+        self::standIns( 'site', '', array( 9 => 'starter' ) );
+        $loaded = null;
+        self::preview( $loaded );
+        $this->assertSame( 'site', $loaded );
     }
 
     public function testWithoutAPublicSiteaccessThePreviewSaysWhyAndDoesNotSwitch()
