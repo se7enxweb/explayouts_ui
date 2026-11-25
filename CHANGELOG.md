@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.35 (2026-11-25)
+
+- Updated: The layout preview renders in the site the layout belongs to, when explayouts 1.4.52 or later tells it (resolveForLayout()); an older explayouts keeps the preview in the administration's preview siteaccess (pull request #17).
+- Added: A CI workflow (php -l on PHP 7.4 and 8.0 to 8.5, extension.xml, version parity).
+
 ## 1.3.34 (2026-11-14)
 
 - Added: The block edit view offers the item view types of a block (explayouts' list: the handler's and `ItemViewTypes[]`), with "Default of the view type" for none, and keeps a stored one the list does not offer.
